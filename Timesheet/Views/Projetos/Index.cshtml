@@ -1,0 +1,201 @@
+﻿@model IEnumerable<Apassos.Models.Project>
+
+@{
+    ViewBag.Title = System.Configuration.ConfigurationManager.AppSettings["TITLEAPP"].ToString();
+    Layout = "~/Views/Shared/_Principal.cshtml";
+    var relativePath = System.Configuration.ConfigurationManager.AppSettings["RELATIVEPATH"].ToString();
+
+    var _mensagem = (string)HttpContext.Current.Session["_MENSAGEM_"];
+    var _success = (string)HttpContext.Current.Session["_SUCCESS_"];
+    var flag = 0;
+
+    HttpContext.Current.Session["_MENSAGEM_"] = "";
+    HttpContext.Current.Session["_SUCCESS_"] = "";
+    
+}
+
+
+<script>
+    (function ($) {
+        _mensagemAlert = '@(_mensagem)';
+         _success = '@(_success)';
+         flag = '@(flag)';
+         if (_mensagemAlert != '') {
+             if (_success == 'true') {
+                 showAlert('success', '&nbsp;&nbsp;' + _mensagemAlert);
+             } else {
+                 showAlert('error', '&nbsp;&nbsp;' + _mensagemAlert);
+             }
+         }
+
+        // Define the Dialog and its properties.
+         $("#dialog-confirm").dialog({
+             resizable: false,
+             modal: true,
+             title: "Exclus&atilde;o",
+             height: 250,
+             width: 400,
+             autoOpen: false,
+             buttons: {
+                 "Sim": function () {
+                     $(this).dialog('close');
+                     apagarmarcados();
+                 },
+                 "Não": function () {
+                     $(this).dialog('close');
+                     //excluir(false);
+                 }
+             }
+         });
+
+    });
+
+    function novoItem() {
+        window.open(relativepath + 'Projetos/Create', '_top');
+    }
+    function getselecionadosProjetos() {
+        var stringchecados = "";
+        var itemschecks = document.getElementsByClassName("checkitemclass");
+
+        for (icont = 0; icont < itemschecks.length; icont++) {
+           if (itemschecks[icont].checked) {
+              
+              stringchecados = stringchecados + itemschecks[icont].id.substr(8) + ",";
+            }
+        }
+
+        if (stringchecados.length > 0) {
+           stringchecados = stringchecados.substr(0, stringchecados.length - 1);
+        }
+        return stringchecados;
+    }
+    function apagarmarcados() {
+       var periodosexcluir = getselecionadosProjetos();
+        $("#checados").val(periodosexcluir);
+        document.getElementById('formexcluir').action = relativepath + "Projetos/Excluir";
+        document.getElementById('formexcluir').method = "post";
+        document.getElementById('formexcluir').submit();
+    }
+    function Exclusao() {
+       var periodosexcluir = getselecionadosProjetos();
+       console.log(periodosexcluir);
+        if (periodosexcluir.length > 0) {
+           //$("#dialog-confirm").dialog("open");
+           var x = confirm("Deseja realmente excluir o projeto?");
+           if (x == true) {
+              apagarmarcados();
+           }
+        }
+    }
+
+</script>
+
+
+<table cellspacing="5" cellpadding="5" align="left" width="100%">
+    <tr >
+        <td>
+
+            <table align="left">
+                   <tr>
+                        <td>
+                            <input id="novo" type="button" onclick="novoItem();"  class="botaocursor"
+                                                    style="background-image:url('@(relativePath)images/mais.png')" 
+                                                    value="  " name="novo" title="Novo Projeto">
+                        </td>
+                        <td>
+                            <input id="excluirmarcados" type="button" onclick="Exclusao();"  class="botaocursor"
+                                                style="background-image:url('@(relativePath)images/lixeira.png')" 
+                                                value="  " name="excluirmarcados" title="Apagar">
+                        </td>
+                    </tr>
+            </table>
+
+
+        <td align="right">
+                
+                <table>
+                	<tr>
+                    	<td>Legenda:&nbsp;&nbsp;&nbsp;
+                        </td>
+                    	<td><img src="@(relativePath)images/icone_usuario.gif" title="Possui consultores alocados" width="20"/></td>
+                    	<td>Possui consultores alocados</td>
+                        <td width="5"></td>
+                    </tr>
+                </table></td>
+
+
+    </tr>
+</table>
+
+<br>
+
+<form id="formexcluir" name="formexcluir">
+    <input type="hidden" value="" id="checados" name="checados" />
+</form>
+
+<table id="tabelaprojetos" width="100%" cellspacing="5" cellpadding="5" >
+    <tr class="trheader">
+        <th>
+            <!--empty cell-->
+        </th>
+        <th>
+            Projeto
+        </th>
+        <th>
+            Cliente
+        </th>
+        <th>
+            Customer WBS
+        </th>
+        <th>
+            In&iacute;cio <br/>
+            Real - Planejado
+        </th>
+        <th>
+            T&eacute;rmino <br/>
+            Real - Planejado
+        </th>
+        <th>
+            Status
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr valign="middle" class="tritem">
+        <td align="center">
+            @if (item.Consultores != null )
+            {
+                <input type="checkbox" id="itemsel_@(item.PROJECTID)" name="itemsel_@(item.PROJECTID)" class="checkitemclass" />
+            }
+        </td>
+        <td >
+            @Html.ActionLink(item.NAME, "Edit", new { id=item.PROJECTID }) <span class="@(item.cssClassPartners)" title="Possui consultores alocados">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </td>
+        <td >
+            @Html.ActionLink(item.Partner.SHORTNAME + " ("+item.Partner.CPFCNPJ+")", "Edit", new { id=item.PROJECTID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CUSTOMERWBS)
+        </td>
+        <td align="center">
+            @(Convert.ToDateTime( item.PLANNEDSTARTDATE).ToShortDateString()) - @( item.GetDateStartToString)
+        </td>
+        <td align="center">
+            @(Convert.ToDateTime( item.PLANNEDFINISHDATE).ToShortDateString()) - @(item.GetDateFinishToString)
+        </td>
+        <td align="center">
+            @(Apassos.Common.Constants.GetDescricaoStatusProjeto(int.Parse(item.STATUS)))
+        </td>
+    </tr>
+}
+
+</table>
+
+
+<div id="dialog-confirm">Confirma a exclus&atilde;o dos projetos selecionados?</div>
+
+
+<script>
+    var relativepath = '@(relativePath)';
+</script>
+

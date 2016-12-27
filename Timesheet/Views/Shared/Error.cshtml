@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "APONTAMENTO DE HORAS";
+    Layout = "~/Views/Shared/_Principal.cshtml";
+    var relativePath = System.Configuration.ConfigurationManager.AppSettings["RELATIVEPATH"].ToString();
+}
+
+ 
+ <h2>
+ Servidor com problemas
+ </h2>
+ <p>
+ Houve um problema no nosso servidor .<br/>
+ Por favor, fa&ccedil;a o login e tente novamente dentro de alguns instantes .
+</p>
+<p>
+<a href="@(relativePath)Login/">Clique para fazer o login.</a>
+ </p>
+ 

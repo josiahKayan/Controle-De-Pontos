@@ -1,0 +1,69 @@
+﻿@{
+    Layout = "~/Views/Shared/_Principal.cshtml";
+    ViewBag.Title = "Login - Controle de Apontamentos - APassos Consultoria";
+    var relativePath = System.Configuration.ConfigurationManager.AppSettings["RELATIVEPATH"].ToString();
+
+    var _mensagem = (string)HttpContext.Current.Session["_MENSAGEM_"];
+    var _success = (string)HttpContext.Current.Session["_SUCCESS_"];
+    var flag = 0;
+    
+}
+
+<!-- Secao da mensagem de alerta -->
+<div id="alert"></div>
+
+<script>
+    jQuery(function ($) {
+        _mensagemAlert = '@(_mensagem)';
+        _success = '@(_success)';
+        flag = '@(flag)';
+        if (_mensagemAlert != '') {
+            if (_success == 'true') {
+                showAlert('success', '&nbsp;&nbsp;' + _mensagemAlert);
+            } else {
+                showAlert('error', '&nbsp;&nbsp;' + _mensagemAlert);
+            }
+        }
+        $('#btsalvar').click(function () {
+            criptografar();
+        });
+    });
+
+    function criptografar() {
+        document.getElementById('_confirmed').value = 'true';
+        document.getElementById('formconfirmed').action = "@(relativePath)Login/Cript";
+        document.getElementById('formconfirmed').submit();
+    }
+</script>
+
+<div class="div-cadastros-container">
+
+    <div style="margin-left:10px;">
+    
+    <table>
+        <tr>
+            <td colspan="2">
+                <span style="text-align:left;font-size:30px;">Criptografar senhas</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Todas as senhas ser&atilde;o criptografadas. <br />
+                Será necessário fazer login novamente, ap&oacute; o t&eacute;rmino do processo.
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <form id="formconfirmed" name="formconfirmed" method="post">
+                    <input type="hidden" id="_confirmed" name="_confirmed" value="" />
+                    <input id="btsalvar" class="botaocursor" type="button" 
+                                style="background-image:url('@(relativePath)images/salvar.png')"  
+                                value="" name="btsalvar" title="Salvar" />
+                </form>
+            </td>
+        </tr>
+    </table>
+    </div>
+</div>
+    
+

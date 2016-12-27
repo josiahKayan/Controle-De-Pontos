@@ -1,0 +1,87 @@
+﻿@{
+  Layout = "~/Views/Shared/_LoginPage.cshtml";
+  ViewBag.Title = "Login - Portal Apassos Consultoria";
+  var relativePath = System.Configuration.ConfigurationManager.AppSettings["RELATIVEPATH"].ToString();
+
+  var _mensagem = (string)HttpContext.Current.Session["_MENSAGEM_"];
+
+  //Console.WriteLine(""+_mensagem);
+  //Console.ReadKey();
+
+  var _success = (string)HttpContext.Current.Session["_SUCCESS_"];
+
+}
+
+
+<script>
+    jQuery(function ($) {
+        _mensagemAlert = '@(_mensagem)';
+        _success = '@(_success)';
+        if (_mensagemAlert != '') {
+            if (_success == 'true') {
+                showAlert('success', '&nbsp;&nbsp;' + _mensagemAlert);
+            } else {
+                showAlert('error', '&nbsp;&nbsp;' + _mensagemAlert);
+            }
+        }
+
+    });
+</script>
+
+<!--Script de validacao do login -->
+<script src="@Url.Content("~/Scripts/apontamentos/login.js")" type="text/javascript"></script>
+
+
+<!--WRAPPER-->
+<div id="wrapper">
+
+	<!--SLIDE-IN ICONS-->
+    <div class="user-icon"></div>
+    <div class="pass-icon"></div>
+    <!--END SLIDE-IN ICONS-->
+    
+<!--LOGIN FORM-->
+<form name="login-form" id="login-form" class="login-form" action="@(relativePath)Login/Acessar" method="post">
+	<!--HEADER-->
+    <div class="header">
+    <!--TITLE-->
+     <img src="@(relativePath)images/APASSOS_logo.png" width="220" />
+
+    <!--END TITLE-->
+    <!--DESCRIPTION--><span>Informe seu login e senha.</span><!--END DESCRIPTION-->
+    </div>
+    <!--END HEADER-->
+	
+	<!--CONTENT-->
+    <div class="content">
+	<!--USERNAME--><input id="loginid" name="loginid" type="text" class="input username" value="Login ID" onfocus="this.value=''" /><!--END USERNAME-->
+    <!--PASSWORD--><input id="password" name="password" type="password" class="input password" value="Password" onfocus="this.value=''" /><!--END PASSWORD-->
+    </div>
+    <!--END CONTENT-->
+    
+    <!--FOOTER-->
+    <div class="footer">
+    <!--LOGIN BUTTON--><input type="button" value="Login" class="button" id="btnloginConsultor"  name="btnloginConsultor"/><!--END LOGIN BUTTON-->
+    <!--REGISTER BUTTON--><input name="button" type="submit" class="register" value="Register" style="display:none;"/><!--END REGISTER BUTTON-->
+    </div>
+    <!--END FOOTER-->
+
+</form>
+<!--END LOGIN FORM-->
+
+</div>
+<!--END WRAPPER-->
+
+<!--GRADIENT--><div class="gradient"></div><!--END GRADIENT-->
+
+<script>
+    var errorm = '@ViewBag.loginerror';
+    var relativepath = '@(relativePath)';
+    function mensagemerro() {
+        if (errorm == 'true') {
+            showAlert('error',"Login e senha não foram encontrados.");
+        }
+    }
+    mensagemerro();
+</script>
+
