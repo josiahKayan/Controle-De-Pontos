@@ -67,7 +67,7 @@ namespace Apassos.TeamWork.Parsers
 
             foreach (var todoItem in todoItems)
             {
-
+            
                 try
                 {
 
