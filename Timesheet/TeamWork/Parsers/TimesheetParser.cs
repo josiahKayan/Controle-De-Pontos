@@ -74,13 +74,13 @@ namespace Apassos.TeamWork.Parsers
                     //Filtro para não salvar tarefas antigas, essas tarefas serão filtradas a partir da data que está corrente
                     mesInicialTarefa = todoItem.StartDate.Month;
 
-                    //if (mesInicialTarefa >= (diaDoMes - 3 ))
-                        if (mesInicialTarefa >= (diaDoMes) )
-
+                    if (mesInicialTarefa >= (diaDoMes))
+                    {
                         if (todoItem.ResponsiblePartyNames.Contains("Danilo S.") || todoItem.ResponsiblePartyNames.Contains("Willian L.") || todoItem.ResponsiblePartyNames.Contains("Josias L.") || todoItem.ResponsiblePartyNames.Contains("Jorge L.") || todoItem.ResponsiblePartyNames.Contains("Andreson M.") || todoItem.ResponsiblePartyNames.Contains("Wanderson H.") || todoItem.ResponsiblePartyNames.Contains("Evandro C.") || todoItem.ResponsiblePartyNames.Contains("Djanildes A.") || todoItem.ResponsiblePartyNames.Contains("Jaime N.") || todoItem.ResponsiblePartyNames.Contains("Carlos X.")
                         || todoItem.ResponsiblePartyNames.Contains("Paulo P.") || todoItem.ResponsiblePartyNames.Contains("Waldir T.") || todoItem.ResponsiblePartyNames.Contains("Sandra G.") || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Rodrigo L.") || todoItem.ResponsiblePartyNames.Contains("Carlos R.") || todoItem.ResponsiblePartyNames.Contains("Bruno R.") || todoItem.ResponsiblePartyNames.Contains("Eduardo C.") || todoItem.ResponsiblePartyNames.Contains("Matheus F.") || todoItem.ResponsiblePartyNames.Contains("Rayden F.")
                         || todoItem.ResponsiblePartyNames.Contains("Stella W.") || todoItem.ResponsiblePartyNames.Contains("Nonato O.") || todoItem.ResponsiblePartyNames.Contains("Fernando P.") || todoItem.ResponsiblePartyNames.Contains("Fábio D.") || todoItem.ResponsiblePartyNames.Contains("Fábio A."))
-                        { 
+
+                        {
                             try
                             {
                                 if (!todoItem.Status.Equals(STATUS_COMPLETED))
@@ -106,6 +106,7 @@ namespace Apassos.TeamWork.Parsers
                             }
 
                         }
+                    }
 
                 }
                 catch (Exception e)
@@ -113,7 +114,7 @@ namespace Apassos.TeamWork.Parsers
                     Debug.WriteLine("" + e.Message);
                 }
             }
-            TimesheetDataAccess.AddTeamworkLogTrace(_logTraceList);
+            //TimesheetDataAccess.AddTeamworkLogTrace(_logTraceList);
             return items;
         }
 
@@ -145,7 +146,9 @@ namespace Apassos.TeamWork.Parsers
                     {
                         string[] mes = entry.Date.Split(('-'));
 
-                        if (int.Parse(mes[1]) >= diaDoMes)
+                        //if (int.Parse(mes[1]) >= (diaDoMes-1))
+                        if (int.Parse(mes[1]) == 12 || int.Parse(mes[1]) == 1)
+
                         {
                             TimesheetItem item = CreateTimesheetItem(todoItem, period, partner, projectTodoItem, entry);
 
@@ -232,7 +235,9 @@ namespace Apassos.TeamWork.Parsers
                 {
                     string[] mes = entry.Date.Split(('-'));
 
-                    if (int.Parse(mes[1]) >= diaDoMes)
+                    //if (int.Parse(mes[1]) >= (diaDoMes-1))
+
+                    if (int.Parse(mes[1]) == 1 || int.Parse(mes[1]) == 12)
                     {
                         Period period = GetPeriodByEntry(entry);
                         Partners partner = GetPartnerByEntry(entry);
@@ -408,7 +413,7 @@ namespace Apassos.TeamWork.Parsers
                 if (todoItem.ResponsiblePartyFirstname.Equals("Fabio"))
                 {
                     if (todoItem.ResponsiblePartyLastname.ToUpper().Trim().Equals("DEALMEIDA"))
-                   {
+                    {
                         return _partners.Find(x => x.LASTNAME.ToUpper().Trim().Equals("ALMEIDA"));
                     }
                     else

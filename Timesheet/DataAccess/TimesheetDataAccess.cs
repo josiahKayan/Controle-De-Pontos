@@ -411,23 +411,29 @@ namespace Apassos.DataAccess
         {
             foreach (var item in logTraceList.ToList())
             {
-                TeamworkLogTraces foundLogTrace = db.TeamworkLogTraces.Where(x => x.TeamWorkTodoItemId == item.TeamWorkTodoItemId).SingleOrDefault();
-                if (foundLogTrace == null)
+                try
                 {
-                    db.TeamworkLogTraces.Add(item);
-                    db.SaveChanges();
-                }
-                else
+                    TeamworkLogTraces foundLogTrace = db.TeamworkLogTraces.Where(x => x.TeamWorkTodoItemId == item.TeamWorkTodoItemId).SingleOrDefault();
+                    if (foundLogTrace == null)
+                    {
+                        db.TeamworkLogTraces.Add(item);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        foundLogTrace.IsFixed = false;
+                        foundLogTrace.Partner = item.Partner;
+                        foundLogTrace.Creator = item.Creator;
+                        foundLogTrace.Description = item.Description;
+                        foundLogTrace.Project = item.Project;
+                        //foundLogTrace.RootCauses = item.RootCauses;
+                        foundLogTrace.TeamWorkTodoItemId = item.TeamWorkTodoItemId;
+                        db.Entry(foundLogTrace).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }catch(Exception e)
                 {
-                    foundLogTrace.IsFixed = false;
-                    foundLogTrace.Partner = item.Partner;
-                    foundLogTrace.Creator = item.Creator;
-                    foundLogTrace.Description = item.Description;
-                    foundLogTrace.Project = item.Project;
-                    //foundLogTrace.RootCauses = item.RootCauses;
-                    foundLogTrace.TeamWorkTodoItemId = item.TeamWorkTodoItemId;
-                    db.Entry(foundLogTrace).State = EntityState.Modified;
-                    db.SaveChanges();
+
                 }
 
             }

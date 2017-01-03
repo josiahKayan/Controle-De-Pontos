@@ -427,7 +427,8 @@ namespace Apassos.DataAccess
             lista = lista.OrderBy(p => p.PROJECTID).ToList();
             return lista;
         }
-       
+
+
         /**
         * Retorna o projeto pelo id. 
         */

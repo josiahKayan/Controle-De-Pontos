@@ -41,15 +41,15 @@ namespace Apassos.TeamWork.Jobs
             List<TeamworkLogTraces> listLogs = erros.RetornaErros();
 
 
-            Emails.Email email = new Emails.Email();
-            try
-            {
-                email.EnviaMensagemEmail(listLogs);
-            }
-            catch (Exception e)
-            {
+            //Emails.Email email = new Emails.Email();
+            //try
+            //{
+            //    email.EnviaMensagemEmail(listLogs);
+            //}
+            //catch (Exception e)
+            //{
 
-            }
+            //}
 
         }
     }
