@@ -62,6 +62,7 @@ namespace Apassos.TeamWork.Parsers
             int diaDoMes = DateTime.Now.Month;
             List<TodoItem> todoItems = _teamWorkService.GetAllTodoItems();
             int mesInicialTarefa;
+            int ano;
 
             List<TimesheetTeamWorkItem> items = new List<TimesheetTeamWorkItem>();
 
@@ -73,15 +74,17 @@ namespace Apassos.TeamWork.Parsers
 
                     //Filtro para não salvar tarefas antigas, essas tarefas serão filtradas a partir da data que está corrente
                     mesInicialTarefa = todoItem.StartDate.Month;
+                    ano = todoItem.StartDate.Year;
 
-                    if (mesInicialTarefa >= (diaDoMes-1))
+                    if (( mesInicialTarefa == 1 && ano == 2017))
                     {
                         //if (todoItem.ResponsiblePartyNames.Contains("Danilo S.") || todoItem.ResponsiblePartyNames.Contains("Willian L.") || todoItem.ResponsiblePartyNames.Contains("Josias L.") || todoItem.ResponsiblePartyNames.Contains("Jorge L.") || todoItem.ResponsiblePartyNames.Contains("Andreson M.") || todoItem.ResponsiblePartyNames.Contains("Wanderson H.") || todoItem.ResponsiblePartyNames.Contains("Evandro C.") || todoItem.ResponsiblePartyNames.Contains("Djanildes A.") || todoItem.ResponsiblePartyNames.Contains("Jaime N.") || todoItem.ResponsiblePartyNames.Contains("Carlos X.")
                         //|| todoItem.ResponsiblePartyNames.Contains("Paulo P.") || todoItem.ResponsiblePartyNames.Contains("Waldir T.") || todoItem.ResponsiblePartyNames.Contains("Sandra G.") || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Rodrigo L.") || todoItem.ResponsiblePartyNames.Contains("Carlos R.") || todoItem.ResponsiblePartyNames.Contains("Bruno R.") || todoItem.ResponsiblePartyNames.Contains("Eduardo C.") || todoItem.ResponsiblePartyNames.Contains("Matheus F.") || todoItem.ResponsiblePartyNames.Contains("Rayden F.")
                         //|| todoItem.ResponsiblePartyNames.Contains("Stella W.") || todoItem.ResponsiblePartyNames.Contains("Nonato O.") || todoItem.ResponsiblePartyNames.Contains("Fernando P.") || todoItem.ResponsiblePartyNames.Contains("Fábio D.") || todoItem.ResponsiblePartyNames.Contains("Fábio A."))
 
-                        if ( todoItem.ResponsiblePartyNames.Contains("Josias L.") || todoItem.ResponsiblePartyNames.Contains("Jorge L.") || todoItem.ResponsiblePartyNames.Contains("Andreson M.")    
-                         || todoItem.ResponsiblePartyNames.Contains("Rodrigo L."))
+                        if (todoItem.ResponsiblePartyNames.Contains("Danilo S.") || todoItem.ResponsiblePartyNames.Contains("Willian L.") || todoItem.ResponsiblePartyNames.Contains("Josias L.") ||  todoItem.ResponsiblePartyNames.Contains("Andreson M.") || todoItem.ResponsiblePartyNames.Contains("Wanderson H.") || todoItem.ResponsiblePartyNames.Contains("Evandro C.") || todoItem.ResponsiblePartyNames.Contains("Djanildes A.") || todoItem.ResponsiblePartyNames.Contains("Jaime N.") || todoItem.ResponsiblePartyNames.Contains("Carlos X.")
+                        || todoItem.ResponsiblePartyNames.Contains("Paulo P.")   || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Rodrigo L.") ||  todoItem.ResponsiblePartyNames.Contains("Eduardo C.") || todoItem.ResponsiblePartyNames.Contains("Matheus F.") || todoItem.ResponsiblePartyNames.Contains("Rayden F.")
+                        || todoItem.ResponsiblePartyNames.Contains("Fábio D.") || todoItem.ResponsiblePartyNames.Contains("Fábio A."))
 
 
                         {
@@ -135,12 +138,11 @@ namespace Apassos.TeamWork.Parsers
             logTrace.Creator = todoItem.CreatorFirstname;
             logTrace.Titulo = todoItem.Content;
 
-            Period period = GetPeriodByTodoItem(todoItem);
             Partners partner = GetPartnerByTodoItem(todoItem);
             int idByTag = GetTagByTodoItem(todoItem);
             Models.Project projectTodoItem = GetProjectByTags(idByTag);
 
-            if (ValidObjects(period, partner, projectTodoItem))
+            if (ValidObjectsPerPeriod( partner, projectTodoItem))
             {
                 TimeEntriesResponse response = _teamWorkService.GetSingleTimeEntry(int.Parse(todoItem.Id));
                 if (response.TimeEntries.Length > 0)
@@ -151,9 +153,10 @@ namespace Apassos.TeamWork.Parsers
                         string[] mes = entry.Date.Split(('-'));
 
                         //if (int.Parse(mes[1]) >= (diaDoMes-1))
-                        if (int.Parse(mes[1]) == 12 || int.Parse(mes[1]) == 1)
+                        if ( int.Parse(mes[1]) == 1)
 
                         {
+                            Period period = GetPeriodByEntry(entry);
                             TimesheetItem item = CreateTimesheetItem(todoItem, period, partner, projectTodoItem, entry);
 
                             TimesheetTeamWorkItem teamWorkItem = new TimesheetTeamWorkItem();
@@ -239,9 +242,8 @@ namespace Apassos.TeamWork.Parsers
                 {
                     string[] mes = entry.Date.Split(('-'));
 
-                    //if (int.Parse(mes[1]) >= (diaDoMes-1))
 
-                    if (int.Parse(mes[1]) == 1 || int.Parse(mes[1]) == 12)
+                    if (int.Parse(mes[1]) == 1 )
                     {
                         Period period = GetPeriodByEntry(entry);
                         Partners partner = GetPartnerByEntry(entry);
@@ -465,6 +467,8 @@ namespace Apassos.TeamWork.Parsers
             return _periods.Find(x => x.YEAR == endDate.Year && x.MONTH == endDate.Month);
         }
 
+
+
         private Period GetPeriodByEntry(TimeEntry entry)
         {
             DateTime date = DateTime.Parse(entry.Date);
@@ -539,5 +543,22 @@ namespace Apassos.TeamWork.Parsers
             return valid;
         }
 
+        private bool ValidObjectsPerPeriod( Partners partner, Models.Project projectTodoItem)
+        {
+            bool valid = true;
+
+           
+            if (partner == null)
+            {
+                valid = false;
+            }
+
+            if (projectTodoItem == null)
+            {
+                valid = false;
+            }
+
+            return valid;
+        }
     }
 }

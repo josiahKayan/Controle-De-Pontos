@@ -386,49 +386,44 @@
             @foreach (var itemApontamento in listaApontamentosItens)
             {
 
-               if (!itemApontamento.DATE.ToString("yyyy/MM/dd").Equals(dataApontamento))
-               {
-                  dataApontamento = itemApontamento.DATE.ToString("yyyy/MM/dd");
-                  List<Apassos.Models.TimesheetItem> items = listaApontamentosItens.FindAll(x => x.DATE.ToString("yyyy/MM/dd") == dataApontamento);
-                  itemApontamento.TotalDays = items.Count();
-                  var ticks = items.Sum(x => x.TotalHours.Ticks);
-                  itemApontamento.TotalHoursDay = TimeSpan.FromTicks(ticks);
-                  itemApontamento.StyleType = "";
-               }
-               else
-               {
-                  itemApontamento.TotalDays = 0;
-                  itemApontamento.StyleType = "display: none";
-               }
+                if (!itemApontamento.DATE.ToString("yyyy/MM/dd").Equals(dataApontamento))
+                {
+                    dataApontamento = itemApontamento.DATE.ToString("yyyy/MM/dd");
+                    List<Apassos.Models.TimesheetItem> items = listaApontamentosItens.FindAll(x => x.DATE.ToString("yyyy/MM/dd") == dataApontamento);
+                    itemApontamento.TotalDays = items.Count();
+                    var ticks = items.Sum(x => x.TotalHours.Ticks);
+                    itemApontamento.TotalHoursDay = TimeSpan.FromTicks(ticks);
+                    itemApontamento.StyleType = "";
+                }
+                else
+                {
+                    itemApontamento.TotalDays = 0;
+                    itemApontamento.StyleType = "display: none";
+                }
 
-               string _iddivitem = "div_" + itemApontamento.TIMESHEETITEMID;
-               string _id = itemApontamento.TIMESHEETITEMID.ToString();
+                string _iddivitem = "div_" + itemApontamento.TIMESHEETITEMID;
+                string _id = itemApontamento.TIMESHEETITEMID.ToString();
 
-               bool isread = itemApontamento.IsRead;
-               bool isdelete = itemApontamento.IsDelete;
+                bool isread = itemApontamento.IsRead;
+                bool isdelete = itemApontamento.IsDelete;
 
-               string stringHashObject = itemApontamento.DATE.ToString("yyyy/MM/dd") + itemApontamento.project.PROJECTID + itemApontamento.TYPE
-                   + itemApontamento.IN.ToString().Substring(0, 5) + itemApontamento.OUT.ToString().Substring(0, 5) + itemApontamento.BREAK.ToString().Substring(0, 5) + itemApontamento.DESCRIPTION;
+                string stringHashObject = itemApontamento.DATE.ToString("yyyy/MM/dd") + itemApontamento.project.PROJECTID + itemApontamento.TYPE
+                    + itemApontamento.IN.ToString().Substring(0, 5) + itemApontamento.OUT.ToString().Substring(0, 5) + itemApontamento.BREAK.ToString().Substring(0, 5) + itemApontamento.DESCRIPTION;
 
-               itemApontamento.HASH = stringHashObject.GetHashCode();
+                itemApontamento.HASH = stringHashObject.GetHashCode();
 
-               totalupdate++;
+                totalupdate++;
 
 
-               if (periodoAuxiliar.Equals("f") || itemApontamento.STATUS == 1 )
-               {
-                  //isdelete = true;
-                  isread = true;
-               }
-               else
-               {
-                  isread = false;
-               }
+               
+                    isread = false;
+               
+              
 
-               if (isread)
-               {
-                  readonlyCell = " disabled = disabled";
-               }
+                if (isread)
+                {
+                    readonlyCell = " disabled = disabled";
+                }
 
 
                 <tr valign="middle" class="tritem" id="trapontamento_@(_id)" >

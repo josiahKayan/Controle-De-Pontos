@@ -98,7 +98,7 @@ namespace Apassos.Controllers
 
                 Session["_SUCCESS_"] = "false";
                 Session["_MENSAGEM_"] = " Mês de Apontamento já fechado !!!";
-                return RedirectToAction("Checkin", "Checkin");
+                return RedirectToAction("Index");
 
             }
             else
