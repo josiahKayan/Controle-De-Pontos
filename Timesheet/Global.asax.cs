@@ -64,7 +64,7 @@ namespace Apassos
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            //StartTeamWorkRetrieverScheduler();
+            StartTeamWorkRetrieverScheduler();
 
             InitDependencies();
 
