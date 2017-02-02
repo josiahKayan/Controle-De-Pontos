@@ -70,15 +70,23 @@ namespace Apassos.Controllers
             var anotacao = Request.Form["text_note_" + itemTimesheet.TIMESHEETITEMID];
             var hash = Request.Form["hash_" + itemTimesheet.TIMESHEETITEMID];
 
-            StringBuilder newObjectHash = new StringBuilder(tipoaprovacao);
-            newObjectHash.Append(anotacao);
+                        //StringBuilder newObjectHash = new StringBuilder(tipoaprovacao);
+                        //newObjectHash.Append(anotacao);
+
+            string newObjectHash = tipoaprovacao + anotacao;
 
             int newHash = newObjectHash.GetHashCode();
             int oldHash = int.Parse(hash);
-            if (!oldHash.Equals(newHash))
-            {
-              TimesheetDataAccess.SalvarItemApontamentoAprovacao(iditem, tipoaprovacao, anotacao);
-            }
+
+            if(!TimesheetDataAccess.GetStatus(iditem, tipoaprovacao))
+                        {
+                            TimesheetDataAccess.SalvarItemApontamentoAprovacao(iditem, tipoaprovacao, anotacao);
+                        }
+
+            //if (oldHash.Equals(newHash))
+            //{
+              //TimesheetDataAccess.SalvarItemApontamentoAprovacao(iditem, tipoaprovacao, anotacao);
+            //}
           }
         }
 

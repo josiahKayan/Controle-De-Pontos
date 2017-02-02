@@ -38,6 +38,32 @@ namespace Apassos.DataAccess
             return null;
         }
 
+
+        public static bool GetStatus(string _id, string tipoaprovacao)
+        {
+            int id = int.Parse(_id);
+            int tipo = int.Parse(tipoaprovacao);
+
+            try
+            {
+                var z = db.TimesheetItems.First(x => x.TIMESHEETITEMID == id && x.STATUS == tipo);
+
+                if (z != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+
+        }
+
         /**
        * Retorna os  itens de apontamentos do cabecalho (header).
        */
@@ -179,49 +205,53 @@ namespace Apassos.DataAccess
 
         public static void SaveTimesheetItems(List<TimesheetTeamWorkItem> items)
         {
+            int mes = DateTime.Now.Month;
             try
             {
                 foreach (var item in items)
                 {
-
-                    TimesheetTeamWorkItem foundItem =
-                        db.TimesheetTeamWorkItems.Include("TimesheetItem").Where(x => x.TeamWorkTimeEntryId == item.TeamWorkTimeEntryId).SingleOrDefault();
-                    if (foundItem != null)
+                    if (item.TimesheetItem.DATE.Month == mes)
                     {
-                        foundItem.TeamWorkTimeEntryId = item.TeamWorkTimeEntryId;
-                        foundItem.TeamWorkTodoItemId = item.TeamWorkTodoItemId;
-                        foundItem.TimesheetItem.BREAK = item.TimesheetItem.BREAK;
-                        foundItem.TimesheetItem.COUNTER = item.TimesheetItem.COUNTER;
-                        foundItem.TimesheetItem.DATE = item.TimesheetItem.DATE;
 
-                        if (item.TeamWorkTimeDescription != null)
+                        TimesheetTeamWorkItem foundItem =
+                            db.TimesheetTeamWorkItems.Include("TimesheetItem").Where(x => x.TeamWorkTimeEntryId == item.TeamWorkTimeEntryId).SingleOrDefault();
+                        if (foundItem != null)
                         {
-                            foundItem.TimesheetItem.DESCRIPTION = item.TimesheetItem.DESCRIPTION + ":" + item.TeamWorkTimeDescription;
+                            foundItem.TeamWorkTimeEntryId = item.TeamWorkTimeEntryId;
+                            foundItem.TeamWorkTodoItemId = item.TeamWorkTodoItemId;
+                            foundItem.TimesheetItem.BREAK = item.TimesheetItem.BREAK;
+                            foundItem.TimesheetItem.COUNTER = item.TimesheetItem.COUNTER;
+                            foundItem.TimesheetItem.DATE = item.TimesheetItem.DATE;
+
+                            if (item.TeamWorkTimeDescription != null)
+                            {
+                                foundItem.TimesheetItem.DESCRIPTION = item.TimesheetItem.DESCRIPTION + ":" + item.TeamWorkTimeDescription;
+                            }
+                            else
+                            {
+                                foundItem.TimesheetItem.DESCRIPTION = item.TimesheetItem.DESCRIPTION;
+                            }
+                            foundItem.TimesheetItem.IN = item.TimesheetItem.IN;
+                            foundItem.TimesheetItem.OUT = item.TimesheetItem.OUT;
+                            foundItem.TimesheetItem.project = item.TimesheetItem.project;
+                            foundItem.TimesheetItem.TimesheetHeader = item.TimesheetItem.TimesheetHeader;
+                            db.Entry(foundItem).State = EntityState.Modified;
+                            db.SaveChanges();
                         }
                         else
                         {
-                            foundItem.TimesheetItem.DESCRIPTION = item.TimesheetItem.DESCRIPTION;
+                            try
+                            {
+                                db.TimesheetTeamWorkItems.Add(item);
+                                db.SaveChanges();
+                            }
+                            catch (Exception e)
+                            {
+                                Util.EscreverLog(e.Message, e.Message);
+                            }
                         }
-                        foundItem.TimesheetItem.IN = item.TimesheetItem.IN;
-                        foundItem.TimesheetItem.OUT = item.TimesheetItem.OUT;
-                        foundItem.TimesheetItem.project = item.TimesheetItem.project;
-                        foundItem.TimesheetItem.TimesheetHeader = item.TimesheetItem.TimesheetHeader;
-                        db.Entry(foundItem).State = EntityState.Modified;
-                        db.SaveChanges();
+
                     }
-                    else
-                    {
-                        try
-                        {
-                            db.TimesheetTeamWorkItems.Add(item);
-                            db.SaveChanges();
-                        }
-                        catch(Exception e)
-                        {
-                            Util.EscreverLog(e.Message, e.Message);
-                        }
-                    }
-                    
                 }
             }
             catch (DbEntityValidationException ex)

@@ -62,7 +62,7 @@ namespace Apassos.TeamWork.Parsers
             int diaDoMes = DateTime.Now.Month;
             List<TodoItem> todoItems = _teamWorkService.GetAllTodoItems();
             int mesInicialTarefa;
-            int ano;
+          
 
             List<TimesheetTeamWorkItem> items = new List<TimesheetTeamWorkItem>();
 
@@ -74,20 +74,16 @@ namespace Apassos.TeamWork.Parsers
 
                     //Filtro para não salvar tarefas antigas, essas tarefas serão filtradas a partir da data que está corrente
                     mesInicialTarefa = todoItem.StartDate.Month;
-                    ano = todoItem.StartDate.Year;
 
-                    if ((mesInicialTarefa >= 12 && ano == 2016))
+                    if ((mesInicialTarefa >= 0 ) )
                     {
-                        //if (todoItem.ResponsiblePartyNames.Contains("Danilo S.") || todoItem.ResponsiblePartyNames.Contains("Willian L.") || todoItem.ResponsiblePartyNames.Contains("Josias L.") || todoItem.ResponsiblePartyNames.Contains("Jorge L.") || todoItem.ResponsiblePartyNames.Contains("Andreson M.") || todoItem.ResponsiblePartyNames.Contains("Wanderson H.") || todoItem.ResponsiblePartyNames.Contains("Evandro C.") || todoItem.ResponsiblePartyNames.Contains("Djanildes A.") || todoItem.ResponsiblePartyNames.Contains("Jaime N.") || todoItem.ResponsiblePartyNames.Contains("Carlos X.")
-                        //|| todoItem.ResponsiblePartyNames.Contains("Paulo P.") || todoItem.ResponsiblePartyNames.Contains("Waldir T.") || todoItem.ResponsiblePartyNames.Contains("Sandra G.") || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Rodrigo L.") || todoItem.ResponsiblePartyNames.Contains("Carlos R.") || todoItem.ResponsiblePartyNames.Contains("Bruno R.") || todoItem.ResponsiblePartyNames.Contains("Eduardo C.") || todoItem.ResponsiblePartyNames.Contains("Matheus F.") || todoItem.ResponsiblePartyNames.Contains("Rayden F.")
-                        //|| todoItem.ResponsiblePartyNames.Contains("Stella W.") || todoItem.ResponsiblePartyNames.Contains("Nonato O.") || todoItem.ResponsiblePartyNames.Contains("Fernando P.") || todoItem.ResponsiblePartyNames.Contains("Fábio D.") || todoItem.ResponsiblePartyNames.Contains("Fábio A."))
-                        if (todoItem.ResponsiblePartyNames.Contains("Danilo S.") || todoItem.ResponsiblePartyNames.Contains("Willian L.") ||   todoItem.ResponsiblePartyNames.Contains("Andreson M.") || todoItem.ResponsiblePartyNames.Contains("Wanderson H.") || todoItem.ResponsiblePartyNames.Contains("Evandro C.") || todoItem.ResponsiblePartyNames.Contains("Djanildes A.") || todoItem.ResponsiblePartyNames.Contains("Jaime N.") || todoItem.ResponsiblePartyNames.Contains("Carlos X.")
-                        || todoItem.ResponsiblePartyNames.Contains("Paulo P.")   || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Rodrigo L.") ||  todoItem.ResponsiblePartyNames.Contains("Eduardo C.") || todoItem.ResponsiblePartyNames.Contains("Matheus F.") || todoItem.ResponsiblePartyNames.Contains("Rayden F.")
-                        || todoItem.ResponsiblePartyNames.Contains("Fábio D.") || todoItem.ResponsiblePartyNames.Contains("Fábio A."))
 
+                        if (todoItem.ResponsiblePartyNames.Contains("Danilo S.") || todoItem.ResponsiblePartyNames.Contains("Willian L.") || todoItem.ResponsiblePartyNames.Contains("Andreson M.") || todoItem.ResponsiblePartyNames.Contains("Wanderson H.") || todoItem.ResponsiblePartyNames.Contains("Evandro C.") || todoItem.ResponsiblePartyNames.Contains("Djanildes A.") || todoItem.ResponsiblePartyNames.Contains("Jaime N.") || todoItem.ResponsiblePartyNames.Contains("Carlos X.")
+                        || todoItem.ResponsiblePartyNames.Contains("Paulo P.") || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Rodrigo L.") || todoItem.ResponsiblePartyNames.Contains("Eduardo C.") || todoItem.ResponsiblePartyNames.Contains("Matheus F.") || todoItem.ResponsiblePartyNames.Contains("Rayden F.") || todoItem.ResponsiblePartyNames.Contains("Waldir T.")
+                        || todoItem.ResponsiblePartyNames.Contains("Fábio D.") || todoItem.ResponsiblePartyNames.Contains("Fábio A.") || todoItem.ResponsiblePartyNames.Contains("Josias L.") || todoItem.ResponsiblePartyNames.Contains("Nonato O.") || todoItem.ResponsiblePartyNames.Contains("Fernando P.") || todoItem.ResponsiblePartyNames.Contains("Raimundo P.") || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Sandra G."))
 
-                        {
-                            try
+                            {
+                                try
                             {
                                 if (!todoItem.Status.Equals(STATUS_COMPLETED))
                                 {
@@ -121,7 +117,7 @@ namespace Apassos.TeamWork.Parsers
                 }
             }
             //TimesheetDataAccess.AddTeamworkLogTrace(_logTraceList);
-            return items;
+           return items;
         }
 
 
@@ -152,7 +148,7 @@ namespace Apassos.TeamWork.Parsers
                         string[] mes = entry.Date.Split(('-'));
 
                         //if (int.Parse(mes[1]) >= (diaDoMes-1))
-                        if ( int.Parse(mes[1]) == 1)
+                        if ( int.Parse(mes[1]) == DateTime.Now.Month)
 
                         {
                             Period period = GetPeriodByEntry(entry);
@@ -241,8 +237,7 @@ namespace Apassos.TeamWork.Parsers
                 {
                     string[] mes = entry.Date.Split(('-'));
 
-
-                    if (int.Parse(mes[1]) == 1 )
+                    if (int.Parse(mes[1]) == DateTime.Now.Month )
                     {
                         Period period = GetPeriodByEntry(entry);
                         Partners partner = GetPartnerByEntry(entry);

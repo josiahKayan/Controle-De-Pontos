@@ -21,8 +21,8 @@ namespace Apassos.TeamWork.Services
         //private readonly string APIKEY = "crimson218frog";
         private readonly string DOMAIN = "apassosconsultingsoftware";
         private readonly string DEFAULT_PATTERN_DATETIME = "yyyyMMdd";
-        private readonly int MAX_PAGES = 1000000;
-        private readonly int DEFAULT_DAYS = -2;
+        private readonly int MAX_PAGES = 100000000;
+        private readonly int DEFAULT_DAYS = -1;
 
 
         private readonly TeamWorkClient _teamWorkClient;
