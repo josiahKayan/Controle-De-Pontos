@@ -17,7 +17,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna uma lista de parceiros, exceto o admin.
         */
-        public static List<Partners> GetParceirosSistema()
+        public  List<Partners> GetParceirosSistema()
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var listaX = db.Partners.Where(p => p.ENVIRONMENT == env && p.PARTNERID != 1).OrderBy(c => c.NAME).ToList();
@@ -35,7 +35,7 @@ namespace Apassos.DataAccess
 
 
 
-        public static List<Partners> GetAllParceiros()
+        public List<Partners> GetAllParceiros()
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var listaAll = db.Partners.Where(p => p.ENVIRONMENT == env && p.SHORTNAME.ToLower() != "admin").OrderBy(c => c.NAME).ToList();
@@ -50,14 +50,14 @@ namespace Apassos.DataAccess
             return lista;
         }
 
-        public static Partners GetParceiroId(string id)
+        public Partners GetParceiroId(string id)
         {
             var parceiro = db.Partners.Find(int.Parse(id));
             return parceiro;
         }
 
 
-        public static Partners GetParceiroName(string name)
+        public Partners GetParceiroName(string name)
         {
             var parceiro = db.Partners.Where( n => n.FIRSTNAME == name  ).FirstOrDefault();
             return parceiro;
@@ -66,7 +66,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna uma lista de parceiros, exceto o admin.
         */
-        public static List<Partners> GetParceirosNaoUsuarios()
+        public List<Partners> GetParceirosNaoUsuarios()
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var listaAll = db.Partners.Where(p => p.ENVIRONMENT == env && p.SHORTNAME.ToLower() != "admin").OrderBy(c => c.NAME).ToList();
@@ -86,7 +86,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna uma lista de datas, baseada no periodo passado como parametro.
         */
-        public static List<Partners> GetEmpresas()
+        public List<Partners> GetEmpresas()
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Partners.Where(p => p.ENVIRONMENT == env && p.ISUSER.ToUpper() == "N").OrderBy(p => p.SHORTNAME).ToList();
@@ -96,7 +96,7 @@ namespace Apassos.DataAccess
         /**
       * Retorna o pais.
       */
-        public static Partners GetPartnerByLogin(string login)
+        public Partners GetPartnerByLogin(string login)
         {
             Users user = UsersDataAccess.GetUserByLogin(login);
             int userid = user.USERID;
@@ -114,7 +114,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna uma empresa, pelo id
         */
-        public static Partners GetEmpresa(int PartnerID)
+        public Partners GetEmpresa(int PartnerID)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var empresa = db.Partners.Find(PartnerID);
@@ -124,14 +124,14 @@ namespace Apassos.DataAccess
         /**
        * Retorna uma empresa, pelo id
        */
-        public static Partners GetParceiro(int PartnerID)
+        public Partners GetParceiro(int PartnerID)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var empresa = db.Partners.Find(PartnerID);
             return empresa;
         }
 
-        public static Partners GetProjeto(int PartnerID)
+        public Partners GetProjeto(int PartnerID)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var empresa = db.Partners.Find(PartnerID);
@@ -139,7 +139,7 @@ namespace Apassos.DataAccess
         }
 
 
-        public static  List<Partners> GetParceiroPorNome( string nome)
+        public  List<Partners> GetParceiroPorNome( string nome)
         {
            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
            List<Partners> parceiros = db.Partners.Where( n => n.NAME.StartsWith(nome) ).ToList();
@@ -152,7 +152,7 @@ namespace Apassos.DataAccess
       /**
       * Retorna gestores do sistrema.
       */
-      public static List<Partners> GetGestores()
+      public List<Partners> GetGestores()
         {
             string tipoGestor = ((int)Constants.ProfileConstant.GESTOR).ToString();
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();

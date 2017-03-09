@@ -29,9 +29,12 @@ function salvar() {
     }
 }
 
+
+
+
 function adicionarlinha() {
 
-    var select = document.getElementById('selectperiodo').value ;
+    var select = document.getElementById('selectperiodo').value;
 
     var periodo = select.split('/');
     console.log(periodo);
@@ -77,7 +80,7 @@ function adicionarlinha() {
     divcopiarHTML = divcopiarHTML.replace("observacao_insert_name_", "observacao_insert_" + numeroultimalinha);
 
     divcopiarHTML = divcopiarHTML.replace("idanchor_id", "idanchor_id" + numeroultimalinha);
-  
+
     divcopiarHTML = divcopiarHTML.replace("<table>", "");
     divcopiarHTML = divcopiarHTML.replace("</table>", "");
     divcopiarHTML = divcopiarHTML.replace("<tbody>", "");
@@ -97,9 +100,10 @@ function adicionarlinha() {
     //$("#entrada_insert_" + numeroultimalinha).focus();
 
     $('html, body').scrollTop($(document).height());
-    
+
 
 }
+
 
 function focusUltimaLinha(numeroLinha) {
     proximaData = ProximaDataDiaSemana(proximaData, limiteData);

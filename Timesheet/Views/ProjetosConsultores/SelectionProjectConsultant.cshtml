@@ -208,7 +208,7 @@
                        ondblclick="move_list_items('to_select_list', 'from_select_list');">
                   @foreach (var itemConsult in consultoresProjeto)
                   {
-                     if (Apassos.DataAccess.ProjectDataAccess.TotalConsultorApontamentos(projetoAtual, itemConsult) > 0)
+                     if (Apassos.DataAccess.ProjectDataAccess.TotalConsultorApontamentosFilter(projetoAtual, itemConsult) > 0)
                      {
                         <option value="-" disabled="disabled">@(itemConsult.NAME) *</option>
                      }

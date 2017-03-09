@@ -26,6 +26,7 @@ namespace Apassos.Controllers
             if (CommonController.Instance.AccessValidateRedirect(this.ControllerContext, Constants.ModulesConstant.CHECKIN))
             {
 
+                PeriodDataAccess period = new PeriodDataAccess();
 
 
                 Partners consultorAtual = usuarioLogado.Partner;
@@ -34,12 +35,12 @@ namespace Apassos.Controllers
                 Period periodoAtual = null;
                 if (_periodid != null && _periodid != "")
                 {
-                    periodoAtual = PeriodDataAccess.GetPeriodo(_periodid);
+                    periodoAtual = period.GetPeriodo(_periodid);
                 }
                 else
                 {
 
-                    periodoAtual = PeriodDataAccess.GetPeriodoAtual();
+                    periodoAtual = period.GetPeriodoAtual();
                 }
 
 
@@ -50,8 +51,8 @@ namespace Apassos.Controllers
 
                 Session["ATUAL_CONSULTOR"] = consultorAtual;
                 Session["ATUAL_PERIODO"] = periodoAtual;
-                Session["DATAS_PERIODO_ATUAL"] = PeriodDataAccess.GetListDate(periodoAtual);
-                Session["PERIODOS_TODOS"] = PeriodDataAccess.GetPeriodoAll();
+                Session["DATAS_PERIODO_ATUAL"] = period.GetListDate(periodoAtual);
+                Session["PERIODOS_TODOS"] = period.GetPeriodoAll();
                 Session["INFO_APONTAMENTOS_NO_PERIODO"] = new PartnersTimesheetHeaderAccess(consultorAtual, periodoAtual, periodoAtual);
                 Session["TODOS_CHECKINS"] = listaCheckins;
 
@@ -74,7 +75,10 @@ namespace Apassos.Controllers
             string consultorid = Request.Form["consultorid"];
             string periodoid = Request.Form["selectperiodo"];
 
-            Period periodoComp = PeriodDataAccess.GetPeriodo(periodoid);
+
+            PeriodDataAccess period = new PeriodDataAccess();
+
+            Period periodoComp = period.GetPeriodo(periodoid);
 
 
 

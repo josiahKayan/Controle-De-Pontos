@@ -21,7 +21,7 @@ namespace Apassos.DataAccess
         /**
          * Retorna o apontamento do consultor(partner.isuser=S), do periodo.
          */
-        public static TimesheetHeader GetApontamentoCabecalhoPorPeriodo(Partners partner, Period periodo)
+        public TimesheetHeader GetApontamentoCabecalhoPorPeriodo(Partners partner, Period periodo)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<TimesheetHeader> lista = db.TimesheetHeaders.Where(th => th.ENVIRONMENT == env).ToList();
@@ -39,7 +39,7 @@ namespace Apassos.DataAccess
         }
 
 
-        public static bool GetStatus(string _id, string tipoaprovacao)
+        public bool GetStatus(string _id, string tipoaprovacao)
         {
             int id = int.Parse(_id);
             int tipo = int.Parse(tipoaprovacao);
@@ -57,7 +57,7 @@ namespace Apassos.DataAccess
                     return false;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return false;
             }
@@ -67,7 +67,7 @@ namespace Apassos.DataAccess
         /**
        * Retorna os  itens de apontamentos do cabecalho (header).
        */
-        public static List<TimesheetItem> GetiTensApontamentoPorCabecalho(TimesheetHeader header)
+        public List<TimesheetItem> GetiTensApontamentoPorCabecalho(TimesheetHeader header)
         {
             if (header != null)
             {
@@ -79,7 +79,7 @@ namespace Apassos.DataAccess
             return new List<TimesheetItem>();
         }
 
-        public static void SalvarItemApontamento(string _id, string _data, string _projectid, string _type, string _in, string _out, string _break, string _description, string _timesheetheaderid, string _consultorid, string _periodoid)
+        public void SalvarItemApontamento(string _id, string _data, string _projectid, string _type, string _in, string _out, string _break, string _description, string _timesheetheaderid, string _consultorid, string _periodoid)
         {
             //valida as entradas
             if (_data == "" || _projectid == "" || _type == "" || _in == "" || _out == "")
@@ -170,10 +170,10 @@ namespace Apassos.DataAccess
                 db.SaveChanges();
             }
 
-            
+
         }
 
-        public static void SalvarItemApontamentoAprovacao(string _id, string tipoaprovacao, string anotacao)
+        public void SalvarItemApontamentoAprovacao(string _id, string tipoaprovacao, string anotacao)
         {
 
             TimesheetItem itemSalvar = db.TimesheetItems.Find(int.Parse(_id));
@@ -184,10 +184,12 @@ namespace Apassos.DataAccess
 
         }
 
-        public static List<TimeSpan> GetTotalHorasApontamentoDia(string _periodoid, string _data, string _idPartners)
+        public List<TimeSpan> GetTotalHorasApontamentoDia(string _periodoid, string _data, string _idPartners)
         {
-            Period p = PeriodDataAccess.GetPeriodo(_periodoid);
-            Partners parceiro = PartnerDataAccess.GetParceiroId(_idPartners);
+            PeriodDataAccess peri = new PeriodDataAccess();
+            PartnerDataAccess part = new PartnerDataAccess();
+            Period p = peri.GetPeriodo(_periodoid);
+            Partners parceiro = part.GetParceiroId(_idPartners);
             DateTime date = Convert.ToDateTime(_data);
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<TimesheetItem> item = db.TimesheetItems.Where(t => t.ENVIRONMENT == env && parceiro.PARTNERID == t.TimesheetHeader.Partner.PARTNERID &&
@@ -203,19 +205,20 @@ namespace Apassos.DataAccess
         }
 
 
-        public static void SaveTimesheetItems(List<TimesheetTeamWorkItem> items)
+        public void SaveTimesheetItems(List<TimesheetTeamWorkItem> items)
         {
             int mes = DateTime.Now.Month;
-            try
-            {
-                foreach (var item in items)
-                {
-                    if (item.TimesheetItem.DATE.Month == mes)
-                    {
 
-                        TimesheetTeamWorkItem foundItem =
-                            db.TimesheetTeamWorkItems.Include("TimesheetItem").Where(x => x.TeamWorkTimeEntryId == item.TeamWorkTimeEntryId).SingleOrDefault();
-                        if (foundItem != null)
+            foreach (var item in items)
+            {
+
+                if (item.TimesheetItem.DATE.Month == mes  )
+                {
+                    TimesheetTeamWorkItem foundItem =
+                        db.TimesheetTeamWorkItems.Include("TimesheetItem").Where(x => x.TeamWorkTimeEntryId == item.TeamWorkTimeEntryId).SingleOrDefault();
+                    if (foundItem != null)
+                    {
+                        try
                         {
                             foundItem.TeamWorkTimeEntryId = item.TeamWorkTimeEntryId;
                             foundItem.TeamWorkTodoItemId = item.TeamWorkTodoItemId;
@@ -225,7 +228,7 @@ namespace Apassos.DataAccess
 
                             if (item.TeamWorkTimeDescription != null)
                             {
-                                foundItem.TimesheetItem.DESCRIPTION = item.TimesheetItem.DESCRIPTION + ":" + item.TeamWorkTimeDescription;
+                                foundItem.TimesheetItem.DESCRIPTION = "TW- " + item.TimesheetItem.DESCRIPTION + ":" + item.TeamWorkTimeDescription;
                             }
                             else
                             {
@@ -238,7 +241,15 @@ namespace Apassos.DataAccess
                             db.Entry(foundItem).State = EntityState.Modified;
                             db.SaveChanges();
                         }
-                        else
+                        catch (Exception e)
+                        {
+                            Util.EscreverLog(e.Message, e.Message);
+                        }
+                    }
+
+                    else
+                    {
+                        if (item.TimesheetItem.DATE.Month == mes)
                         {
                             try
                             {
@@ -250,61 +261,62 @@ namespace Apassos.DataAccess
                                 Util.EscreverLog(e.Message, e.Message);
                             }
                         }
-
                     }
+
                 }
             }
-            catch (DbEntityValidationException ex)
-            {
+            //}
+            //catch (DbEntityValidationException ex)
+            //{
 
-                List<string> errorMessages = new List<string>();
-                foreach (DbEntityValidationResult validationResult in ex.EntityValidationErrors)
-                {
-                    string entityName = validationResult.Entry.Entity.GetType().Name;
-                    foreach (DbValidationError error in validationResult.ValidationErrors)
-                    {
-                        errorMessages.Add(entityName + "." + error.PropertyName + ": " + error.ErrorMessage);
-                    }
-                }
-                var fullErrorMessage = string.Join("; ", errorMessages);
-                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-                Util.EscreverLog(exceptionMessage, fullErrorMessage);
-            }
+            //    List<string> errorMessages = new List<string>();
+            //    foreach (DbEntityValidationResult validationResult in ex.EntityValidationErrors)
+            //    {
+            //        string entityName = validationResult.Entry.Entity.GetType().Name;
+            //        foreach (DbValidationError error in validationResult.ValidationErrors)
+            //        {
+            //            errorMessages.Add(entityName + "." + error.PropertyName + ": " + error.ErrorMessage);
+            //        }
+            //    }
+            //    var fullErrorMessage = string.Join("; ", errorMessages);
+            //    var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+            //    Util.EscreverLog(exceptionMessage, fullErrorMessage);
+            //}
             //catch (Exception dbuex)
             //{
-                //StringBuilder builder = new StringBuilder("");
+            //StringBuilder builder = new StringBuilder("");
 
-                //try
-                //{
-                //    foreach (var result in dbuex.Entries)
-                //    {
-                //        if (result.Entity != null)
-                //        {
-                //            var entityType = result.Entity.GetType();
+            //try
+            //{
+            //    foreach (var result in dbuex.Entries)
+            //    {
+            //        if (result.Entity != null)
+            //        {
+            //            var entityType = result.Entity.GetType();
 
-                //            var id = entityType.GetProperty("Id").GetValue(result.Entity, null);
+            //            var id = entityType.GetProperty("Id").GetValue(result.Entity, null);
 
-                //            builder.Append(id);
-                //        }
-                //    }
-                //}
-                //catch (Exception e)
-                //{
-                //    builder.Append("Error parsing DbUpdateException: " + e.ToString());
-                //}
+            //            builder.Append(id);
+            //        }
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    builder.Append("Error parsing DbUpdateException: " + e.ToString());
+            //}
 
-                //string message = builder.ToString();
+            //string message = builder.ToString();
             //    //var exceptionMessage = string.Concat(dbuex.Message, " The validation errors are: ", message);
             //    Util.EscreverLog(dbuex, message);
             //}
-            catch (Exception ex)
-            {
-                Util.EscreverLog(ex.Message, "");
-            }
+            //catch (Exception ex)
+            //{
+            //    Util.EscreverLog(ex.Message, "");
+            //}
         }
 
 
-        public static void SalvarHeader(Partners consultor, Period periodo)
+        public void SalvarHeader(Partners consultor, Period periodo)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             TimesheetHeader itemSalvar = new TimesheetHeader
@@ -317,14 +329,14 @@ namespace Apassos.DataAccess
             db.SaveChanges();
         }
 
-        public static void ExcluirItemApontamento(string _id)
+        public void ExcluirItemApontamento(string _id)
         {
 
             if (_id != null && _id != "") //excluir
             {
                 var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
 
-                
+
                 TimesheetItem itemExcluir = db.TimesheetItems.Find(int.Parse(_id));
                 TimesheetTeamWorkItem exclui = db.TimesheetTeamWorkItems.Where(x => x.TimesheetItem.TIMESHEETITEMID == itemExcluir.TIMESHEETITEMID).FirstOrDefault();
 
@@ -336,14 +348,14 @@ namespace Apassos.DataAccess
                 else
                 {
                     db.TimesheetItems.Remove(itemExcluir);
-                } 
-                
+                }
+
                 db.SaveChanges();
             }
 
         }
 
-        public static bool ApontamentosFechado(TimesheetHeader th)
+        public bool ApontamentosFechado(TimesheetHeader th)
         {
             if (th != null)
             {
@@ -359,7 +371,7 @@ namespace Apassos.DataAccess
             return false;
         }
 
-        public static void TimesheetItemAtualizar(int id)
+        public void TimesheetItemAtualizar(int id)
         {
             db.TimesheetItems.Find(id);
             db.SaveChanges();
@@ -373,10 +385,11 @@ namespace Apassos.DataAccess
         /**
      * Retorna os  itens de apontamentos do cabecalho (header).
      */
-        public static bool isApontamentoByStartTS(string login)
+        public bool isApontamentoByStartTS(string login)
         {
+            PartnerDataAccess part = new PartnerDataAccess();
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-            Partners consultorAtual = PartnerDataAccess.GetPartnerByLogin(login);
+            Partners consultorAtual = part.GetPartnerByLogin(login);
             DateTime dataAtual = DateTime.Now;
             List<TimesheetItem> listaReturn = db.TimesheetItems.Where(thi => thi.ENVIRONMENT == env).ToList();
 
@@ -394,10 +407,11 @@ namespace Apassos.DataAccess
         /**
           * Retorna os  itens de apontamentos do cabecalho (header).
           */
-        public static TimesheetItem GetApontamentoByStartTS(string login)
+        public TimesheetItem GetApontamentoByStartTS(string login)
         {
+            PartnerDataAccess partner = new PartnerDataAccess();
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-            Partners consultorAtual = PartnerDataAccess.GetPartnerByLogin(login);
+            Partners consultorAtual = partner.GetPartnerByLogin(login);
             DateTime dataAtual = DateTime.Now;
             List<TimesheetItem> listaReturn = db.TimesheetItems.Where(thi => thi.ENVIRONMENT == env).ToList();
 
@@ -414,30 +428,30 @@ namespace Apassos.DataAccess
             return itReturn;
         }
 
-        public static List<Models.Project> GetAllProjects()
+        public List<Models.Project> GetAllProjects()
         {
             List<Models.Project> projects = db.Projects.ToList();
             return projects;
         }
 
-        public static List<Period> GetAllPeriods()
+        public List<Period> GetAllPeriods()
         {
             List<Period> periods = db.Periods.ToList();
             return periods;
         }
 
-        public static List<Partners> GetAllPartners()
+        public List<Partners> GetAllPartners()
         {
             List<Partners> partners = db.Partners.ToList();
             return partners;
         }
 
-        public static TeamworkRootCauseProblems GetRootCauseProblem(string abbreviation)
+        public TeamworkRootCauseProblems GetRootCauseProblem(string abbreviation)
         {
             return db.TeamworkRootCauseProblems.Where(root => root.Abbreviation == abbreviation).SingleOrDefault();
         }
 
-        public static void AddTeamworkLogTrace(List<TeamworkLogTraces> logTraceList)
+        public void AddTeamworkLogTrace(List<TeamworkLogTraces> logTraceList)
         {
             foreach (var item in logTraceList.ToList())
             {
@@ -461,7 +475,8 @@ namespace Apassos.DataAccess
                         db.Entry(foundLogTrace).State = EntityState.Modified;
                         db.SaveChanges();
                     }
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
 
                 }

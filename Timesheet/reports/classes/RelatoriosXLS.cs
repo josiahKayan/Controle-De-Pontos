@@ -16,10 +16,12 @@ namespace Apassos.reports.classes
 
       public RelatoriosXLS(string periodid, Partners gestorAtual)
       {
-         this.periodoAtual = PeriodDataAccess.GetPeriodo(periodid);
+            PeriodDataAccess p = new PeriodDataAccess();
+            ProjectDataAccess project = new ProjectDataAccess();
+         this.periodoAtual = p.GetPeriodo(periodid);
          this.gestorAtual = gestorAtual;
          this.filename = "apontamentos_" + periodoAtual.YEAR + "_" + periodoAtual.MONTH + ".xlsx";
-         this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(PeriodDataAccess.GetPeriodo(periodid));
+         this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodo(p.GetPeriodo(periodid));
          this.wb = new XSSFWorkbook();
          this.CriaGeral();
          this.CriaAbas();
@@ -29,46 +31,49 @@ namespace Apassos.reports.classes
       public RelatoriosXLS(string periodid, Project projeto, Partners partner, string periodoInicialId, string periodoFinalId)
       {
 
+            PeriodDataAccess periodData = new PeriodDataAccess();
+            ProjectDataAccess project = new ProjectDataAccess();
+
 
          //Para todos os campos cheios...
-         if (projeto == null && partner == null && periodoInicialId != null && periodoFinalId != null)
+            if (projeto == null && partner == null && periodoInicialId != null && periodoFinalId != null)
          {
-            this.periodoInicial = PeriodDataAccess.GetPeriodo(periodoInicialId);
-            this.periodoFinal = PeriodDataAccess.GetPeriodo(periodoFinalId);
+            this.periodoInicial = periodData.GetPeriodo(periodoInicialId);
+            this.periodoFinal = periodData.GetPeriodo(periodoFinalId);
             this.filename = "apontamentos_" + periodoInicial.YEAR + "_" + periodoInicial.MONTH + "_" + periodoFinal.YEAR + "_" + periodoFinal.MONTH + ".xlsx";
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, periodoInicial, periodoFinal);
+            this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, periodoInicial, periodoFinal);
          }
 
          //Para todos os campos cheios...
          else if (projeto != null && partner != null && periodoInicialId != null && periodoFinalId != null)
          {
-            this.periodoInicial = PeriodDataAccess.GetPeriodo(periodoInicialId);
-            this.periodoFinal = PeriodDataAccess.GetPeriodo(periodoFinalId);
+            this.periodoInicial = periodData.GetPeriodo(periodoInicialId);
+            this.periodoFinal = periodData.GetPeriodo(periodoFinalId);
             this.filename = "apontamentos_" + periodoInicial.YEAR + "_" + periodoInicial.MONTH + "_" + periodoFinal.YEAR + "_" + periodoFinal.MONTH + ".xlsx";
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, PeriodDataAccess.GetPeriodo(periodoInicialId), PeriodDataAccess.GetPeriodo(periodoFinalId));
+            this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, periodData.GetPeriodo(periodoInicialId), periodData.GetPeriodo(periodoFinalId));
          }
 
          //Fazendo o periodoInicial como vazio
          else if (projeto != null && partner != null && periodoFinalId != null && periodoInicialId == null)
          {
-            this.periodoFinal = PeriodDataAccess.GetPeriodo(periodoFinalId);
+            this.periodoFinal = periodData.GetPeriodo(periodoFinalId);
             this.filename = "apontamentos_" + periodoFinal.YEAR + "_" + periodoFinal.MONTH + ".xlsx";
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, null, PeriodDataAccess.GetPeriodo(periodoFinalId));
+            this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, null, periodData.GetPeriodo(periodoFinalId));
          }
 
          //Fazendo o periodoFinal como vazio
          else if (projeto != null && partner != null && periodoFinalId == null && periodoInicialId != null)
          {
-            this.periodoInicial = PeriodDataAccess.GetPeriodo(periodoInicialId);
+            this.periodoInicial = periodData.GetPeriodo(periodoInicialId);
             this.filename = "apontamentos_" + periodoInicial.YEAR + "_" + periodoInicial.MONTH + ".xlsx";
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, PeriodDataAccess.GetPeriodo(periodoInicialId), null);
+            this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, periodData.GetPeriodo(periodoInicialId), null);
          }
 
          //Fazendo os dois periodos como nulo
          else if (projeto != null && partner != null && periodoFinalId == null && periodoInicialId == null)
          {
             this.filename = "apontamentos_" + projeto.NAME + ".xlsx";
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto);
+            this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto);
          }
 
          //Fazendo o projeto como vazio e com qualquer periodo nulo
@@ -76,27 +81,27 @@ namespace Apassos.reports.classes
          {
             if (partner != null && periodoFinalId != null && periodoInicialId != null)
             {
-               this.periodoInicial = PeriodDataAccess.GetPeriodo(periodoInicialId);
-               this.periodoFinal = PeriodDataAccess.GetPeriodo(periodoFinalId);
+               this.periodoInicial = periodData.GetPeriodo(periodoInicialId);
+               this.periodoFinal = periodData.GetPeriodo(periodoFinalId);
                this.filename = "apontamentos_" + periodoInicial.YEAR + "_" + periodoInicial.MONTH + "_" + periodoFinal.YEAR + "_" + periodoFinal.MONTH + ".xlsx";
-               this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, PeriodDataAccess.GetPeriodo(periodoInicialId), PeriodDataAccess.GetPeriodo(periodoFinalId));
+               this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, periodData.GetPeriodo(periodoInicialId), periodData.GetPeriodo(periodoFinalId));
             }
             else if (partner != null && periodoInicialId != null)
             {
-               this.periodoInicial = PeriodDataAccess.GetPeriodo(periodoInicialId);
+               this.periodoInicial = periodData.GetPeriodo(periodoInicialId);
                this.filename = "apontamentos_" + periodoInicial.YEAR + "_" + periodoInicial.MONTH + ".xlsx";
-               this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, PeriodDataAccess.GetPeriodo(periodoInicialId), null);
+               this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, periodData.GetPeriodo(periodoInicialId), null);
             }
             else if (partner != null && periodoFinalId != null)
             {
-               this.periodoFinal = PeriodDataAccess.GetPeriodo(periodoFinalId);
+               this.periodoFinal = periodData.GetPeriodo(periodoFinalId);
                this.filename = "apontamentos_" + periodoFinal.YEAR + "_" + periodoFinal.MONTH + ".xlsx";
-               this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, null, PeriodDataAccess.GetPeriodo(periodoFinalId));
+               this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, null, periodData.GetPeriodo(periodoFinalId));
             }
             else if (partner != null && periodoFinalId == null && periodoInicialId == null)
             {
                this.filename = "apontamentos_" + partner.SHORTNAME + ".xlsx";
-               this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, null, null);
+               this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodoProjeto(partner, projeto, null, null);
             }
          }
 
@@ -105,31 +110,31 @@ namespace Apassos.reports.classes
          {
             if (projeto != null && periodoFinalId != null && periodoInicialId != null)
             {
-               this.periodoInicial = PeriodDataAccess.GetPeriodo(periodoInicialId);
-               this.periodoFinal = PeriodDataAccess.GetPeriodo(periodoFinalId);
+               this.periodoInicial = periodData.GetPeriodo(periodoInicialId);
+               this.periodoFinal = periodData.GetPeriodo(periodoFinalId);
                this.filename = "apontamentos_" + periodoInicial.YEAR + "_" + periodoInicial.MONTH + "_" + periodoFinal.YEAR + "_" + periodoFinal.MONTH + ".xlsx";
-               this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(projeto, PeriodDataAccess.GetPeriodo(periodoInicialId), PeriodDataAccess.GetPeriodo(periodoFinalId));
+               this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodo(projeto, periodData.GetPeriodo(periodoInicialId), periodData.GetPeriodo(periodoFinalId));
             }
             else if (projeto != null && periodoInicialId != null)
             {
-               this.periodoInicial = PeriodDataAccess.GetPeriodo(periodoInicialId);
+               this.periodoInicial = periodData.GetPeriodo(periodoInicialId);
                this.filename = "apontamentos_" + periodoInicial.YEAR + "_" + periodoInicial.MONTH + ".xlsx";
-               this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(projeto, PeriodDataAccess.GetPeriodo(periodoInicialId), null);
+               this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodo(projeto, periodData.GetPeriodo(periodoInicialId), null);
             }
             else if (projeto != null && periodoFinalId == null && periodoInicialId == null)
             {
                this.filename = "apontamentos_" + projeto.NAME + ".xlsx";
-               this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(projeto, null, null);
+               this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodo(projeto, null, null);
             }
             else if (projeto != null && periodoInicialId != null)
             {
                this.filename = "apontamentos_" + projeto.NAME + ".xlsx";
-               this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(projeto, PeriodDataAccess.GetPeriodo(periodoInicialId), null);
+               this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodo(projeto, periodData.GetPeriodo(periodoInicialId), null);
             }
             else if (projeto != null && periodoFinalId != null)
             {
                this.filename = "apontamentos_" + projeto.NAME + ".xlsx";
-               this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(projeto, null, PeriodDataAccess.GetPeriodo(periodoFinalId));
+               this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodo(projeto, null, periodData.GetPeriodo(periodoFinalId));
             }
 
          }
@@ -137,7 +142,7 @@ namespace Apassos.reports.classes
          if (partner == null && projeto == null && periodoFinalId == null && periodoInicialId == null)
          {
             this.filename = "apontamentos_" + ".xlsx";
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(null, null, null);
+            this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodo(null, null, null);
          }
 
 
@@ -152,26 +157,29 @@ namespace Apassos.reports.classes
       //Fazendo a sobrecarga de método aqui, a variável irrelevante serve para poder passar user o construtor
       public RelatoriosXLS(string periodid, Project projeto, Partners partner)
       {
+            PeriodDataAccess period = new PeriodDataAccess();
+            ProjectDataAccess projectData = new ProjectDataAccess();
+
          // Se todos forem nulos isso resolve
-         this.periodoAtual = PeriodDataAccess.GetPeriodo(periodid);
+            this.periodoAtual = period.GetPeriodo(periodid);
          this.filename = "apontamentos_" + periodoAtual.YEAR + "_" + periodoAtual.MONTH + ".xlsx";
 
          if (projeto == null && partner == null)
          {
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(PeriodDataAccess.GetPeriodo(periodid));
+            this.consultoresApontamentos = projectData.GetConsultoresApontamentosPorPeriodo(period.GetPeriodo(periodid));
          }
          //Se o projeto for diferente de null 
          else if (projeto != null && partner == null)
          {
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorProjeto(PeriodDataAccess.GetPeriodo(periodid), projeto);
+            this.consultoresApontamentos = projectData.GetConsultoresApontamentosPorProjeto(period.GetPeriodo(periodid), projeto);
          }
          else if (projeto != null && partner != null)
          {
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoProjeto(PeriodDataAccess.GetPeriodo(periodid), partner, projeto);
+            this.consultoresApontamentos = projectData.GetConsultoresApontamentosPorPeriodoProjeto(period.GetPeriodo(periodid), partner, projeto);
          }
          else if (projeto == null && partner != null)
          {
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodoPartner(PeriodDataAccess.GetPeriodo(periodid), partner);
+            this.consultoresApontamentos = projectData.GetConsultoresApontamentosPorPeriodoPartner(period.GetPeriodo(periodid), partner);
          }
 
          this.wb = new XSSFWorkbook();

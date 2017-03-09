@@ -19,10 +19,13 @@ namespace Apassos.reports.classes
 
         public ConsultoresApontamentosXLS(string periodid, Partners gestorAtual)
         {
-            this.periodoAtual = PeriodDataAccess.GetPeriodo(periodid);
+            PeriodDataAccess period = new PeriodDataAccess();
+            ProjectDataAccess project = new ProjectDataAccess();
+
+            this.periodoAtual = period.GetPeriodo(periodid);
             this.gestorAtual = gestorAtual;
             this.filename = "apontamentos_" + periodoAtual.YEAR + "_" + periodoAtual.MONTH + ".xlsx";
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(PeriodDataAccess.GetPeriodo(periodid));
+            this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodo(period.GetPeriodo(periodid));
             this.wb = new XSSFWorkbook();
             this.CriaGeral();
             this.CriaAbas();
@@ -33,10 +36,14 @@ namespace Apassos.reports.classes
         public ConsultoresApontamentosXLS(string periodid, Partners gestorAtual, bool irrelevante)
         {
 
-            this.periodoAtual = PeriodDataAccess.GetPeriodo(periodid);
+            PeriodDataAccess period = new PeriodDataAccess();
+            ProjectDataAccess project = new ProjectDataAccess();
+
+
+            this.periodoAtual = period.GetPeriodo(periodid);
             this.gestorAtual = gestorAtual;
             this.filename = "apontamentos_" + periodoAtual.YEAR + "_" + periodoAtual.MONTH + ".xlsx";
-            this.consultoresApontamentos = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(PeriodDataAccess.GetPeriodo(periodid));
+            this.consultoresApontamentos = project.GetConsultoresApontamentosPorPeriodo(period.GetPeriodo(periodid));
             this.wb = new XSSFWorkbook();
             this.CriaGeral();
             this.CriaAbas();

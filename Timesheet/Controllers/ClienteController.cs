@@ -29,7 +29,10 @@ namespace Apassos.Controllers
       {
         return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
       }
-      var listaParceiros = PartnerDataAccess.GetParceirosSistema();
+
+      PartnerDataAccess parceiro = new PartnerDataAccess();
+
+      var listaParceiros = parceiro.GetParceirosSistema();
 
       return View(listaParceiros);
     }

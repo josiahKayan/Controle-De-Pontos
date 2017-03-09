@@ -25,25 +25,26 @@ namespace Apassos.Controllers
             if (CommonController.Instance.AccessValidateRedirect(this.ControllerContext, Constants.ModulesConstant.TIMESHEET))
             {
                 var consultorAtual = usuarioLogado.Partner;
-
-
+                PeriodDataAccess period = new PeriodDataAccess();
+                ProjectDataAccess projeto = new ProjectDataAccess();
 
                 var _periodid = Request.Form["selectperiodo"];
                 Period periodoAtual = null;
                 if (_periodid != null && _periodid != "")
                 {
-                    periodoAtual = PeriodDataAccess.GetPeriodo(_periodid);
+                    periodoAtual = period.GetPeriodo(_periodid);
                 }
                 else
                 {
-                    periodoAtual = PeriodDataAccess.GetPeriodoAtual();
+                    periodoAtual = period.GetPeriodoAtual();
                 }
+                TimesheetDataAccess time = new TimesheetDataAccess();
 
-                apontamentocabecalho = TimesheetDataAccess.GetApontamentoCabecalhoPorPeriodo(consultorAtual, periodoAtual);
+                apontamentocabecalho = time.GetApontamentoCabecalhoPorPeriodo(consultorAtual, periodoAtual);
                 List<TimesheetItem> apontamentoitens = null;
                 if (apontamentocabecalho != null)
                 {
-                    apontamentoitens = TimesheetDataAccess.GetiTensApontamentoPorCabecalho(apontamentocabecalho);
+                    apontamentoitens = time.GetiTensApontamentoPorCabecalho(apontamentocabecalho);
                 }
                 else
                 { //salva o novo cabecalho
@@ -56,12 +57,12 @@ namespace Apassos.Controllers
 
                 var grupo = consultorAtual.USERGROUP;
 
-                var projetosconsultor = ProjectDataAccess.GetProjetosPorConsultor(consultorAtual, true);
+                var projetosconsultor = projeto.GetProjetosPorConsultor(consultorAtual, true);
 
                 Session["CONSULTOR_ATUAL"] = consultorAtual;
                 Session["PERIODO_ATUAL"] = periodoAtual;
-                Session["PERIODO_ATUAL_DATAS"] = PeriodDataAccess.GetListDate(periodoAtual);
-                Session["TODOS_PERIODOS"] = PeriodDataAccess.GetPeriodoAll();
+                Session["PERIODO_ATUAL_DATAS"] = period.GetListDate(periodoAtual);
+                Session["TODOS_PERIODOS"] = period.GetPeriodoAll();
 
                 Session["CONSULTOR_APONTAMENTO_CABECALHO_ATUAL"] = apontamentocabecalho;
                 Session["CONSULTOR_APONTAMENTOS_ITENS_ATUAL"] = apontamentoitens;
@@ -80,6 +81,7 @@ namespace Apassos.Controllers
         [HttpPost]
         public ActionResult Salvar()
         {
+            PeriodDataAccess period = new PeriodDataAccess();
             //TimeSpan almoco = new TimeSpan(1, 30, 0);
             Session["_MENSAGEM_"] = "";
             var totalupdates = int.Parse(Request.Form["totalupdates"]);
@@ -88,7 +90,7 @@ namespace Apassos.Controllers
             string consultorid = Request.Form["consultorid"];
             string periodoid = Request.Form["selectperiodo"];
 
-            Period periodoComp = PeriodDataAccess.GetPeriodo(periodoid);
+            Period periodoComp = period.GetPeriodo(periodoid);
 
 
 
@@ -141,7 +143,9 @@ namespace Apassos.Controllers
                             int oldHash = int.Parse(_hash);
                             if (!oldHash.Equals(newHash))
                             {
-                                TimesheetDataAccess.SalvarItemApontamento(_id, _data, _projectid, _type, _in, _out, _break, _description, timesheetheaderid, consultorid, periodoid);
+                                TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+                                timesheetSalvar.SalvarItemApontamento(_id, _data, _projectid, _type, _in, _out, _break, _description, timesheetheaderid, consultorid, periodoid);
                             }
                         }
                     }
@@ -161,8 +165,9 @@ namespace Apassos.Controllers
                     string _out = Request.Form["saida_insert_" + contins];
                     string _break = Request.Form["intervalo_insert_" + contins];
                     string _description = Request.Form["observacao_insert_" + contins];
+                    TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
 
-                    TimesheetDataAccess.SalvarItemApontamento(null, _data, _projectid, _type, _in, _out, _break, _description, timesheetheaderid, consultorid, periodoid);
+                    timesheetSalvar.SalvarItemApontamento(null, _data, _projectid, _type, _in, _out, _break, _description, timesheetheaderid, consultorid, periodoid);
 
                 }
 
@@ -172,7 +177,9 @@ namespace Apassos.Controllers
                     string[] arrayIdsExcluir = idsexcluir.Split(',');
                     for (int contidx = 0; contidx < arrayIdsExcluir.Length; contidx++)
                     {
-                        TimesheetDataAccess.ExcluirItemApontamento(arrayIdsExcluir[contidx]);
+                        TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+                        timesheetSalvar.ExcluirItemApontamento(arrayIdsExcluir[contidx]);
                     }
                 }
 
@@ -186,7 +193,9 @@ namespace Apassos.Controllers
         [HttpPost]
         public ActionResult Atualizar(int id)
         {
-            TimesheetDataAccess.TimesheetItemAtualizar(id);
+            TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+            timesheetSalvar.TimesheetItemAtualizar(id);
             return RedirectToAction("Index", "Apontamentos");
         }
 

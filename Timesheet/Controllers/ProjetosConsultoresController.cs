@@ -22,7 +22,9 @@ namespace Apassos.Controllers
             return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
          }
 
-         var gestorAtual = usuarioLogado.Partner;
+            ProjectDataAccess project = new ProjectDataAccess();
+            PeriodDataAccess periodoo = new PeriodDataAccess();
+            var gestorAtual = usuarioLogado.Partner;
 
          var _projectid = Request.Form["selectprojeto"];
 
@@ -38,7 +40,7 @@ namespace Apassos.Controllers
          Project projetoAtual = null;
          if (_projectid != null && _projectid != "")
          {
-            projetoAtual = ProjectDataAccess.GetProjeto(_projectid);
+            projetoAtual = project.GetProjeto(_projectid);
          }
          else
          {
@@ -50,7 +52,7 @@ namespace Apassos.Controllers
             }
             else
             {
-               projetoAtual = ProjectDataAccess.GetProjetoAtual();
+               projetoAtual = project.GetProjetoAtual();
             }
          }
          //db.Entry(projetoAtual).Reload();
@@ -58,7 +60,7 @@ namespace Apassos.Controllers
          Period periodoAtual = null;
          if (_periodid != null && _periodid != "")
          {
-            periodoAtual = PeriodDataAccess.GetPeriodo(_periodid);
+            periodoAtual = periodoo.GetPeriodo(_periodid);
          }
 
          //Tirei o if daqui
@@ -67,8 +69,8 @@ namespace Apassos.Controllers
          var listaConsultores = db.Partners.Where(p => p.ENVIRONMENT == env && p.ISUSER == "S").ToList();
          listaConsultores.Sort((x, y) => string.Compare(x.NAME, y.NAME));
 
-         var listaConsultoresProjeto = ProjectDataAccess.GetConsultoresProjeto(projetoAtual);
-         var listaConsultoresComApontamentos = ProjectDataAccess.GetConsultoresComApontamentos(projetoAtual);
+         var listaConsultoresProjeto = project.GetConsultoresProjeto(projetoAtual);
+         var listaConsultoresComApontamentos = project.GetConsultoresComApontamentos(projetoAtual);
 
          List<Partners> consultoresDisponiveis = new List<Partners>();
 
@@ -114,12 +116,15 @@ namespace Apassos.Controllers
       [HttpPost]
       public ActionResult Save()
       {
+
+            ProjectDataAccess projectData = new ProjectDataAccess();
+            PartnerDataAccess partner = new PartnerDataAccess();
          var _projectid = Request.Form["selectprojeto"];
-         var projetoAtual = ProjectDataAccess.GetProjeto(_projectid);
+         var projetoAtual = projectData.GetProjeto(_projectid);
          var _consultoreselecionados = Request.Form["idsconsultoresselecionados"];
 
-         //remove os consultores nao selecionados, que antes estavam alocados no projeto.
-         ProjectDataAccess.ExcluiRelacaoConsultoresProjetos(projetoAtual, _consultoreselecionados);
+            //remove os consultores nao selecionados, que antes estavam alocados no projeto.
+            projectData.ExcluiRelacaoConsultoresProjetos(projetoAtual, _consultoreselecionados);
 
          //insere os novos consultores no projeto
          string consultoresFalha = "";
@@ -130,9 +135,9 @@ namespace Apassos.Controllers
             {
                if (_idPartner != "")
                {
-                  if (!ProjectDataAccess.SaveProjectPartner(projetoAtual.PROJECTID, int.Parse(_idPartner), usuarioLogado))
+                  if (!projectData.SaveProjectPartner(projetoAtual.PROJECTID, int.Parse(_idPartner), usuarioLogado))
                   {
-                     Partners consultor = PartnerDataAccess.GetParceiro(int.Parse(_idPartner));
+                     Partners consultor = partner.GetParceiro(int.Parse(_idPartner));
                      consultoresFalha = consultoresFalha + consultor.SHORTNAME + ",";
                   }
                }

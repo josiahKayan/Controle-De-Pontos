@@ -51,7 +51,8 @@ namespace Apassos.reports.classes
 
     public BaseXLS(string periodid)
     {
-      this.periodoAtual = PeriodDataAccess.GetPeriodo(periodid);
+            PeriodDataAccess period = new PeriodDataAccess();
+      this.periodoAtual = period.GetPeriodo(periodid);
       this.filename = "apontamentos_" + periodoAtual.YEAR + "_" + periodoAtual.MONTH + ".xlsx";
       this.wb = new XSSFWorkbook();
     }

@@ -54,14 +54,14 @@ namespace Apassos.Controllers
         protected List<Project> getListaProjects(Period periodoAtual)
         {
             List<Project> listaProjetos;
-
+            ProjectDataAccess period = new ProjectDataAccess();
             if (periodoAtual == null)
             {
-                listaProjetos = ProjectDataAccess.GetProjetosNomeNoPeriodoAll();
+                listaProjetos = period.GetProjetosNomeNoPeriodoAll();
             }
             else
             {
-                listaProjetos = ProjectDataAccess.GetProjetosNomeNoPeriodo(periodoAtual);
+                listaProjetos = period.GetProjetosNomeNoPeriodo(periodoAtual);
             }
             return listaProjetos;
         }  

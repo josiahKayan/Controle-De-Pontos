@@ -19,7 +19,8 @@ namespace Apassos.reports.classes
 
         public ApontamentosXLS(string periodid, Partners consultorAtual)
         {
-            this.periodoAtual = PeriodDataAccess.GetPeriodo(periodid);
+            PeriodDataAccess period = new PeriodDataAccess();
+            this.periodoAtual = period.GetPeriodo(periodid);
             this.consultorAtual = consultorAtual;
             this.filename = "apontamentos_" + periodoAtual.YEAR + "_" + periodoAtual.MONTH + ".xlsx";
             this.partnerPeriod = new PartnersTimesheetHeaderAccess(consultorAtual, periodoAtual, periodoAtual);

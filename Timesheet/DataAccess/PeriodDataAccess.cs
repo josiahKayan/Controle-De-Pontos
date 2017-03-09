@@ -15,7 +15,7 @@ namespace Apassos.DataAccess
         /**
          * Retorna o periodo atual cadastrado em banco.Em ordem descrescente de entrada.
          */
-        public static List<Period> GetPeriodoAll()
+        public List<Period> GetPeriodoAll()
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Periods.Where(p => p.ENVIRONMENT == env).ToList();
@@ -34,7 +34,7 @@ namespace Apassos.DataAccess
         /**
          * Retorna o periodo atual cadastrado em banco. 
          */
-        public static Period GetPeriodoAtual()
+        public Period GetPeriodoAtual()
         {
             var lista = GetPeriodoAll();
             return lista.FirstOrDefault();
@@ -43,7 +43,7 @@ namespace Apassos.DataAccess
         /**
          * Retorna o periodo pelo id. 
          */
-        public static Period GetPeriodo(string id)
+        public Period GetPeriodo(string id)
         {
           var period = db.Periods.Find( int.Parse(id));
           return period;
@@ -55,7 +55,7 @@ namespace Apassos.DataAccess
     /**
      * Retorna uma lista de datas, baseada no periodo atual cadastrado no sistema.
      */
-    public static List<DateTime> GetListDate()
+    public List<DateTime> GetListDate()
         {
             return GetListDate(GetPeriodoAtual());
         }
@@ -65,7 +65,7 @@ namespace Apassos.DataAccess
         /**
          * Retorna uma lista de datas, baseada no periodo passado como parametro.
          */
-        public static List<DateTime> GetListDate(Period period)
+        public List<DateTime> GetListDate(Period period)
         {
             if (period.TIMESHEETPERIODSTART != null && period.TIMESHEETPERIODFINISH != null)
             {

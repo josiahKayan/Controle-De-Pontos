@@ -62,28 +62,30 @@ namespace Apassos.TeamWork.Parsers
             int diaDoMes = DateTime.Now.Month;
             List<TodoItem> todoItems = _teamWorkService.GetAllTodoItems();
             int mesInicialTarefa;
-          
+            int ano;
 
-            List<TimesheetTeamWorkItem> items = new List<TimesheetTeamWorkItem>();
+                List<TimesheetTeamWorkItem> items = new List<TimesheetTeamWorkItem>();
+
+
 
             foreach (var todoItem in todoItems)
             {
-            
+
                 try
                 {
 
                     //Filtro para não salvar tarefas antigas, essas tarefas serão filtradas a partir da data que está corrente
+                    ano = todoItem.StartDate.Year;
                     mesInicialTarefa = todoItem.StartDate.Month;
 
-                    if ((mesInicialTarefa >= 0 ) )
+                    if ((ano == DateTime.Now.Year && mesInicialTarefa >= 1))
                     {
 
                         if (todoItem.ResponsiblePartyNames.Contains("Danilo S.") || todoItem.ResponsiblePartyNames.Contains("Willian L.") || todoItem.ResponsiblePartyNames.Contains("Andreson M.") || todoItem.ResponsiblePartyNames.Contains("Wanderson H.") || todoItem.ResponsiblePartyNames.Contains("Evandro C.") || todoItem.ResponsiblePartyNames.Contains("Djanildes A.") || todoItem.ResponsiblePartyNames.Contains("Jaime N.") || todoItem.ResponsiblePartyNames.Contains("Carlos X.")
-                        || todoItem.ResponsiblePartyNames.Contains("Paulo P.") || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Rodrigo L.") || todoItem.ResponsiblePartyNames.Contains("Eduardo C.") || todoItem.ResponsiblePartyNames.Contains("Matheus F.") || todoItem.ResponsiblePartyNames.Contains("Rayden F.") || todoItem.ResponsiblePartyNames.Contains("Waldir T.")
+                        || todoItem.ResponsiblePartyNames.Contains("Paulo P.") || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Eduardo C.") || todoItem.ResponsiblePartyNames.Contains("Matheus F.") || todoItem.ResponsiblePartyNames.Contains("Rayden F.") || todoItem.ResponsiblePartyNames.Contains("Waldir T.")
                         || todoItem.ResponsiblePartyNames.Contains("Fábio D.") || todoItem.ResponsiblePartyNames.Contains("Fábio A.") || todoItem.ResponsiblePartyNames.Contains("Josias L.") || todoItem.ResponsiblePartyNames.Contains("Nonato O.") || todoItem.ResponsiblePartyNames.Contains("Fernando P.") || todoItem.ResponsiblePartyNames.Contains("Raimundo P.") || todoItem.ResponsiblePartyNames.Contains("Dennis C.") || todoItem.ResponsiblePartyNames.Contains("Sandra G."))
-
-                            {
-                                try
+                        { 
+                            try
                             {
                                 if (!todoItem.Status.Equals(STATUS_COMPLETED))
                                 {
@@ -117,7 +119,7 @@ namespace Apassos.TeamWork.Parsers
                 }
             }
             //TimesheetDataAccess.AddTeamworkLogTrace(_logTraceList);
-           return items;
+            return items;
         }
 
 
@@ -133,24 +135,42 @@ namespace Apassos.TeamWork.Parsers
             logTrace.Creator = todoItem.CreatorFirstname;
             logTrace.Titulo = todoItem.Content;
 
-            Partners partner = GetPartnerByTodoItem(todoItem);
-            int idByTag = GetTagByTodoItem(todoItem);
-            Models.Project projectTodoItem = GetProjectByTags(idByTag);
+            Partners partn = GetPartnerByTodoItemValid(todoItem);
+            int idByTa = GetTagByTodoItem(todoItem);
+            Models.Project projectTodoIte = GetProjectByTags(idByTa);
 
-            if (ValidObjectsPerPeriod( partner, projectTodoItem))
-            {
-                TimeEntriesResponse response = _teamWorkService.GetSingleTimeEntry(int.Parse(todoItem.Id));
+            //if (ValidObjectsPerPeriod(partn, projectTodoIte))
+                if (ValidObjectsPerPeriod( projectTodoIte))
+
+                {
+                    TimeEntriesResponse response = _teamWorkService.GetSingleTimeEntry(int.Parse(todoItem.Id));
                 if (response.TimeEntries.Length > 0)
                 {
 
                     foreach (var entry in response.TimeEntries)
                     {
+
                         string[] mes = entry.Date.Split(('-'));
 
-                        //if (int.Parse(mes[1]) >= (diaDoMes-1))
-                        if ( int.Parse(mes[1]) == DateTime.Now.Month)
+                        string[] dia = entry.Date.Split(':');
 
+                        var x1 = dia[0];
+                        string[] x2 = dia[0].Split('-');
+                        var x4 = x2[2].Split('T');
+
+                        if (x4[0].Equals("17"))
                         {
+
+                        }
+
+                        //if (int.Parse(mes[1]) == 2 && entry.PersonLastName.Equals("Porfírio"))
+                        if (int.Parse(mes[1]) == (DateTime.Now.Month ))
+                        {
+
+                            Partners partner = GetPartnerByTodoItem(entry);
+                            int idByTag = GetTagByTodoItem(todoItem);
+                            Models.Project projectTodoItem = GetProjectByTags(idByTag);
+
                             Period period = GetPeriodByEntry(entry);
                             TimesheetItem item = CreateTimesheetItem(todoItem, period, partner, projectTodoItem, entry);
 
@@ -162,7 +182,7 @@ namespace Apassos.TeamWork.Parsers
                                 teamWorkItem.TeamWorkTimeEntryId = entry.Id;
                                 if (entry.Description != null)
                                 {
-                                    teamWorkItem.TeamWorkTimeDescription = entry.Description;
+                                    teamWorkItem.TeamWorkTimeDescription = ". " + entry.Description;
                                 }
                                 //teamWorkItem.TeamWorkTimeUser = entry.PersonFirstName;
                                 items.Add(teamWorkItem);
@@ -177,11 +197,11 @@ namespace Apassos.TeamWork.Parsers
             }
             else
             {
-                if (idByTag == -1)
+                if (idByTa == -1)
                 {
                     NoTagRootCause(logTrace);
                 }
-                if (partner == null)
+                if (partn == null)
                 {
                     NoUserRootCause(logTrace);
                 }
@@ -223,7 +243,9 @@ namespace Apassos.TeamWork.Parsers
 
         private TeamworkRootCauseProblems GetRootCauseProblem(EnumRootCauseProblems rootCause)
         {
-            return TimesheetDataAccess.GetRootCauseProblem(rootCause.ToString());
+            TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+            return timesheetSalvar.GetRootCauseProblem(rootCause.ToString());
         }
 
         private List<TimesheetTeamWorkItem> NonCompletedTodoItem(TodoItem todoItem)
@@ -237,7 +259,21 @@ namespace Apassos.TeamWork.Parsers
                 {
                     string[] mes = entry.Date.Split(('-'));
 
-                    if (int.Parse(mes[1]) == DateTime.Now.Month )
+                    string[] dia = entry.Date.Split(':');
+
+                    var x1 = dia[0];
+                    string[] x2 = dia[0].Split('-');
+                    var x4 = x2[2].Split('T');
+
+                    if (x4[0].Equals("17"))
+                    {
+
+                    }
+
+
+                    if (int.Parse(mes[1]) == (DateTime.Now.Month ))
+                    //if (int.Parse(mes[1]) == 2 && entry.PersonLastName.Equals("Porfírio") )
+
                     {
                         Period period = GetPeriodByEntry(entry);
                         Partners partner = GetPartnerByEntry(entry);
@@ -255,7 +291,7 @@ namespace Apassos.TeamWork.Parsers
                                 teamWorkItem.TeamWorkTimeEntryId = entry.Id;
                                 if (entry.Description != null)
                                 {
-                                    teamWorkItem.TeamWorkTimeDescription = entry.Description;
+                                    teamWorkItem.TeamWorkTimeDescription = "." + entry.Description;
                                 }
                                 else
                                 {
@@ -269,6 +305,7 @@ namespace Apassos.TeamWork.Parsers
             }
             else
             {
+                PartnerDataAccess partners = new PartnerDataAccess();
                 TeamworkLogTraces logTrace = new TeamworkLogTraces();
                 logTrace.RootCauses = new List<TeamworkLogTraceRootCauses>();
                 logTrace.TeamWorkTodoItemId = todoItem.Id;
@@ -283,12 +320,12 @@ namespace Apassos.TeamWork.Parsers
                 Partners parceiro;
                 if (todoItem.ResponsiblePartyFirstname.Equals(string.Empty))
                 {
-                    parceiro = PartnerDataAccess.GetParceiroName(todoItem.ResponsiblePartyFirstname.ToString());
+                    parceiro = partners.GetParceiroName(todoItem.ResponsiblePartyFirstname.ToString());
                     logTrace.Partner = parceiro.PARTNERID;
                 }
                 else
                 {
-                    parceiro = PartnerDataAccess.GetParceiroName("josias");
+                    parceiro = partners.GetParceiroName("josias");
                     logTrace.Partner = parceiro.PARTNERID;
                 }
 
@@ -367,13 +404,22 @@ namespace Apassos.TeamWork.Parsers
 
         private TimesheetHeader GetHeader(Period period, Partners partner)
         {
-            TimesheetHeader header = TimesheetDataAccess.GetApontamentoCabecalhoPorPeriodo(partner, period);
+            TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+            TimesheetHeader header = timesheetSalvar.GetApontamentoCabecalhoPorPeriodo(partner, period);
             if (header == null)
             {
                 header = new TimesheetHeader();
                 header.ENVIRONMENT = _enviroment;
+                //header.Period = period;
+                //header.Partner = partner;
+                header.CHANGEDATE = DateTime.Now;
+                header.CHANGEDBY = "TimesheetService";
+                header.CREATEDBY = "TimesheetService";
+                header.CREATIONDATE = DateTime.Now;
                 header.Period = period;
                 header.Partner = partner;
+
             }
 
             return header;
@@ -382,37 +428,43 @@ namespace Apassos.TeamWork.Parsers
 
         private List<Period> GetAllPeriods()
         {
-            List<Period> periods = TimesheetDataAccess.GetAllPeriods();
+            TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+            List<Period> periods = timesheetSalvar.GetAllPeriods();
             return periods;
         }
 
         private List<Models.Project> GetAllProjects()
         {
-            List<Models.Project> projects = TimesheetDataAccess.GetAllProjects();
+            TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+            List<Models.Project> projects = timesheetSalvar.GetAllProjects();
             return projects;
         }
 
         private List<Partners> GetAllPartners()
         {
-            List<Partners> partners = TimesheetDataAccess.GetAllPartners();
+            TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+            List<Partners> partners = timesheetSalvar.GetAllPartners();
             return partners;
         }
 
-        private Partners GetPartnerByTodoItem(TodoItem todoItem)
+        private Partners GetPartnerByTodoItem(TimeEntry entry)
         {
             //return _partners.Find(x => x.FIRSTNAME.ToUpper() == todoItem.CompleterFirstname.ToUpper()
             //                                && x.LASTNAME.ToUpper() == todoItem.CompleterLastname.ToUpper());
 
 
-            todoItem.ResponsiblePartyFirstname = todoItem.ResponsiblePartyFirstname.Replace('á', 'a');
+            entry.PersonFirstName = entry.PersonFirstName.Replace('á', 'a');
 
-            List<Partners> p = _partners.FindAll(x => x.FIRSTNAME.ToUpper().Trim().Equals(todoItem.ResponsiblePartyFirstname.ToUpper()));
+            List<Partners> p = _partners.FindAll(x => x.FIRSTNAME.ToUpper().Trim().Equals(entry.PersonFirstName.ToUpper()));
 
             if (p.Count > 1)
             {
-                if (todoItem.ResponsiblePartyFirstname.Equals("Fabio"))
+                if (entry.PersonFirstName.Equals("Fabio"))
                 {
-                    if (todoItem.ResponsiblePartyLastname.ToUpper().Trim().Equals("DEALMEIDA"))
+                    if (entry.PersonFirstName.ToUpper().Trim().Equals("DEALMEIDA"))
                     {
                         return _partners.Find(x => x.LASTNAME.ToUpper().Trim().Equals("ALMEIDA"));
                     }
@@ -421,9 +473,77 @@ namespace Apassos.TeamWork.Parsers
                         return _partners.Find(x => x.LASTNAME.ToUpper().Trim().Equals("ALVES"));
                     }
                 }
+
                 //return _partners.Find(x => x.NAME.Replace('á', 'a').ToUpper().Trim().Equals(entry.PersonFirstName.ToUpper().Trim()+entry.PersonLastName.ToUpper().Trim()));
             }
-            return _partners.Find(x => x.FIRSTNAME.ToUpper().Trim().Equals(todoItem.ResponsiblePartyFirstname.ToUpper()));
+
+            if (p.Count > 1)
+            {
+                if (entry.PersonLastName.ToUpper().Trim().Equals("PORFÍRIO"))
+                {
+                    return _partners.Find(x => x.SHORTNAME.ToUpper().Trim().Equals("PORFIRIO"));
+                }
+                else if (entry.PersonFirstName.ToUpper().Trim().Equals("FERNANDES"))
+                {
+                    return _partners.Find(x => x.SHORTNAME.ToUpper().Trim().Equals("RAYDEN"));
+                }
+                else if (entry.PersonFirstName.ToUpper().Trim().Equals("Oliveira"))
+                {
+                    return _partners.Find(x => x.SHORTNAME.ToUpper().Trim().Equals("Nonato"));
+                }
+            }
+
+
+            return _partners.Find(x => x.FIRSTNAME.ToUpper().Trim().Equals(entry.PersonFirstName.ToUpper()));
+
+        }
+
+
+        private Partners GetPartnerByTodoItemValid(TodoItem entry)
+        {
+            //return _partners.Find(x => x.FIRSTNAME.ToUpper() == todoItem.CompleterFirstname.ToUpper()
+            //                                && x.LASTNAME.ToUpper() == todoItem.CompleterLastname.ToUpper());
+
+
+            entry.ResponsiblePartyFirstname = entry.ResponsiblePartyFirstname.Replace('á', 'a');
+
+            List<Partners> p = _partners.FindAll(x => x.FIRSTNAME.ToUpper().Trim().Equals(entry.ResponsiblePartyFirstname.ToUpper()));
+
+            if (p.Count > 1)
+            {
+                if (entry.ResponsiblePartyFirstname.Equals("Fabio"))
+                {
+                    if (entry.ResponsiblePartyFirstname.ToUpper().Trim().Equals("DEALMEIDA"))
+                    {
+                        return _partners.Find(x => x.LASTNAME.ToUpper().Trim().Equals("ALMEIDA"));
+                    }
+                    else
+                    {
+                        return _partners.Find(x => x.LASTNAME.ToUpper().Trim().Equals("ALVES"));
+                    }
+                }
+
+                //return _partners.Find(x => x.NAME.Replace('á', 'a').ToUpper().Trim().Equals(entry.PersonFirstName.ToUpper().Trim()+entry.PersonLastName.ToUpper().Trim()));
+            }
+
+            if (p.Count > 1)
+            {
+                if (entry.ResponsiblePartyFirstname.ToUpper().Trim().Equals("PORFÍRIO"))
+                {
+                    return _partners.Find(x => x.SHORTNAME.ToUpper().Trim().Equals("PORFIRIO"));
+                }
+                else if (entry.ResponsiblePartyFirstname.ToUpper().Trim().Equals("FERNANDES"))
+                {
+                    return _partners.Find(x => x.SHORTNAME.ToUpper().Trim().Equals("RAYDEN"));
+                }
+                else if (entry.ResponsiblePartyFirstname.ToUpper().Trim().Equals("Oliveira"))
+                {
+                    return _partners.Find(x => x.SHORTNAME.ToUpper().Trim().Equals("Nonato"));
+                }
+            }
+
+
+            return _partners.Find(x => x.FIRSTNAME.ToUpper().Trim().Equals(entry.ResponsiblePartyFirstname.ToUpper()));
 
         }
 
@@ -452,6 +572,24 @@ namespace Apassos.TeamWork.Parsers
                 }
                 //return _partners.Find(x => x.NAME.Replace('á', 'a').ToUpper().Trim().Equals(entry.PersonFirstName.ToUpper().Trim()+entry.PersonLastName.ToUpper().Trim()));
             }
+
+
+            if (p.Count> 1)
+            {
+                if (entry.PersonLastName.ToUpper().Trim().Equals("PORFÍRIO"))
+                {
+                    return _partners.Find(x => x.SHORTNAME.ToUpper().Trim().Equals("PORFIRIO"));
+                }
+                else if (entry.PersonLastName.ToUpper().Trim().Equals("FERNANDES"))
+                {
+                    return _partners.Find(x => x.SHORTNAME.ToUpper().Trim().Equals("RAYDEN"));
+                }
+                else if (entry.PersonLastName.ToUpper().Trim().Equals("Oliveira"))
+                {
+                    return _partners.Find(x => x.SHORTNAME.ToUpper().Trim().Equals("Nonato"));
+                }
+            }
+
             return _partners.Find(x => x.FIRSTNAME.ToUpper().Trim().Equals(entry.PersonFirstName.ToUpper()));
         }
 
@@ -537,15 +675,10 @@ namespace Apassos.TeamWork.Parsers
             return valid;
         }
 
-        private bool ValidObjectsPerPeriod( Partners partner, Models.Project projectTodoItem)
+        private bool ValidObjectsPerPeriod( Models.Project projectTodoItem)
         {
             bool valid = true;
 
-           
-            if (partner == null)
-            {
-                valid = false;
-            }
 
             if (projectTodoItem == null)
             {

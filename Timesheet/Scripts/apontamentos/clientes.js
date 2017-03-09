@@ -97,11 +97,18 @@ function update() {
         if (!ValidarCPF()) {
             isSubmit = false;
         }
-    } else {
-        if (!ValidarCNPJ()) {
-            isSubmit = false;
-        }
     }
+    else {
+        if (document.getElementById("selecttipo").value == "0") {
+            isSubmit = true;
+        }
+        //else (!ValidarCNPJ())
+        //{
+        //    isSubmit = false;
+        //}
+    }
+
+    
 
     if (isSubmit) {
         //se for pessoa juridica, apaga os campos primeiro e ultimo nome
@@ -366,4 +373,9 @@ function atualizaCidades() {
 
 function cancelar() {
     window.open(relativepath + 'Cliente', '_self');
+}
+
+
+function ValidarCNPJ2() {
+    return false;
 }

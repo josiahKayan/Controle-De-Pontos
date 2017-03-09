@@ -27,7 +27,8 @@ namespace Apassos.Controllers
             {
                 return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
             }
-            var lista = ProjectDataAccess.GetProjetosNomeAll();  // db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
+            ProjectDataAccess project = new ProjectDataAccess();
+            var lista = project.GetProjetosNomeAll();  // db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
             
             return View(lista);
         }
@@ -41,9 +42,9 @@ namespace Apassos.Controllers
             {
                 return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
             }
-
-            Session["TODOS_CLIENTES"] = PartnerDataAccess.GetEmpresas();
-            Session["TODOS_GESTORES"] = PartnerDataAccess.GetGestores();
+            PartnerDataAccess partner = new PartnerDataAccess();
+            Session["TODOS_CLIENTES"] = partner.GetEmpresas();
+            Session["TODOS_GESTORES"] = partner.GetGestores();
 
             return View();
         } 
@@ -123,8 +124,10 @@ namespace Apassos.Controllers
             {
                 return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
             }
-            Session["TODOS_CLIENTES"] = PartnerDataAccess.GetEmpresas();
-            Session["TODOS_GESTORES"] = PartnerDataAccess.GetGestores();
+            PartnerDataAccess partner = new PartnerDataAccess();
+
+            Session["TODOS_CLIENTES"] = partner.GetEmpresas();
+            Session["TODOS_GESTORES"] = partner.GetGestores();
             Project project = db.Projects.Find(int.Parse(id));
             return View(project);
         }
@@ -188,12 +191,14 @@ namespace Apassos.Controllers
             }
             catch (Exception ex)
             {
+                PartnerDataAccess partner = new PartnerDataAccess();
+
                 Util.EscreverLog(ex.Message, usuarioLogado);
                 ViewBag.loginerror = "true";
                 Session["_SUCCESS_"] = "false";
                 Session["_MENSAGEM_"] = "Falha na transação!";
-                Session["TODOS_CLIENTES"] = PartnerDataAccess.GetEmpresas();
-                Session["TODOS_GESTORES"] = PartnerDataAccess.GetGestores();
+                Session["TODOS_CLIENTES"] = partner.GetEmpresas();
+                Session["TODOS_GESTORES"] = partner.GetGestores();
                 return View(project);
             }
         }

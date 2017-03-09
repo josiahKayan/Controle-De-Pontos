@@ -13,32 +13,6 @@
 <script src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/InfoProjetos/InfoProjetos.js")" type="text/javascript"></script>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#ProjectName").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: "/InfoProjetos/AutoCompleteCountry",
-                    type: "GET",
-                    dataType: "json",
-                    async: true,
-                    data: { term: request.term },
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return { label: item.name, value: item.id };
-                        }
-                        ))
-
-                    }
-                })
-            },
-            minLength: 4,
-            messages: {
-                noResults: "", results: ""
-            }
-        });
-    })
-</script>
 
 
 <table id="tabelaperiodos" style="width:100%;border-spacing:5px;">
@@ -71,26 +45,6 @@
         </tr>
     }*@
 
-    <th>
-        Projeto:
-    </th>
-
-    <form name="formproject" id="formproject" class="login-form" method="post">
-
-        <th>
-            @*@Html.TextBox("ProjectName")*@
-            <input id="ProjectName" name="ProjectName" type="text" value="" />
-        </th>
-        <th>
-
-
-            <button id="btprocurar" name="procurar" class="botaocursor" type="button" 
-                    style="background-image:url('@(relativePath)images/busca23.png')" value="" title="Procurar" />
-        </th>
-
-
-        <span id="rData"></span>
-    </form>
 
     <tr class="trheader">
 
@@ -101,6 +55,7 @@
             Nome Projeto
         </th>
         <th>Descrição</th>
+        <th>Cliente</th>
 
     </tr>
 
@@ -124,6 +79,14 @@
                     @if (!(@project.DESCRIPTION == null))
                     {
                         @project.DESCRIPTION.ToString().Replace(';', ' ');
+                    }
+
+                </td>
+
+                <td>
+                    @if (!(@project.Partner.FIRSTNAME == null))
+                    {
+                        @project.Partner.FIRSTNAME.ToString().Replace(';', ' ');
                     }
 
                 </td>

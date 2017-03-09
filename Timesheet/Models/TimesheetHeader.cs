@@ -75,7 +75,9 @@ namespace Apassos.Models
         {
             get
             {
-                return TimesheetDataAccess.ApontamentosFechado(this);
+                TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+                return timesheetSalvar.ApontamentosFechado(this);
             }
         }
 

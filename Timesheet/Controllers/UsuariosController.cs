@@ -40,7 +40,8 @@ namespace Apassos.Controllers
             {
                 return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
             }
-            Session["PARCEIROS_NAO_USUARIOS"] = PartnerDataAccess.GetParceirosNaoUsuarios();
+            PartnerDataAccess partner = new PartnerDataAccess();
+            Session["PARCEIROS_NAO_USUARIOS"] = partner.GetParceirosNaoUsuarios();
             Session["TODOS_PERFIS"] = PartnerDataAccess.GetPerfisAll();
             return View();
         }

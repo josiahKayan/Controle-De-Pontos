@@ -58,8 +58,11 @@ namespace Apassos.DataAccess
 
          if (_id == null) //inserir
          {
-            Users user = PartnerDataAccess.GetUsuario(PartnerDataAccess.GetParceiroId(_consultorid));
-            List<TimeSpan> horasApontamento = TimesheetDataAccess.GetTotalHorasApontamentoDia(_periodoid, _data, user.Partner.PARTNERID.ToString());
+                PartnerDataAccess partner = new PartnerDataAccess();
+            Users user = PartnerDataAccess.GetUsuario(partner.GetParceiroId(_consultorid));
+                TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+                List<TimeSpan> horasApontamento = timesheetSalvar.GetTotalHorasApontamentoDia(_periodoid, _data, user.Partner.PARTNERID.ToString());
             TimeSpan ts = new TimeSpan();
             foreach (var x in horasApontamento)
             {
@@ -89,9 +92,11 @@ namespace Apassos.DataAccess
          else
          {
 
+                PartnerDataAccess partner = new PartnerDataAccess();
+            Users user = PartnerDataAccess.GetUsuario(partner.GetParceiroId(_consultorid));
+                TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
 
-            Users user = PartnerDataAccess.GetUsuario(PartnerDataAccess.GetParceiroId(_consultorid));
-            List<TimeSpan> horasApontamento = TimesheetDataAccess.GetTotalHorasApontamentoDia(_periodoid, _data, user.Partner.PARTNERID.ToString());
+                List<TimeSpan> horasApontamento = timesheetSalvar.GetTotalHorasApontamentoDia(_periodoid, _data, user.Partner.PARTNERID.ToString());
             TimeSpan ts = new TimeSpan(0, 0, 0);
             foreach (var x in horasApontamento)
             {

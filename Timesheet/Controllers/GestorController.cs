@@ -30,23 +30,26 @@ namespace Apassos.Controllers
 
       var gestorAtual = usuarioLogado.Partner;
 
-      var _periodid = Request.Form["selectperiodo"];
+            PeriodDataAccess period = new PeriodDataAccess();
+            ProjectDataAccess project = new ProjectDataAccess();
+
+            var _periodid = Request.Form["selectperiodo"];
       Period periodoAtual = null;
       if (_periodid != null && _periodid != "")
       {
-        periodoAtual = PeriodDataAccess.GetPeriodo(_periodid);
+        periodoAtual = period.GetPeriodo(_periodid);
       }
       else
       {
-        periodoAtual = PeriodDataAccess.GetPeriodoAtual();
+        periodoAtual = period.GetPeriodoAtual();
       }
 
       Session["_USUARIO_LOGADO"] = usuarioLogado;
       Session["GESTOR_ATUAL"] = gestorAtual;
       Session["PERIODO_ATUAL"] = periodoAtual;
-      Session["TODOS_PERIODOS"] = PeriodDataAccess.GetPeriodoAll();
+      Session["TODOS_PERIODOS"] = period.GetPeriodoAll();
 
-      Session["TODOS_CONSULTORES_APONTAMENTOS"] = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(periodoAtual);
+      Session["TODOS_CONSULTORES_APONTAMENTOS"] = project.GetConsultoresApontamentosPorPeriodo(periodoAtual);
 
       return View();
     }
@@ -55,8 +58,9 @@ namespace Apassos.Controllers
     [HttpPost]
     public ActionResult AprovacaoSalvar()
     {
+            ProjectDataAccess projectData = new ProjectDataAccess();
       Period periodoAtual = db.Periods.Find(int.Parse(Request.Form["selectperiodo"]));
-      List<PartnersTimesheetHeaderAccess> listaApont = ProjectDataAccess.GetConsultoresApontamentosPorPeriodo(periodoAtual);
+      List<PartnersTimesheetHeaderAccess> listaApont = projectData.GetConsultoresApontamentosPorPeriodo(periodoAtual);
 
       foreach (PartnersTimesheetHeaderAccess consultApont in listaApont)
       {
@@ -77,10 +81,11 @@ namespace Apassos.Controllers
 
             int newHash = newObjectHash.GetHashCode();
             int oldHash = int.Parse(hash);
+                        TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
 
-            if(!TimesheetDataAccess.GetStatus(iditem, tipoaprovacao))
+                        if (!timesheetSalvar.GetStatus(iditem, tipoaprovacao))
                         {
-                            TimesheetDataAccess.SalvarItemApontamentoAprovacao(iditem, tipoaprovacao, anotacao);
+                            timesheetSalvar.SalvarItemApontamentoAprovacao(iditem, tipoaprovacao, anotacao);
                         }
 
             //if (oldHash.Equals(newHash))

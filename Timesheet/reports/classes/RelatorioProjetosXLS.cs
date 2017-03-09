@@ -15,8 +15,9 @@ namespace Apassos.Models
 
         public RelatorioProjetosXLS(string periodid)
         {
+            PeriodDataAccess periodData = new PeriodDataAccess();
 
-            this.periodoatual = PeriodDataAccess.GetPeriodo(periodid);
+            this.periodoatual = periodData.GetPeriodo(periodid);
 
             this.filename = "apontamentos_projeto" + periodoatual.YEAR + "_" + periodoatual.MONTH + ".xlsx";
 

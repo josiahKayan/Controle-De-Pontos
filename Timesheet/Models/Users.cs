@@ -134,7 +134,8 @@ namespace Apassos.Models
             {
                 if (PARTNERID > 0)
                 {
-                    return PartnerDataAccess.GetParceiro(PARTNERID);
+                    PartnerDataAccess p = new PartnerDataAccess();
+                    return p.GetParceiro(PARTNERID);
                 }
                 return null;
             }

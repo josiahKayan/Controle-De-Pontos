@@ -14,7 +14,8 @@ namespace Apassos.Controllers
     {
         public ActionResult InfoProjetos(List<ProjetoAuxiliar> x = null)
         {
-            Session["LISTA_PROJETOS"] = ProjectDataAccess.GetProjetosAllTimesheet();
+            ProjectDataAccess project = new ProjectDataAccess();
+            Session["LISTA_PROJETOS"] = project.GetProjetosAllTimesheet();
             Session["PROJETO"] = x;
             return View();
         }
@@ -22,7 +23,8 @@ namespace Apassos.Controllers
 
         public JsonResult AutoCompleteCountry(string term)
         {
-            var result = ProjectDataAccess.GetListaProjetosPorNome(term);
+            ProjectDataAccess project = new ProjectDataAccess();
+            var result = project.GetListaProjetosPorNome(term);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

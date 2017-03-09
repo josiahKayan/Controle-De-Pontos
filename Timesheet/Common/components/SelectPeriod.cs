@@ -19,7 +19,8 @@ namespace Apassos.Common.Components
         }
         public SelectPeriod(string idSelect)
         {
-            this.period = PeriodDataAccess.GetPeriodoAtual();
+            PeriodDataAccess periodo = new PeriodDataAccess();
+            this.period = periodo.GetPeriodoAtual();
             this.onchange = "";
             this.idSelect = idSelect;
             this.style = "width:150px;";
@@ -59,7 +60,8 @@ namespace Apassos.Common.Components
 
         public string EchoSelectPeriod()
         {
-            var listPeriod = PeriodDataAccess.GetPeriodoAll();
+            PeriodDataAccess periodo = new PeriodDataAccess();
+            var listPeriod = periodo.GetPeriodoAll();
             string htmlSelect = "<select id='"+this.idSelect+"' name='"+this.idSelect+"' onchange='"+this.onchange+"' style='"+this.style+"'>";
             htmlSelect = htmlSelect + "<option value=''>Todos os períodos</option>";
             foreach (var periodItem in listPeriod)

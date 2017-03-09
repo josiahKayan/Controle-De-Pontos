@@ -18,7 +18,7 @@ namespace Apassos.DataAccess
         /**
          * Retorna lista de projetos do consultor.
          */
-        public static List<ProjectUser> GetProjetosPorConsultor(Partners consultor, bool ignoreEncerrados = true)
+        public List<ProjectUser> GetProjetosPorConsultor(Partners consultor, bool ignoreEncerrados = true)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<ProjectUser> lista = new List<ProjectUser>();
@@ -57,7 +57,7 @@ namespace Apassos.DataAccess
         /**
          * Retorna lista de projetos do consultor.
          */
-        public static List<Project> GetProjetosPorGestor(Partners gestor)
+        public List<Project> GetProjetosPorGestor(Partners gestor)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
@@ -78,7 +78,7 @@ namespace Apassos.DataAccess
         }
 
 
-        public static List<ProjetoAuxiliar> GetListaProjetosPorNome(string name)
+        public List<ProjetoAuxiliar> GetListaProjetosPorNome(string name)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Projects.Where(p => p.ENVIRONMENT == env && (p.STATUS == "1" || p.STATUS == "0") && p.NAME.ToUpper().Contains(name.ToUpper())).ToList();
@@ -112,7 +112,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna lista de consultores que sao dos projetos.
         */
-        public static List<TimesheetHeader> GetConsultoresApontamentosPorGestor(Partners gestor)
+        public List<TimesheetHeader> GetConsultoresApontamentosPorGestor(Partners gestor)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.TimesheetHeaders.Where(p => p.ENVIRONMENT == env).ToList();
@@ -135,7 +135,7 @@ namespace Apassos.DataAccess
         /**
        * Retorna lista de consultores que tem apontamentos no periodo.
        */
-        public static List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodo(Period periodo)
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodo(Period periodo)
         {
 
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
@@ -155,7 +155,7 @@ namespace Apassos.DataAccess
         }
 
 
-        public static List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodo(Project projeto = null , Period periodoInicial = null, Period periodoFinal = null)
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodo(Project projeto = null , Period periodoInicial = null, Period periodoFinal = null)
         {
 
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
@@ -184,7 +184,7 @@ namespace Apassos.DataAccess
             return list;
         }
 
-        public static List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Period periodo, Partners partners, Project project)
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Period periodo, Partners partners, Project project)
         {
 
 
@@ -208,7 +208,7 @@ namespace Apassos.DataAccess
         }
 
 
-        public static List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Partners partners , Project project , Period periodoInicial , Period periodoFinal )
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Partners partners , Project project , Period periodoInicial , Period periodoFinal )
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<PartnersTimesheetHeaderAccess> list = new List<PartnersTimesheetHeaderAccess>();
@@ -270,7 +270,7 @@ namespace Apassos.DataAccess
         }
 
 
-        public static List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Partners partners, Project project )
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Partners partners, Project project )
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<PartnersTimesheetHeaderAccess> list = new List<PartnersTimesheetHeaderAccess>();
@@ -305,11 +305,8 @@ namespace Apassos.DataAccess
         }
 
 
-        public static List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoPartner(Period periodo, Partners partners)
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoPartner(Period periodo, Partners partners)
         {
-
-
-            Debug.WriteLine("Aqui");
 
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
 
@@ -328,7 +325,7 @@ namespace Apassos.DataAccess
             return list;
         }
 
-        public static List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorProjeto(Period periodo, Project project)
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorProjeto(Period periodo, Project project)
         {
 
 
@@ -353,7 +350,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna os projetos cadastrados em banco.
         */
-        public static List<Project> GetProjetosNomeAll()
+        public List<Project> GetProjetosNomeAll()
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var listaX = db.Projects.Where(p => p.ENVIRONMENT == env).OrderBy(p => p.NAME).ToList();
@@ -371,7 +368,7 @@ namespace Apassos.DataAccess
         /**
        * Retorna todos os projetos cadastrados.
        */
-        public static List<Project> GetProjetosNomeNoPeriodoAll()
+        public List<Project> GetProjetosNomeNoPeriodoAll()
         {
             DateTime dataHoje = DateTime.Now;
 
@@ -384,15 +381,15 @@ namespace Apassos.DataAccess
         /**
       * Retorna os projetos cadastrados, que estejam dentro do periodo estipulado de inicio e final.
       */
-        public static List<Project> GetProjetosNomeNoPeriodo(Period period)
+        public List<Project> GetProjetosNomeNoPeriodo(Period period)
         {
             DateTime dataHoje = DateTime.Now;
-
+            PeriodDataAccess periodo = new PeriodDataAccess();
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var listaAll = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
 
             List<Project> lista = new List<Project>();
-            List<DateTime> listaDatasPeriodo = PeriodDataAccess.GetListDate(period);
+            List<DateTime> listaDatasPeriodo = periodo.GetListDate(period);
 
             foreach (var item in listaAll)
             {
@@ -411,7 +408,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna os projetos cadastrados em banco.
         */
-        public static List<Project> GetProjetosAll()
+        public  List<Project> GetProjetosAll()
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
@@ -420,7 +417,7 @@ namespace Apassos.DataAccess
         }
 
 
-        public static List<Project> GetProjetosAllTimesheet()
+        public  List<Project> GetProjetosAllTimesheet()
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
@@ -434,14 +431,14 @@ namespace Apassos.DataAccess
         */
 
         //Tratar esse bug
-        public static Project GetProjeto(string id)
+        public  Project GetProjeto(string id)
         {
             var projeto = db.Projects.Find(int.Parse(id));
             return projeto;
         }
 
 
-        public static bool IsProjectExistInThisPeriod(Period period)
+        public  bool IsProjectExistInThisPeriod(Period period)
         {
             var exist = db.Projects.Where(p => p.PLANNEDSTARTDATE.Month >= period.MONTH && p.PLANNEDFINISHDATE.Month <= period.MONTH).ToString();
             if( exist != null || exist != string.Empty )
@@ -457,13 +454,13 @@ namespace Apassos.DataAccess
         /**
         * Retorna o ultimo projeto cadastrado.
         */
-        public static Project GetProjetoAtual()
+        public Project GetProjetoAtual()
         {
             var lista = GetProjetosAll();
             return lista.FirstOrDefault();
         }
 
-        public static Project GetProjetoAtualPorPeriodo(Period periodo, Project project)
+        public Project GetProjetoAtualPorPeriodo(Period periodo, Project project)
         {
             var lista = db.Projects.Where(p => p.ACTUALSTARTDATE >= periodo.TIMESHEETPERIODSTART && p.ACTUALFINISHDATE <= periodo.TIMESHEETPERIODFINISH).ToList();
             return lista.FirstOrDefault();
@@ -473,7 +470,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna os consultores do projeto selecionado.
         */
-        public static List<Partners> GetConsultoresProjeto(Project project)
+        public List<Partners> GetConsultoresProjeto(Project project)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<Partners> listPartners = db.ProjectUsers.Where(p => p.ENVIRONMENT == env && p.project.PROJECTID == project.PROJECTID).
@@ -483,7 +480,7 @@ namespace Apassos.DataAccess
             return lista;
         }
 
-        public static List<Partners> GetConsultoresIdProjeto(int id)
+        public List<Partners> GetConsultoresIdProjeto(int id)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<Partners> listPartners = db.ProjectUsers.Where(p => p.ENVIRONMENT == env && p.project.PROJECTID == id).
@@ -499,7 +496,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna as relacoes dos consultores/projeto selecionado.
         */
-        public static List<ProjectUser> GetRelacaoConsultoresProjeto(Project project)
+        public List<ProjectUser> GetRelacaoConsultoresProjeto(Project project)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<ProjectUser> lista = db.ProjectUsers.Where(p => p.ENVIRONMENT == env && p.project.PROJECTID == project.PROJECTID).ToList();
@@ -509,7 +506,7 @@ namespace Apassos.DataAccess
         /**
         * Retorna os consultores do projeto selecionado, com apontamentos.
         */
-        public static List<Partners> GetConsultoresComApontamentos(Project project)
+        public List<Partners> GetConsultoresComApontamentos(Project project)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<Partners> listPartners = db.TimesheetItems.Where(t => t.ENVIRONMENT == env && t.project.PROJECTID == project.PROJECTID).
@@ -522,7 +519,16 @@ namespace Apassos.DataAccess
         /**
        * Verifica se o consultor do projeto tem apontamentos.
        */
-        public static int TotalConsultorApontamentos(Project project, Partners partner)
+        public int TotalConsultorApontamentos(Project project, Partners partner)
+        {
+            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            int totalApontamentos = db.TimesheetItems.Where(t => t.ENVIRONMENT == env && t.project.PROJECTID == project.PROJECTID
+                && t.TimesheetHeader.Partner.PARTNERID == partner.PARTNERID).Count();
+            return totalApontamentos;
+        }
+
+
+        public static int TotalConsultorApontamentosFilter(Project project, Partners partner)
         {
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             int totalApontamentos = db.TimesheetItems.Where(t => t.ENVIRONMENT == env && t.project.PROJECTID == project.PROJECTID
@@ -533,7 +539,7 @@ namespace Apassos.DataAccess
         /**
        * Salva o relacionamento do projeto e consultor.
        */
-        public static bool SaveProjectPartner(int ProjectID, int PartnerID, Users usuarioLogado)
+        public bool SaveProjectPartner(int ProjectID, int PartnerID, Users usuarioLogado)
         {
             try
             {
@@ -577,16 +583,16 @@ namespace Apassos.DataAccess
         /**
          * Remove as relacoes entre projetos e consultores que sairam da selecao atual.
          */
-        public static void ExcluiRelacaoConsultoresProjetos(Project projetoAtual, string _consultoreselecionados)
+        public void ExcluiRelacaoConsultoresProjetos(Project projetoAtual, string _consultoreselecionados)
         {
-
+            ProjectDataAccess project = new ProjectDataAccess();
             //corre todos os consultores ja cadastrados, para verificar quais serao excluidos
             List<ProjectUser> listaConsultoresProjetoExcluir = new List<ProjectUser>();
-            List<ProjectUser> listaRelacaoConsultoresProjeto = ProjectDataAccess.GetRelacaoConsultoresProjeto(projetoAtual);
+            List<ProjectUser> listaRelacaoConsultoresProjeto = project.GetRelacaoConsultoresProjeto(projetoAtual);
             foreach (ProjectUser item in listaRelacaoConsultoresProjeto)
             {
                 //se nao tiver apontamentos, nao pode excluir
-                if (ProjectDataAccess.TotalConsultorApontamentos(item.project, item.partner) == 0)
+                if (project.TotalConsultorApontamentos(item.project, item.partner) == 0)
                 {
                     //se não estiver selecionado, marca para exclusao
                     if (!_consultoreselecionados.Contains("," + item.PROJECTUSERID + ","))
@@ -602,7 +608,7 @@ namespace Apassos.DataAccess
             db.SaveChanges();
         }
 
-        public static int calculateNextProjectNumber(int year, int month)
+        public  int calculateNextProjectNumber(int year, int month)
         {
             int nextNumber = 0;
             int yearMonthStarts = int.Parse(year.ToString() + month.ToString() + "0000");

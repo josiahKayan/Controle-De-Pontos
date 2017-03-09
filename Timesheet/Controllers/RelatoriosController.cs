@@ -18,33 +18,35 @@ namespace Apassos.Controllers
             {
                 return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
             }
-
+            PeriodDataAccess period = new PeriodDataAccess();
+            PartnerDataAccess partner = new PartnerDataAccess();
+            ProjectDataAccess projectData = new ProjectDataAccess();
             List<Period> listaPeriodoInicial = new List<Period>();
             Period periodoInicial = null;
-            listaPeriodoInicial = PeriodDataAccess.GetPeriodoAll();
+            listaPeriodoInicial = period.GetPeriodoAll();
             List<Period> listaPeriodoFinal = new List<Period>();
-            listaPeriodoFinal = PeriodDataAccess.GetPeriodoAll();
+            listaPeriodoFinal = period.GetPeriodoAll();
             Period periodoFinal = null;
 
             var _idPeriodoInicial = Request.Form["selectperiodoinicial"];
             if (_idPeriodoInicial != null && _idPeriodoInicial != null)
             {
-                periodoInicial = PeriodDataAccess.GetPeriodo(_idPeriodoInicial);
+                periodoInicial = period.GetPeriodo(_idPeriodoInicial);
             }
             else
             {
-                periodoInicial = PeriodDataAccess.GetPeriodoAtual();
+                periodoInicial = period.GetPeriodoAtual();
             }
 
 
             var _idPeriodoFinal = Request.Form["selectperiodoFinal"];
             if (_idPeriodoFinal != null && _idPeriodoFinal != null)
             {
-                periodoFinal = PeriodDataAccess.GetPeriodo(_idPeriodoFinal);
+                periodoFinal = period.GetPeriodo(_idPeriodoFinal);
             }
             else
             {
-                periodoFinal = PeriodDataAccess.GetPeriodoAtual();
+                periodoFinal = period.GetPeriodoAtual();
             }
 
 
@@ -56,33 +58,33 @@ namespace Apassos.Controllers
 
             if (_periodid != null && _periodid != "")
             {
-                periodoAtual = PeriodDataAccess.GetPeriodo(_periodid);
+                periodoAtual = period.GetPeriodo(_periodid);
             }
             else
             {
-                periodoAtual = PeriodDataAccess.GetPeriodoAtual();
+                periodoAtual = period.GetPeriodoAtual();
             }
 
             List<Project> listaProjetos = new List<Project>();
 
             var _projectId = Request.Form["selectprojeto"];
-            listaProjetos.AddRange(ProjectDataAccess.GetProjetosAll());
+            listaProjetos.AddRange(projectData.GetProjetosAll());
 
             listaProjetos.OrderBy(x => x.NAME);
 
-            List<Period> listaPeriodos = PeriodDataAccess.GetPeriodoAll();
+            List<Period> listaPeriodos = period.GetPeriodoAll();
 
-            List<Partners> consultoresDisponiveis = PartnerDataAccess.GetAllParceiros();
+            List<Partners> consultoresDisponiveis = partner.GetAllParceiros();
 
             Project projetoAtual = null;
 
             if (_projectId != null && _projectId != string.Empty)
             {
-                projetoAtual = ProjectDataAccess.GetProjeto(_projectId);
+                projetoAtual = projectData.GetProjeto(_projectId);
             }
             if (projetoAtual != null)
             {
-                consultoresDisponiveis = ProjectDataAccess.GetConsultoresProjeto(projetoAtual);
+                consultoresDisponiveis = projectData.GetConsultoresProjeto(projetoAtual);
             }
 
             //Partners parceiroAtual = null ;
@@ -149,8 +151,10 @@ namespace Apassos.Controllers
 
         public ActionResult getListPartersSelected(int id)
         {
+            ProjectDataAccess projectData = new ProjectDataAccess();
+
             Debug.WriteLine("O id recebido foi:" + id);
-            List<Partners> listPartners = ProjectDataAccess.GetConsultoresIdProjeto(id);
+            List<Partners> listPartners = projectData.GetConsultoresIdProjeto(id);
             Session["CONSULTORES_DISPONIVEIS"] = listPartners;
             return View();
         }
@@ -168,7 +172,7 @@ namespace Apassos.Controllers
                 var projectID = Request.Form["selectprojeto"];
                 List<Partners> consultoresDisponiveis = (List<Partners>)Session["CONSULTORES_DISPONIVEIS"];
                 List<Project> listaProjetos = (List<Project>)Session["TODOS_PROJETOS"];
-
+                PeriodDataAccess period = new PeriodDataAccess();
 
                 Project projeto = null;
                 
@@ -177,8 +181,8 @@ namespace Apassos.Controllers
                     projeto = listaProjetos.Where(p => p.PROJECTID == int.Parse(projectID)).SingleOrDefault();
                 }
 
-                Period periodoInicial = PeriodDataAccess.GetPeriodo(periodInicialId);
-                Period periodoFinal = PeriodDataAccess.GetPeriodo(periodFinalId);
+                Period periodoInicial = period.GetPeriodo(periodInicialId);
+                Period periodoFinal = period.GetPeriodo(periodFinalId);
 
                 Partners partner = consultoresDisponiveis.Where(p => p.NAME == consultor).SingleOrDefault();
 

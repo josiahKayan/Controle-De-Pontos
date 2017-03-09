@@ -35,7 +35,9 @@ namespace Apassos.TeamWork.Jobs
         public void Execute(IJobExecutionContext context)
      {
             List<TimesheetTeamWorkItem> items = _parser.GetItems();
-            TimesheetDataAccess.SaveTimesheetItems(items);
+            TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
+
+            timesheetSalvar.SaveTimesheetItems(items);
 
             //Erros.ErroMensage erros = new Erros.ErroMensage();
             //List<TeamworkLogTraces> listLogs = erros.RetornaErros();

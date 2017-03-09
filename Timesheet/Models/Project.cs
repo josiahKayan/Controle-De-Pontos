@@ -143,7 +143,8 @@ namespace Apassos.Models
             {
                 if (PARTNERID > 0)
                 {
-                    _partner = PartnerDataAccess.GetParceiro(PARTNERID);
+                    PartnerDataAccess p = new PartnerDataAccess();
+                    _partner = p.GetParceiro(PARTNERID);
                     return _partner;
                 }
                 return Partner;
@@ -161,7 +162,9 @@ namespace Apassos.Models
             {
                 if (GESTORID > 0)
                 {
-                    return PartnerDataAccess.GetParceiro(GESTORID);
+                    PartnerDataAccess p = new PartnerDataAccess();
+
+                    return p.GetParceiro(GESTORID);
                 }
                 return null;
             }
@@ -176,7 +179,8 @@ namespace Apassos.Models
         {
             get
             {
-                return ProjectDataAccess.GetConsultoresProjeto(this);
+                ProjectDataAccess p = new ProjectDataAccess();
+                return p.GetConsultoresProjeto(this);
             }
         }
 
