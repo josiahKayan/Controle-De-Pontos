@@ -2,8 +2,11 @@
 using Apassos.DataAccess;
 using Apassos.IoC;
 using Apassos.Models;
+using Apassos.TeamWork.Handler;
+using Apassos.TeamWork.JsonObject;
 using Apassos.TeamWork.Parsers;
 using Apassos.TeamWork.Services;
+using Apassos.TeamWork.WebServices;
 using Ninject;
 using Quartz;
 using System;
@@ -18,26 +21,34 @@ namespace Apassos.TeamWork.Jobs
     {
 
         [Inject]
-        private ITimesheetParser _parser;
+        private ITimeEntryService _parser;
 
         [Inject]
-        private ITeamWorkService _service;
+        private ITeamWorkWebService _service;
 
         private readonly IKernel _kernel;
 
         public TeamWorkJob()
         {
             _kernel = new StandardKernel(new TimesheetNinjectModule());
-            _parser = _kernel.Get<ITimesheetParser>();
-            _service = _kernel.Get<ITeamWorkService>();
+            //TimesheetPaerser
+            _parser = _kernel.Get<ITimeEntryService>();
+            //TeamWorkService
+            _service = _kernel.Get<ITeamWorkWebService>();
         }
 
         public void Execute(IJobExecutionContext context)
      {
-            List<TimesheetTeamWorkItem> items = _parser.GetItems();
+
+            var items = _parser.GetItems();
+
+            TimesheetManager tsManager = new TimesheetManager();
+
+            List<TimesheetTeamWorkItem> listTimesheetItems =  tsManager.InsertData(items);
+
             TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
 
-            timesheetSalvar.SaveTimesheetItems(items);
+            timesheetSalvar.SaveTimesheetItemsInTs(listTimesheetItems);
 
             //Erros.ErroMensage erros = new Erros.ErroMensage();
             //List<TeamworkLogTraces> listLogs = erros.RetornaErros();

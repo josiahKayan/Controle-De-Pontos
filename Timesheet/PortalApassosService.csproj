@@ -200,6 +200,7 @@
     <Compile Include="Controllers\TimesheetBaseController.cs" />
     <Compile Include="DataAccess\BaseDataAccess.cs" />
     <Compile Include="DataAccess\CheckinDataAccess.cs" />
+    <Compile Include="DataAccess\InfoObjectsDataAccess.cs" />
     <Compile Include="DataAccess\RelatorioAccess.cs" />
     <Compile Include="Emails\Email.cs" />
     <Compile Include="Emails\SendMailApp.cs" />
@@ -220,6 +221,9 @@
     <Compile Include="Models\TodoItemWithSubTask.cs" />
     <Compile Include="Models\TodoListWithSubTask.cs" />
     <Compile Include="reports\classes\RelatoriosXLS.cs" />
+    <Compile Include="TeamWork\Handler\TimesheetManager.cs" />
+    <Compile Include="TeamWork\Handler\TimesheetManagerHeader.cs" />
+    <Compile Include="TeamWork\Handler\TimesheetManagerItem.cs" />
     <Compile Include="TeamWork\Handler\TSProjectHandler.cs" />
     <Compile Include="TeamWork\Handler\TSTimeHandler.cs" />
     <Compile Include="TeamWork\Jobs\TeamWorkJob.cs" />
@@ -261,10 +265,18 @@
     <Compile Include="reports\classes\ConsultoresApontamentosXLS.cs" />
     <Compile Include="reports\classes\ApontamentosXLS.cs" />
     <Compile Include="reports\classes\BaseXLS.cs" />
+    <Compile Include="TeamWork\JsonObject\InfoObjects.cs" />
     <Compile Include="TeamWork\Parsers\ITimesheetParser.cs" />
     <Compile Include="TeamWork\Parsers\TimesheetParser.cs" />
+    <Compile Include="TeamWork\Response\EntryTime.cs" />
+    <Compile Include="TeamWork\Response\Tag.cs" />
+    <Compile Include="TeamWork\Response\TimeResponse.cs" />
     <Compile Include="TeamWork\Services\ITeamWorkService.cs" />
     <Compile Include="TeamWork\Services\TeamWorkService.cs" />
+    <Compile Include="TeamWork\WebServices\ITeamWorkWebService.cs" />
+    <Compile Include="TeamWork\WebServices\ITimeEntryService.cs" />
+    <Compile Include="TeamWork\WebServices\TeamWorkWebService.cs" />
+    <Compile Include="TeamWork\WebServices\TimeEntryService.cs" />
     <Compile Include="Tools\Conexao.cs" />
     <Compile Include="Views\LoginMaster.Master.cs">
       <DependentUpon>LoginMaster.Master</DependentUpon>
@@ -493,6 +505,7 @@
   <ItemGroup>
     <Folder Include="ErrorPage\" />
     <Folder Include="reports\exports\" />
+    <Folder Include="TeamWork\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

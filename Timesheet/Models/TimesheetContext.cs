@@ -1,4 +1,5 @@
 ﻿
+using Apassos.TeamWork.JsonObject;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
@@ -151,5 +152,7 @@ namespace Apassos.Models
         /// </summary>
         /// <value>The feriados.</value>
         public DbSet<Feriados> Feriados { get; set; }
-   }
+
+        public DbSet<InfoObjects> InfoObjects { get; set; }
+    }
 }

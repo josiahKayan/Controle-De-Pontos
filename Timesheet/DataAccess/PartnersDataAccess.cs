@@ -37,13 +37,14 @@ namespace Apassos.DataAccess
 
         public List<Partners> GetAllParceiros()
         {
+            TimesheetContext d = new TimesheetContext();
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-            var listaAll = db.Partners.Where(p => p.ENVIRONMENT == env && p.SHORTNAME.ToLower() != "admin").OrderBy(c => c.NAME).ToList();
+            var listaAll = d.Partners.Where(p => p.ENVIRONMENT == env && p.SHORTNAME.ToLower() != "admin").OrderBy(c => c.NAME).ToList();
             List<Partners> lista = new List<Partners>();
             foreach (var partner in listaAll)
             {
-                
-                db.Entry(partner).Reload();
+
+                d.Entry(partner).Reload();
                 lista.Add(partner);
             }
 

@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using Apassos.DataAccess;
 using Apassos.TeamWork.Parsers;
 using Apassos.TeamWork.Services;
+using System.Web.Http;
+using Newtonsoft.Json;
 
 namespace Apassos
 {
@@ -53,6 +55,7 @@ namespace Apassos
 
         protected void Application_Start()
         {
+
             //descomentar: desabilita a criacao da base automatica
             Database.SetInitializer<TimesheetContext>(null);
 
@@ -63,6 +66,10 @@ namespace Apassos
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
+            HttpConfiguration config = GlobalConfiguration.Configuration;
+            config.Formatters.JsonFormatter.SerializerSettings.Formatting =
+                Newtonsoft.Json.Formatting.Indented;
 
             StartTeamWorkRetrieverScheduler();
 

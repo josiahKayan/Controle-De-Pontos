@@ -106,7 +106,8 @@ namespace Apassos.TeamWork.Services
 
         public TimeEntriesResponse GetSingleTimeEntry(int id)
         {
-            return _tsTimeHandler.GetSingleTimeEntry(id).Result;
+            //return _tsTimeHandler.GetSingleTimeEntry(id).Result;
+            return null;
         }
 
 

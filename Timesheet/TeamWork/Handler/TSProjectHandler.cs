@@ -40,7 +40,7 @@ namespace Apassos.TeamWork.Handler
             {
                var response = (ProjectResponse)data.ContentObj;
 
-               StringBuilder url = new StringBuilder("projects/" + projectId + "/todo_lists.json?nestSubTasks=yes&false");
+               StringBuilder url = new StringBuilder("projects/" + projectId + "/todo_lists.json?nestSubTasks=yes");
                if (startDate != null)
                {
                   url.Append("&createdAfterDate=");

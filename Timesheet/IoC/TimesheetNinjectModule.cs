@@ -1,5 +1,6 @@
 ﻿using Apassos.TeamWork.Parsers;
 using Apassos.TeamWork.Services;
+using Apassos.TeamWork.WebServices;
 using Ninject.Modules;
 
 namespace Apassos.IoC
@@ -9,11 +10,21 @@ namespace Apassos.IoC
     public override void Load()
     {
 
-      //SERVICES
-      Bind<ITeamWorkService>().To<TeamWorkService>();
+            ////SERVICES
+            //Bind<ITeamWorkService>().To<TeamWorkService>();
 
-      //PARSERS
-      Bind<ITimesheetParser>().To<TimesheetParser>();
-    }
+            ////PARSERS
+            //Bind<ITimesheetParser>().To<TimesheetParser>();
+
+            //PARSERS
+            Bind<ITimeEntryService>().To<TimeEntryService>();
+
+            //SERVICES
+            Bind<ITeamWorkWebService>().To<TeamWorkWebService>();
+
+          
+
+
+        }
   }
 }

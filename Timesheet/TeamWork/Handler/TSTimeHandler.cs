@@ -1,4 +1,5 @@
 ﻿
+using Apassos.TeamWork.Response;
 using System;
 using System.Diagnostics;
 using System.Net;
@@ -25,15 +26,15 @@ namespace Apassos.TeamWork.Handler
         /// </summary>
         /// <param name="id">Time Entry ID</param>
         /// <returns></returns>
-        public async Task<TimeEntriesResponse> GetSingleTimeEntry(int id)
+        public async Task<TimeResponse> GetSingleTimeEntry(string startDate , string endDate)
         {
             using (var client = new AuthorizedHttpClient(_client))
             {
-                string url = "todo_items/" + id + "/time_entries.json";
-                var data = await client.GetAsync<TimeEntriesResponse>(url, null);
+                string url = "/time_entries.json?sortorder=ASC&fromdate="+startDate+"&todate="+endDate;
+                var data = await client.GetAsync<TimeResponse>(url, null);
                 if (data.StatusCode == HttpStatusCode.OK)
                 {
-                    TimeEntriesResponse response = (TimeEntriesResponse)data.ContentObj;
+                    TimeResponse response = (TimeResponse)data.ContentObj;
                     return response;
                 }
             }

@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Apassos.DataAccess;
-
+using Newtonsoft.Json;
 
 namespace Apassos.Models
 {
@@ -247,7 +247,7 @@ namespace Apassos.Models
             }
 
         }
-
+        [JsonIgnore]
         /// <summary>
         /// Gets the user.
         /// </summary>
@@ -269,6 +269,8 @@ namespace Apassos.Models
 
         }
 
+        [JsonIgnore]
+
         /// <summary>
         /// Gets the user forced.
         /// </summary>
@@ -286,6 +288,8 @@ namespace Apassos.Models
             }
 
         }
+
+        [JsonIgnore]
 
         /// <summary>
         /// Gets a value indicating whether this instance is user forced.
