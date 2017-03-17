@@ -26,11 +26,11 @@ namespace Apassos.TeamWork.Handler
         /// </summary>
         /// <param name="id">Time Entry ID</param>
         /// <returns></returns>
-        public async Task<TimeResponse> GetSingleTimeEntry(string startDate , string endDate)
+        public async Task<TimeResponse> GetSingleTimeEntry(string startDate , string endDate, int i)
         {
             using (var client = new AuthorizedHttpClient(_client))
             {
-                string url = "/time_entries.json?sortorder=ASC&fromdate="+startDate+"&todate="+endDate;
+                string url = "/time_entries.json?sortorder=ASC&fromdate="+startDate+"&todate="+endDate+"&page="+i;
                 var data = await client.GetAsync<TimeResponse>(url, null);
                 if (data.StatusCode == HttpStatusCode.OK)
                 {

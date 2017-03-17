@@ -51,13 +51,15 @@ namespace Apassos.Controllers
         [HttpPost]
         public ActionResult Create(Users usuario)
         {
+            UsersDataAccess userData = new UsersDataAccess();
+
             if (!CommonController.Instance.AccessValidate(this.ControllerContext, Constants.ModulesConstant.USERS))
             {
                 return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
             }
             try
             {
-                UsersDataAccess.SalvarUsuario(usuario, Request.Form["checkperfil"], Request.Form["selectparceiro"], usuarioLogado, "1", Request.Form["selectisalterpwd"]);
+                userData.SalvarUsuario(usuario, Request.Form["checkperfil"], Request.Form["selectparceiro"], usuarioLogado, "1", Request.Form["selectisalterpwd"]);
                 var msg = "O usuário foi salvo com sucesso!";
                 Session["_SUCCESS_"] = "true";
                 Session["_MENSAGEM_"] = msg;
@@ -114,6 +116,8 @@ namespace Apassos.Controllers
         [HttpPost]
         public ActionResult Edit(Users usuario)
         {
+            UsersDataAccess userData = new UsersDataAccess();
+
             if (!CommonController.Instance.AccessValidate(this.ControllerContext, Constants.ModulesConstant.USERS))
             {
                 return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
@@ -122,7 +126,7 @@ namespace Apassos.Controllers
             {
                 string locked = Request.Form["selectlock"];
                 string isalterpwd = Request.Form["selectisalterpwd"];
-                UsersDataAccess.SalvarUsuario(usuario, Request.Form["checkperfil"], Request.Form["selectparceiro"], usuarioLogado, locked, isalterpwd);
+                userData.SalvarUsuario(usuario, Request.Form["checkperfil"], Request.Form["selectparceiro"], usuarioLogado, locked, isalterpwd);
                 var msg = "O usuário foi salvo com sucesso!";
                 Session["_SUCCESS_"] = "true";
                 Session["_MENSAGEM_"] = msg;
@@ -157,7 +161,7 @@ namespace Apassos.Controllers
                 Session["_MENSAGEM_"] = msg;
                 Util.EscreverLog(e.Message, usuarioLogado);
             }
-            return View(UsersDataAccess.GetUsuario(usuario.USERID));
+            return View(userData.GetUsuario(usuario.USERID));
         }
 
         [HttpPost]
@@ -192,6 +196,8 @@ namespace Apassos.Controllers
         [HttpPost]
         public string Resetar(string username)
         {
+            UsersDataAccess userData = new UsersDataAccess();
+
             try
             {
                 usuarioLogado = (Users)Session["_USUARIO_LOGADO"];
@@ -202,12 +208,12 @@ namespace Apassos.Controllers
                     string[] userId = username.Split(',');
                     for (int i = 0; i < userId.Length; i++)
                     {
-                        listUserd.Add(UsersDataAccess.GetUsuario(int.Parse(userId[i])));
+                        listUserd.Add(userData.GetUsuario(int.Parse(userId[i])));
                     }
                     foreach (var u in listUserd)
                     {
 
-                        var userPersist = UsersDataAccess.GetUserByLogin(u.USERNAME);
+                        var userPersist = userData.GetUserByLogin(u.USERNAME);
                         userPersist.PASSWORD = DEFAULT_PASSWORD;
                         db.Entry(userPersist).State = EntityState.Modified;
                         db.SaveChanges();
@@ -216,8 +222,8 @@ namespace Apassos.Controllers
                 }
                 else
                 {
-                    Users u = UsersDataAccess.GetUsuario(int.Parse(username));
-                    var userPersist = UsersDataAccess.GetUserByLogin(u.USERNAME);
+                    Users u = userData.GetUsuario(int.Parse(username));
+                    var userPersist = userData.GetUserByLogin(u.USERNAME);
                     userPersist.PASSWORD = DEFAULT_PASSWORD;
                     db.Entry(userPersist).State = EntityState.Modified;
                     db.SaveChanges();

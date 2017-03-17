@@ -177,13 +177,13 @@ namespace Apassos.TeamWork.Parsers
                             TimesheetTeamWorkItem teamWorkItem = new TimesheetTeamWorkItem();
                             if (item != null)
                             {
-                                teamWorkItem.TimesheetItem = item;
-                                teamWorkItem.TeamWorkTodoItemId = todoItem.Id;
-                                teamWorkItem.TeamWorkTimeEntryId = entry.Id;
-                                if (entry.Description != null)
-                                {
-                                    teamWorkItem.TeamWorkTimeDescription = ". " + entry.Description;
-                                }
+                                //teamWorkItem.TimesheetItem = item;
+                                //teamWorkItem.TeamWorkTodoItemId = todoItem.Id;
+                                //teamWorkItem.TeamWorkTimeEntryId = entry.Id;
+                                //if (entry.Description != null)
+                                //{
+                                //    teamWorkItem.TeamWorkTimeDescription = ". " + entry.Description;
+                                //}
                                 //teamWorkItem.TeamWorkTimeUser = entry.PersonFirstName;
                                 items.Add(teamWorkItem);
                             }
@@ -286,17 +286,17 @@ namespace Apassos.TeamWork.Parsers
                             TimesheetTeamWorkItem teamWorkItem = new TimesheetTeamWorkItem();
                             if (item != null)
                             {
-                                teamWorkItem.TimesheetItem = item;
-                                teamWorkItem.TeamWorkTodoItemId = todoItem.Id;
-                                teamWorkItem.TeamWorkTimeEntryId = entry.Id;
-                                if (entry.Description != null)
-                                {
-                                    teamWorkItem.TeamWorkTimeDescription = "." + entry.Description;
-                                }
-                                else
-                                {
-                                    teamWorkItem.TeamWorkTimeDescription = "A";
-                                }
+                                //teamWorkItem.TimesheetItem = item;
+                                //teamWorkItem.TeamWorkTodoItemId = todoItem.Id;
+                                //teamWorkItem.TeamWorkTimeEntryId = entry.Id;
+                                //if (entry.Description != null)
+                                //{
+                                //    teamWorkItem.TeamWorkTimeDescription = "." + entry.Description;
+                                //}
+                                //else
+                                //{
+                                //    teamWorkItem.TeamWorkTimeDescription = "A";
+                                //}
                                 items.Add(teamWorkItem);
                             }
                         }

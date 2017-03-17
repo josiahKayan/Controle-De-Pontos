@@ -62,6 +62,10 @@
     <Reference Include="Common.Logging.Core">
       <HintPath>..\packages\Common.Logging.Core.3.0.0\lib\net35\Common.Logging.Core.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\..\..\APS_DEV\Front-End\APS\Resources\dll\NPOI\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -190,6 +194,7 @@
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\InfoProjetosController.cs" />
+    <Compile Include="Controllers\IntegrationController.cs" />
     <Compile Include="Controllers\RelatoriosController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Controllers\GestorController.cs" />
@@ -201,11 +206,15 @@
     <Compile Include="DataAccess\BaseDataAccess.cs" />
     <Compile Include="DataAccess\CheckinDataAccess.cs" />
     <Compile Include="DataAccess\InfoObjectsDataAccess.cs" />
+    <Compile Include="DataAccess\LogDataAccess.cs" />
     <Compile Include="DataAccess\RelatorioAccess.cs" />
     <Compile Include="Emails\Email.cs" />
     <Compile Include="Emails\SendMailApp.cs" />
     <Compile Include="Erros\ErroMensage.cs" />
+    <Compile Include="Erros\Erros.cs" />
     <Compile Include="IoC\TimesheetNinjectModule.cs" />
+    <Compile Include="Log\EndLog.cs" />
+    <Compile Include="Log\Logs.cs" />
     <Compile Include="Models\Checkins.cs" />
     <Compile Include="Models\Cities.cs" />
     <Compile Include="Models\EmailConfig.cs" />
@@ -221,6 +230,8 @@
     <Compile Include="Models\TodoItemWithSubTask.cs" />
     <Compile Include="Models\TodoListWithSubTask.cs" />
     <Compile Include="reports\classes\RelatoriosXLS.cs" />
+    <Compile Include="reports\Excel.cs" />
+    <Compile Include="reports\Export.cs" />
     <Compile Include="TeamWork\Handler\TimesheetManager.cs" />
     <Compile Include="TeamWork\Handler\TimesheetManagerHeader.cs" />
     <Compile Include="TeamWork\Handler\TimesheetManagerItem.cs" />
@@ -300,6 +311,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\alert.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\error.css" />
     <Content Include="Content\jquery.toastmessage.css" />
     <Content Include="Content\styleform.css" />
@@ -360,8 +375,17 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\resetButton.css" />
     <Content Include="fonts\Bree_Serif\OFL.txt" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\Bree_Serif\BreeSerif-Regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -418,8 +442,11 @@
     <Content Include="Scripts\apontamentos\login.js" />
     <None Include="Properties\PublishProfiles\TimesheetService.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Checkin\Checkin.js" />
     <Content Include="Scripts\InfoProjetos\InfoProjetos.js" />
+    <Content Include="Scripts\Integracao\integracao.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
@@ -493,6 +520,7 @@
     <Content Include="Views\Relatorios\Relatorios.cshtml" />
     <Content Include="Views\Checkin\Checkin.cshtml" />
     <Content Include="Views\InfoProjetos\InfoProjetos.cshtml" />
+    <Content Include="Views\Integration\Integration.cshtml" />
     <None Include="_Timesheet_20140617DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>_Timesheet_20140617DataSet.Designer.cs</LastGenOutput>
@@ -504,6 +532,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ErrorPage\" />
+    <Folder Include="Integration\" />
     <Folder Include="reports\exports\" />
     <Folder Include="TeamWork\Models\" />
   </ItemGroup>
@@ -526,12 +555,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>58640</DevelopmentServerPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost:58995/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

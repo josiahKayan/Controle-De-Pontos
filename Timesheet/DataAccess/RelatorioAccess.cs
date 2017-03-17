@@ -9,39 +9,44 @@ namespace Apassos.DataAccess
     public class RelatorioAccess
     {
 
-        private static TimesheetContext db = new TimesheetContext();
 
-        public static List<RelatorioHoras> GetListaRelatorioProjetoConsultorHoras(int ano, int mes)
+        public List<RelatorioHoras> GetListaRelatorioProjetoConsultorHoras(int ano, int mes)
         {
-            List<RelatorioHoras> list = new List<RelatorioHoras>();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                List<RelatorioHoras> list = new List<RelatorioHoras>();
 
-            list = db.Database.SqlQuery<RelatorioHoras>(GetRelatorioProjetoConsultorHorasQuery(mes, ano)).ToList();
+                list = db.Database.SqlQuery<RelatorioHoras>(GetRelatorioProjetoConsultorHorasQuery(mes, ano)).ToList();
 
-            return list;
+                return list;
+            }
         }
 
-        public static List<RelatorioHoras> GetListaRelatorioProjetoHoras(int ano, int mes, int projectId = 0, int partnerId = 0)
+        public List<RelatorioHoras> GetListaRelatorioProjetoHoras(int ano, int mes, int projectId = 0, int partnerId = 0)
         {
-            List<RelatorioHoras> list = new List<RelatorioHoras>();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                List<RelatorioHoras> list = new List<RelatorioHoras>();
 
-            if (projectId == 0 && partnerId == 0)
-            {
-                list = db.Database.SqlQuery<RelatorioHoras>(getRelatorioProjetoHorasQuery(ano, mes)).ToList();
-            }
-            else if (projectId != 0 && partnerId == 0)
-            {
-                list = db.Database.SqlQuery<RelatorioHoras>(GetReportProjectAloneQuery(ano, mes, projectId)).ToList();
-            }
-            else if (projectId != 0 && partnerId != 0)
-            {
-                list = db.Database.SqlQuery<RelatorioHoras>(GetReportProjectAndPartnerIdQuery(ano, mes, projectId, partnerId)).ToList();
-            }
-            else if (projectId == 0 && partnerId != 0)
-            {
-                list = db.Database.SqlQuery<RelatorioHoras>(GetReportPartnerIdQuery(ano, mes, partnerId)).ToList();
-            }
+                if (projectId == 0 && partnerId == 0)
+                {
+                    list = db.Database.SqlQuery<RelatorioHoras>(getRelatorioProjetoHorasQuery(ano, mes)).ToList();
+                }
+                else if (projectId != 0 && partnerId == 0)
+                {
+                    list = db.Database.SqlQuery<RelatorioHoras>(GetReportProjectAloneQuery(ano, mes, projectId)).ToList();
+                }
+                else if (projectId != 0 && partnerId != 0)
+                {
+                    list = db.Database.SqlQuery<RelatorioHoras>(GetReportProjectAndPartnerIdQuery(ano, mes, projectId, partnerId)).ToList();
+                }
+                else if (projectId == 0 && partnerId != 0)
+                {
+                    list = db.Database.SqlQuery<RelatorioHoras>(GetReportPartnerIdQuery(ano, mes, partnerId)).ToList();
+                }
 
-            return list;
+                return list;
+            }
         }
         
         private static string GetRelatorioProjetoConsultorHorasQuery(int ano, int mes)
@@ -213,45 +218,51 @@ namespace Apassos.DataAccess
 
 
         //A partir daqui os novos construtores
-        public static List<RelatorioHoras> GetListaRelatorioProjetoConsultorHoras(Period periodoInicial, Period periodoFinal)
+        public  List<RelatorioHoras> GetListaRelatorioProjetoConsultorHoras(Period periodoInicial, Period periodoFinal)
         {
-            List<RelatorioHoras> list = new List<RelatorioHoras>();
-            string periodIncial = periodoInicial.TIMESHEETPERIODSTART.Value.ToString("yyyy-MM-dd");
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                List<RelatorioHoras> list = new List<RelatorioHoras>();
+                string periodIncial = periodoInicial.TIMESHEETPERIODSTART.Value.ToString("yyyy-MM-dd");
 
-            string periodFinal = periodoFinal.TIMESHEETPERIODFINISH.Value.ToString("yyyy-MM-dd");
+                string periodFinal = periodoFinal.TIMESHEETPERIODFINISH.Value.ToString("yyyy-MM-dd");
 
-            list = db.Database.SqlQuery<RelatorioHoras>(GetRelatorioProjetoConsultorHorasQueryy(periodIncial, periodFinal)).ToList();
+                list = db.Database.SqlQuery<RelatorioHoras>(GetRelatorioProjetoConsultorHorasQueryy(periodIncial, periodFinal)).ToList();
 
-            return list;
+                return list;
+            }
         }
 
 
-        public static List<RelatorioHoras> GetListaRelatorioProjetoHoras(Period periodoInicial, Period periodoFinal, int projectId = 0, int partnerId = 0)
+        public  List<RelatorioHoras> GetListaRelatorioProjetoHoras(Period periodoInicial, Period periodoFinal, int projectId = 0, int partnerId = 0)
         {
-            List<RelatorioHoras> list = new List<RelatorioHoras>();
-
-            string initial = periodoInicial.TIMESHEETPERIODSTART.Value.ToString("yyyy-MM-dd");
-            string final = periodoFinal.TIMESHEETPERIODFINISH.Value.ToString("yyyy-MM-dd");
-
-
-            if (projectId == 0 && partnerId == 0)
+            using (TimesheetContext db = new TimesheetContext())
             {
-                list = db.Database.SqlQuery<RelatorioHoras>(getRelatorioProjetoHorasQuery(initial, final)).ToList();
-            }
-            else if (projectId != 0 && partnerId == 0)
-            {
-                list = db.Database.SqlQuery<RelatorioHoras>(GetReportProjectAloneQuery(initial, final, projectId)).ToList();
-            }
-            else if (projectId != 0 && partnerId != 0)
-            {
-                list = db.Database.SqlQuery<RelatorioHoras>(GetReportProjectAndPartnerIdQuery(initial, final, projectId, partnerId)).ToList();
-            }
-            else if (projectId == 0 && partnerId != 0)
-            {
-                list = db.Database.SqlQuery<RelatorioHoras>(GetReportPartnerIdQuery(initial, final, partnerId)).ToList();
-            }
+                List<RelatorioHoras> list = new List<RelatorioHoras>();
 
-            return list;
+                string initial = periodoInicial.TIMESHEETPERIODSTART.Value.ToString("yyyy-MM-dd");
+                string final = periodoFinal.TIMESHEETPERIODFINISH.Value.ToString("yyyy-MM-dd");
+
+
+                if (projectId == 0 && partnerId == 0)
+                {
+                    list = db.Database.SqlQuery<RelatorioHoras>(getRelatorioProjetoHorasQuery(initial, final)).ToList();
+                }
+                else if (projectId != 0 && partnerId == 0)
+                {
+                    list = db.Database.SqlQuery<RelatorioHoras>(GetReportProjectAloneQuery(initial, final, projectId)).ToList();
+                }
+                else if (projectId != 0 && partnerId != 0)
+                {
+                    list = db.Database.SqlQuery<RelatorioHoras>(GetReportProjectAndPartnerIdQuery(initial, final, projectId, partnerId)).ToList();
+                }
+                else if (projectId == 0 && partnerId != 0)
+                {
+                    list = db.Database.SqlQuery<RelatorioHoras>(GetReportPartnerIdQuery(initial, final, partnerId)).ToList();
+                }
+
+                return list;
+            }
         }
 
 

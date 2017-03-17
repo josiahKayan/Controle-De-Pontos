@@ -6,8 +6,10 @@
 
     List<string[]> buttonsPermission = Apassos.Common.AccessRules.ButtonsProfile(usuarioLogado);
 
+    buttonsPermission = buttonsPermission.Distinct().ToList();
+
     var titleApp = System.Configuration.ConfigurationManager.AppSettings["TITLEAPP"].ToString();
-    
+
 }
 
 <!doctype html>
@@ -17,6 +19,7 @@
 <title>@ViewBag.Title</title>
 
 <link href="@Url.Content("~/Content/styleform.css")" rel="stylesheet" type="text/css" />
+
 <link href="@Url.Content("~/Content/alert.css")" rel="stylesheet" type="text/css" />
 <link href="@Url.Content("~/Content/error.css")" rel="stylesheet" type="text/css" />
 
@@ -142,9 +145,9 @@
             </table>
 
             <!-- footer -->
-          <table id="tblfooter" width="100%" style="position:fixed;bottom:0px;" >
+          @*<table id="tblfooter" width="100%" style="position:fixed;bottom:0px;" >
                 <tr><td align="center" class="tdfooter">APASSOS Consultoria &amp; Software &copy; @(DateTime.Now.Year). Vers&atilde;o @(version). Todos os direitos reservados.</td></tr>
-            </table>
+            </table>*@
 
 
       </td>

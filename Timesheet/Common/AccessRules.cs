@@ -26,7 +26,9 @@ namespace Apassos.Common
                 Constants.ModulesConstant.PASSWORD, 
                 Constants.ModulesConstant.CRYPTALL,
                 Constants.ModulesConstant.REPORTS,
-                Constants.ModulesConstant.INFOPROJETOS
+                Constants.ModulesConstant.INFOPROJETOS,
+                Constants.ModulesConstant.INTEGRATION
+
                 //,Constants.ModulesConstant.CHECKIN
             };
             Constants.ModulesConstant[] aGestor = { Constants.ModulesConstant.PROJECTS, 
@@ -36,7 +38,9 @@ namespace Apassos.Common
                 Constants.ModulesConstant.ALLTIMESHEETINPERIODREPORT,
                 Constants.ModulesConstant.PASSWORD,
                 Constants.ModulesConstant.REPORTS,
-                Constants.ModulesConstant.INFOPROJETOS
+                Constants.ModulesConstant.INFOPROJETOS,
+                Constants.ModulesConstant.INTEGRATION
+
                 //,Constants.ModulesConstant.CHECKIN
             };
             Constants.ModulesConstant[] aAdmin = { Constants.ModulesConstant.PROJECTS, 
@@ -50,7 +54,8 @@ namespace Apassos.Common
             Constants.ModulesConstant[] aConsult = { Constants.ModulesConstant.TIMESHEET, 
                 Constants.ModulesConstant.PASSWORD,
                 Constants.ModulesConstant.TIMESHEETINPERIODREPORT,
-                Constants.ModulesConstant.INFOPROJETOS
+                Constants.ModulesConstant.INFOPROJETOS,
+                Constants.ModulesConstant.INTEGRATION
                 //,Constants.ModulesConstant.CHECKIN
             };
             switch (user.PROFILE)
@@ -121,6 +126,7 @@ namespace Apassos.Common
             permissionsMap.Add(Constants.ButtonsConstant.REPORTS.ToString(), new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.REPORTS), "btRelatorios", "Relatorios", "Relatorios" });
             //permissionsMap.Add(Constants.ButtonsConstant.CHECKIN.ToString(), new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.CHECKIN), "btCheckin", "Checkin", "Checkin" });
             permissionsMap.Add(Constants.ButtonsConstant.INFOPROJETOS.ToString(), new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.INFOPROJETOS), "btInfoProjetos", "InfoProjetos", "InfoProjetos" });
+            permissionsMap.Add(Constants.ButtonsConstant.INTEGRATION.ToString(), new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.INTEGRATION), "btIntegration", "Integration", "Integration" });
 
             return permissionsMap;
         }
@@ -140,6 +146,8 @@ namespace Apassos.Common
             aRoot.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.PASSWORD), "btSenha", "Login", "Senha" });
             //aRoot.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.CRYPTALL), "btCriptSenha", "Login", "Cript" });
             aRoot.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.INFOPROJETOS), "btInfoProjetos", "InfoProjetos", "InfoProjetos" });
+            aRoot.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.INTEGRATION), "btIntegration", "Integration", "Integration" });
+
 
             List<string[]> aGestor = new List<string[]>();
             aGestor.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.PROJECTS), "btProjetos", "Projetos", "Index" });
@@ -151,6 +159,9 @@ namespace Apassos.Common
             aGestor.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.INFOPROJETOS), "btInfoProjetos", "InfoProjetos", "InfoProjetos" });
             aGestor.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.TIMESHEET), "btApontamentos", "Apontamentos", "Index" });
             //aGestor.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.CHECKIN), "btCheckin", "Checkin", "Checkin" });
+            aGestor.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.INTEGRATION), "btIntegration", "Integration", "Integration" });
+
+
 
             List<string[]> aAdmin = new List<string[]>();
             aAdmin.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.PROJECTS), "btProjetos", "Projetos", "Index" });
@@ -168,6 +179,8 @@ namespace Apassos.Common
             aConsult.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.PASSWORD), "btSenha", "Login", "Senha" });
             aConsult.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.INFOPROJETOS), "btInfoProjetos", "InfoProjetos", "InfoProjetos" });
             //aConsult.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.CHECKIN), "btCheckin", "Checkin", "Checkin" });
+            aConsult.Add(new string[] { Constants.GetEnumDescription(Constants.ButtonsConstant.INTEGRATION), "btIntegration", "Integration", "Integration" });
+
 
             switch (profile)
             {

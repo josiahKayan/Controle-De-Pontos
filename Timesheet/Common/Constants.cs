@@ -127,11 +127,12 @@ namespace Apassos.Common
             PASSWORD = 8,
             PERIODS = 9,
             CRYPTALL = 10,
-            ALLTIMESHEETINPERIODREPORT = 11, 
+            ALLTIMESHEETINPERIODREPORT = 11,
             TIMESHEETINPERIODREPORT = 12,
             REPORTS=13,
             CHECKIN =14,
             INFOPROJETOS = 15,
+            INTEGRATION = 16
         }
 
         public enum ButtonsConstant
@@ -167,7 +168,9 @@ namespace Apassos.Common
             [Description("Check-in")]
             CHECKIN = 14,
             [Description("Info-Projetos")]
-            INFOPROJETOS = 15
+            INFOPROJETOS = 15,
+            [Description("IntegraçãoTW")]
+            INTEGRATION = 16
         }
 
         public static string GetEnumDescription(Enum value)

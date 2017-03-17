@@ -1,4 +1,5 @@
 ﻿
+using Apassos.Observer;
 using Apassos.TeamWork.JsonObject;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -10,28 +11,28 @@ namespace Apassos.Models
     /// </summary>
     /// <seealso cref="System.Data.Entity.DbContext" />
     public partial class TimesheetContext : DbContext
-   {
+    {
         /// <summary>
         /// Interface IDescribableEntity
         /// </summary>
         public interface IDescribableEntity
-      {
+        {
             // Override this method to provide a description of the entity for audit purposes
             /// <summary>
             /// Describes this instance.
             /// </summary>
             /// <returns>System.String.</returns>
             string Describe();
-      }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimesheetContext"/> class.
         /// </summary>
         public TimesheetContext()
           : base("TimesheetContext")
-      {
-
-      }
+        {
+            //this.Configuration.LazyLoadingEnabled = true;
+        }
 
         /// <summary>
         /// This method is called when the model for a derived context has been initialized, but
@@ -47,10 +48,10 @@ namespace Apassos.Models
         /// More control over caching is provided through use of the DbModelBuilder and DbContextFactory
         /// classes directly.</remarks>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
-      {
-         //modelBuilder.Entity<aspnet_UsersInRoles>().HasMany(i => i.Users).WithRequired().WillCascadeOnDelete(false);
-         modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-      }
+        {
+            //modelBuilder.Entity<aspnet_UsersInRoles>().HasMany(i => i.Users).WithRequired().WillCascadeOnDelete(false);
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+        }
 
         /// <summary>
         /// Gets or sets the users.
@@ -153,6 +154,8 @@ namespace Apassos.Models
         /// <value>The feriados.</value>
         public DbSet<Feriados> Feriados { get; set; }
 
-        public DbSet<InfoObjects> InfoObjects { get; set; }
+        public DbSet<Logs> Logs { get; set; }
+
+
     }
 }

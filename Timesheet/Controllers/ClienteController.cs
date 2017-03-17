@@ -115,9 +115,10 @@ namespace Apassos.Controllers
 
         if (isUserSN == "S")
         {
+                    UsersDataAccess userData = new UsersDataAccess();
           //grava novo usuario
           loginusuario = partners.SHORTNAME.Replace(" ", "").Replace("'", "").Replace("\"\"", "") + DateTime.Now.ToString("yyyyMMdd");
-          string loginNovo = UsersDataAccess.CreateLogin(partners);
+          string loginNovo = userData.CreateLogin(partners);
           Users itemSalvar = new Users
           {
             //inicialmente o usuario sera consultor, com um login criado automaticamente
@@ -129,7 +130,7 @@ namespace Apassos.Controllers
             LASTLOGONDATE = null,
             LOCKED = "N",
             PARTNERID = partners.PARTNERID,
-            PASSWORD = UsersDataAccess.SenhaDefault(loginNovo),
+            PASSWORD = userData.SenhaDefault(loginNovo),
             PROFILE = ((int)Constants.ProfileConstant.CONSULTOR).ToString(),
             USERNAME = loginNovo,      //partners.SHORTNAME.Replace(" ", "").Replace("'", "").Replace("\"\"", ""),   // + DateTime.Now.ToString("yyyyMMdd"),
             VALIDFROM = DateTime.Now,
@@ -253,8 +254,9 @@ namespace Apassos.Controllers
 
           if (partners.user == null || partners.user.USERID <= 0)
           {
+                        UsersDataAccess userData = new UsersDataAccess();
             loginusuario = partners.SHORTNAME.Replace(" ", "").Replace("'", "").Replace("\"\"", "") + DateTime.Now.ToString("yyyyMMdd");
-            string loginNovo = UsersDataAccess.CreateLogin(partners);
+            string loginNovo = userData.CreateLogin(partners);
             //grava novo usuario
             Users itemSalvar = new Users
             {
@@ -267,7 +269,7 @@ namespace Apassos.Controllers
               LASTLOGONDATE = null,
               LOCKED = "N",
               PARTNERID = partners.PARTNERID,
-              PASSWORD = UsersDataAccess.SenhaDefault(loginNovo),
+              PASSWORD = userData.SenhaDefault(loginNovo),
               PROFILE = ((int)Constants.ProfileConstant.CONSULTOR).ToString(),
               USERNAME = loginNovo,   //partners.SHORTNAME.Replace(" ", "").Replace("'", "").Replace("\"\"", ""),  // + DateTime.Now.ToString("yyyyMMdd"),
               VALIDFROM = DateTime.Now,

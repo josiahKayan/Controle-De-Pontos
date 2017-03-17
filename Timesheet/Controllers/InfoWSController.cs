@@ -35,7 +35,8 @@ namespace Apassos.Controllers
         // GET: /sendpwd/crypt/text
         public String sendpwd(string login, string obs)
         {
-            var userLogin = UsersDataAccess.GetUserByLogin(login);
+            UsersDataAccess userData = new UsersDataAccess();
+            var userLogin = userData.GetUserByLogin(login);
             if (userLogin.Partner.MOBILEPHONENUMBER != null && userLogin.Partner.MOBILEPHONENUMBER.Length > 3)
             {
                 var cellOri = userLogin.Partner.MOBILEPHONENUMBER.Trim();
@@ -71,7 +72,9 @@ namespace Apassos.Controllers
         // GET: /InfoWS/crypt/text
         public String encrypt(string login, string text, string obs)
         {
-            var userLogin = UsersDataAccess.GetUserByLogin(login);
+            UsersDataAccess userData = new UsersDataAccess();
+
+            var userLogin = userData.GetUserByLogin(login);
             if (userLogin.Partner.MOBILEPHONENUMBER != null && userLogin.Partner.MOBILEPHONENUMBER.Length > 3)
             {
                 var cellOri = userLogin.Partner.MOBILEPHONENUMBER.Trim();
@@ -91,7 +94,9 @@ namespace Apassos.Controllers
         // GET: /InfoWS/crypt/text
         public String decrypt(string login, string text, string obs)
         {
-            var userLogin = UsersDataAccess.GetUserByLogin(login);
+            UsersDataAccess userData = new UsersDataAccess();
+
+            var userLogin = userData.GetUserByLogin(login);
             if (userLogin.Partner.MOBILEPHONENUMBER != null && userLogin.Partner.MOBILEPHONENUMBER.Length > 3)
             {
                 var cellOri = userLogin.Partner.MOBILEPHONENUMBER.Trim();
@@ -363,7 +368,7 @@ namespace Apassos.Controllers
                     }
                     else if (idts != null && !idts.Trim().Equals(string.Empty))
                     {
-                        TimesheetItem it = TimesheetDataAccess.Get(int.Parse(idts));
+                        TimesheetItem it = timesheetSalvar.Get(int.Parse(idts));
                         string _data = it.DATE.ToString("dd/MM/yyyy");
                         string _projectid = it.project.PROJECTID.ToString();
                         string _type = it.TYPE;

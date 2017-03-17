@@ -183,7 +183,8 @@ namespace Apassos.Models
         /// <returns>List&lt;UserPerfil&gt;.</returns>
         public List<UserPerfil> UserPerfilsList()
         {
-            return UsersDataAccess.GetUserPerfisUsuario(this);
+            UsersDataAccess user = new UsersDataAccess();
+            return user.GetUserPerfisUsuario(this);
         }
 
 

@@ -15,72 +15,74 @@ using System.Text;
 
 namespace Apassos.Controllers
 {
-  public class GestorController : TimesheetBaseController
-  {
-
-    //
-    // GET: /Gestor/
-
-    public ActionResult Aprovacao()
+    public class GestorController : TimesheetBaseController
     {
-      if (!CommonController.Instance.AccessValidate(this.ControllerContext, Constants.ModulesConstant.APPROVAL))
-      {
-        return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
-      }
 
-      var gestorAtual = usuarioLogado.Partner;
+        //
+        // GET: /Gestor/
+
+        public ActionResult Aprovacao()
+        {
+            if (!CommonController.Instance.AccessValidate(this.ControllerContext, Constants.ModulesConstant.APPROVAL))
+            {
+                return CommonController.Instance.ReturnToLoginPage(this.ControllerContext);
+            }
+
+            var gestorAtual = usuarioLogado.Partner;
 
             PeriodDataAccess period = new PeriodDataAccess();
             ProjectDataAccess project = new ProjectDataAccess();
 
             var _periodid = Request.Form["selectperiodo"];
-      Period periodoAtual = null;
-      if (_periodid != null && _periodid != "")
-      {
-        periodoAtual = period.GetPeriodo(_periodid);
-      }
-      else
-      {
-        periodoAtual = period.GetPeriodoAtual();
-      }
+            Period periodoAtual = null;
+            if (_periodid != null && _periodid != "")
+            {
+                periodoAtual = period.GetPeriodo(_periodid);
+            }
+            else
+            {
+                periodoAtual = period.GetPeriodoAtual();
+            }
 
-      Session["_USUARIO_LOGADO"] = usuarioLogado;
-      Session["GESTOR_ATUAL"] = gestorAtual;
-      Session["PERIODO_ATUAL"] = periodoAtual;
-      Session["TODOS_PERIODOS"] = period.GetPeriodoAll();
+            Session["_USUARIO_LOGADO"] = usuarioLogado;
+            Session["GESTOR_ATUAL"] = gestorAtual;
+            Session["PERIODO_ATUAL"] = periodoAtual;
+            Session["TODOS_PERIODOS"] = period.GetPeriodoAll();
 
-      Session["TODOS_CONSULTORES_APONTAMENTOS"] = project.GetConsultoresApontamentosPorPeriodo(periodoAtual);
+            ProjectDataAccess projectList = new ProjectDataAccess();
 
-      return View();
-    }
+            Session["TODOS_CONSULTORES_APONTAMENTOS"] = projectList.GetConsultoresApontamentosPorPeriodo(periodoAtual);
 
-    // Post: /Login/Acessar?loginid=x&pass=y
-    [HttpPost]
-    public ActionResult AprovacaoSalvar()
-    {
-            ProjectDataAccess projectData = new ProjectDataAccess();
-      Period periodoAtual = db.Periods.Find(int.Parse(Request.Form["selectperiodo"]));
-      List<PartnersTimesheetHeaderAccess> listaApont = projectData.GetConsultoresApontamentosPorPeriodo(periodoAtual);
+            return View();
+        }
 
-      foreach (PartnersTimesheetHeaderAccess consultApont in listaApont)
-      {
-        //verifica se tem status para atualizar no formulario
-        foreach (TimesheetItem itemTimesheet in consultApont.items)
+        // Post: /Login/Acessar?loginid=x&pass=y
+        [HttpPost]
+        public ActionResult AprovacaoSalvar()
         {
-          var iditem = Request.Form["hidden_id_timesheetitem_" + itemTimesheet.TIMESHEETITEMID];
-          if (iditem != null)
-          {
-            var tipoaprovacao = Request.Form["selectstatusitem_id_" + itemTimesheet.TIMESHEETITEMID];
-            var anotacao = Request.Form["text_note_" + itemTimesheet.TIMESHEETITEMID];
-            var hash = Request.Form["hash_" + itemTimesheet.TIMESHEETITEMID];
+            ProjectDataAccess projectData = new ProjectDataAccess();
+            Period periodoAtual = db.Periods.Find(int.Parse(Request.Form["selectperiodo"]));
+            List<PartnersTimesheetHeaderAccess> listaApont = projectData.GetConsultoresApontamentosPorPeriodo(periodoAtual);
+
+            foreach (PartnersTimesheetHeaderAccess consultApont in listaApont)
+            {
+                //verifica se tem status para atualizar no formulario
+                foreach (TimesheetItem itemTimesheet in consultApont.items)
+                {
+                    var iditem = Request.Form["hidden_id_timesheetitem_" + itemTimesheet.TIMESHEETITEMID];
+                    if (iditem != null)
+                    {
+                        var tipoaprovacao = Request.Form["selectstatusitem_id_" + itemTimesheet.TIMESHEETITEMID];
+                        var anotacao = Request.Form["text_note_" + itemTimesheet.TIMESHEETITEMID];
+                        var hash = Request.Form["hash_" + itemTimesheet.TIMESHEETITEMID];
 
                         //StringBuilder newObjectHash = new StringBuilder(tipoaprovacao);
                         //newObjectHash.Append(anotacao);
 
-            string newObjectHash = tipoaprovacao + anotacao;
+                        string newObjectHash = tipoaprovacao + anotacao;
 
-            int newHash = newObjectHash.GetHashCode();
-            int oldHash = int.Parse(hash);
+                        int newHash = newObjectHash.GetHashCode();
+                        int oldHash = int.Parse(hash);
                         TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
 
                         if (!timesheetSalvar.GetStatus(iditem, tipoaprovacao))
@@ -88,47 +90,47 @@ namespace Apassos.Controllers
                             timesheetSalvar.SalvarItemApontamentoAprovacao(iditem, tipoaprovacao, anotacao);
                         }
 
-            //if (oldHash.Equals(newHash))
-            //{
-              //TimesheetDataAccess.SalvarItemApontamentoAprovacao(iditem, tipoaprovacao, anotacao);
-            //}
-          }
+                        //if (oldHash.Equals(newHash))
+                        //{
+                        //TimesheetDataAccess.SalvarItemApontamentoAprovacao(iditem, tipoaprovacao, anotacao);
+                        //}
+                    }
+                }
+
+            }
+
+            Session["_SUCCESS_"] = "true";
+            Session["_MENSAGEM_"] = "Os apontamentos foram atualizados com sucesso!";
+
+            return RedirectToAction("Aprovacao", "Gestor");
         }
 
-      }
+        // GET: /InfoWS/ExportToExcel/1 => periodid
+        public void ExportToExcel()
+        {
+            //valida se tem permissao para entrar nessa tela
+            if (CommonController.Instance.AccessValidateRedirect(this.ControllerContext, Constants.ModulesConstant.ALLTIMESHEETINPERIODREPORT))
+            {
+                var periodid = Request.Form["selectperiodo"];
+                var gestorAtual = usuarioLogado.Partner;
+                ConsultoresApontamentosXLS xls = new ConsultoresApontamentosXLS(periodid, gestorAtual, true);
+                xls.Execute(this.HttpContext);
+            }
 
-      Session["_SUCCESS_"] = "true";
-      Session["_MENSAGEM_"] = "Os apontamentos foram atualizados com sucesso!";
+        }
 
-      return RedirectToAction("Aprovacao", "Gestor");
+        public void ExportToExcelHours()
+        {
+            //valida se tem permissao para entrar nessa tela
+            if (CommonController.Instance.AccessValidateRedirect(this.ControllerContext, Constants.ModulesConstant.TIMESHEETINPERIODREPORT))
+            {
+                var periodid = Request.Form["selectperiodo"];
+                RelatorioProjetosXLS xls = new RelatorioProjetosXLS(periodid);
+                xls.Execute(this.HttpContext);
+            }
+        }
+
+
+
     }
-
-    // GET: /InfoWS/ExportToExcel/1 => periodid
-    public void ExportToExcel()
-    {
-      //valida se tem permissao para entrar nessa tela
-      if (CommonController.Instance.AccessValidateRedirect(this.ControllerContext, Constants.ModulesConstant.ALLTIMESHEETINPERIODREPORT))
-      {
-        var periodid = Request.Form["selectperiodo"];
-        var gestorAtual = usuarioLogado.Partner;
-        ConsultoresApontamentosXLS xls = new ConsultoresApontamentosXLS(periodid, gestorAtual,true);
-        xls.Execute(this.HttpContext);
-      }
-      
-    }
- 
-    public void ExportToExcelHours()
-    {
-      //valida se tem permissao para entrar nessa tela
-      if (CommonController.Instance.AccessValidateRedirect(this.ControllerContext, Constants.ModulesConstant.TIMESHEETINPERIODREPORT))
-      {
-        var periodid = Request.Form["selectperiodo"];
-        RelatorioProjetosXLS xls = new RelatorioProjetosXLS(periodid);
-        xls.Execute(this.HttpContext);
-      }
-    }
-
-    
-    
-  }
 }

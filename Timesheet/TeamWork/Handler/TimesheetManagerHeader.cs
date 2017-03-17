@@ -15,14 +15,11 @@ namespace Apassos.TeamWork.Handler
         public TimesheetHeader GetHeader(Period period, Partners partner)
         {
             TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
-
-            TimesheetHeader header = timesheetSalvar.GetApontamentoCabecalhoPorPeriodo(partner, period);
+            TimesheetHeader header  = timesheetSalvar.GetApontamentoCabecalhoPorPeriodo(partner, period);
             if (header == null)
             {
                 header = new TimesheetHeader();
                 header.ENVIRONMENT = _enviroment;
-                //header.Period = period;
-                //header.Partner = partner;
                 header.CHANGEDATE = DateTime.Now.Date;
                 header.CHANGEDBY = "TimesheetService";
                 header.CREATEDBY = "TimesheetService";

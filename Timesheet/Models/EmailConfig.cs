@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Apassos.TeamWork.JsonObject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,66 +10,31 @@ namespace Apassos.Models
 
     {
 
-        static private TimesheetContext db = new TimesheetContext();
-
-        public TeamworkLogTraces Log { get; set; }
+        public InfoObjects Log { get; set; }
         public string EmailUser { get; set; }
 
         public string Pendencia { get; set; }
 
-        public string Titulo { get; set; }
+        public string Date { get; set; }
+        public string Name { get; set; }
+        public string Projeto { get; set; }
 
-        public EmailConfig(TeamworkLogTraces log)
+
+        public EmailConfig(InfoObjects log)
         {
             this.Log = log;
-
         }
 
-        public void GetUserNameMail(TeamworkLogTraces log)
+        public void GetUserNameMail(InfoObjects log)
         {
-            Partners parceiro;
-            parceiro = db.Partners.Where(p => p.FIRSTNAME == log.Creator).FirstOrDefault();
 
-            if (parceiro != null)
-            {
-                this.EmailUser = parceiro.EMAIL;
-            }
-            else
-            {
-                try
-                {
-                    this.EmailUser = parceiro.EMAIL;
-                }
-                catch (Exception e)
-                {
-                    this.EmailUser = "paulo.palmeira@apassos.com.br";
-                }
-            }
-
-
-
-            this.Titulo = log.Titulo;
-            foreach (var item in log.RootCauses)
-            {
-                if (item.TeamworkRootCauseProblems.Description != null)
-                {
-                    Pendencia = item.TeamworkRootCauseProblems.Description;
-                }
-                else
-                {
-                    Pendencia = "A descrição esta nula";
-                }
-               
-            }
-            
+            this.EmailUser = log.Erro.EmailPartner;
+            this.Pendencia = log.Erro.ProblemDescription;
+            this.Date = log.Erro.Date;
+            this.Name = log.Erro.Consultor;
+            this.Projeto = log.Erro.TWProject;
         }
 
-        public void SetaParaNaoEnviarEmail(TeamworkLogTraces log)
-        {
-            log.IsFixed = true;
-            Erros.ErroMensage.MarcarNaoEnviarEmail(log);
-
-        }
 
         
     }

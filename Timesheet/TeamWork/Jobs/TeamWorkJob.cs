@@ -44,20 +44,12 @@ namespace Apassos.TeamWork.Jobs
 
             TimesheetManager tsManager = new TimesheetManager();
 
-            List<TimesheetTeamWorkItem> listTimesheetItems =  tsManager.InsertData(items);
-
-            TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
-
-            timesheetSalvar.SaveTimesheetItemsInTs(listTimesheetItems);
-
-            //Erros.ErroMensage erros = new Erros.ErroMensage();
-            //List<TeamworkLogTraces> listLogs = erros.RetornaErros();
-
+            List<InfoObjects> listTimesheetItems =  tsManager.InsertData(items);
 
             //Emails.Email email = new Emails.Email();
             //try
             //{
-            //    email.EnviaMensagemEmail(listLogs);
+            //    email.EnviaMensagemEmail(listTimesheetItems);
             //}
             //catch (Exception e)
             //{

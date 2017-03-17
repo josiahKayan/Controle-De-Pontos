@@ -62,29 +62,31 @@ namespace Apassos.Models
 
         public void CriaAbaProjetoConsultorHorasNovo(string exportToExcel, Period periodoInicial, Period periodoFinal)
         {
+            RelatorioAccess relatorio = new RelatorioAccess();
+
             if (exportToExcel.Equals(WITH_PARTNER_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoConsultorHoras(periodoInicial, periodoFinal);
+                listaRelatorios = relatorio.GetListaRelatorioProjetoConsultorHoras(periodoInicial, periodoFinal);
             }
             else if (exportToExcel.Equals(NO_PARTNER_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal);
+                listaRelatorios = relatorio.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal);
             }
             else if (exportToExcel.Equals(ONLY_PROJECT_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal, project.PROJECTID);
+                listaRelatorios = relatorio.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal, project.PROJECTID);
             }
             else if (exportToExcel.Equals(BOTH_ITEMS_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal, project.PROJECTID, partner.PARTNERID );
+                listaRelatorios = relatorio.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal, project.PROJECTID, partner.PARTNERID );
             }
             else if (exportToExcel.Equals(ONLY_PARTNER_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal, 0, partner.PARTNERID);
+                listaRelatorios = relatorio.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal, 0, partner.PARTNERID);
             }
             else if (exportToExcel.Equals(NO_PROJECT_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal, 0, 0);
+                listaRelatorios = relatorio.GetListaRelatorioProjetoHoras(periodoInicial, periodoFinal, 0, 0);
             }
 
             this.CriaAbaProjetoConsultorHoras(listaRelatorios, exportToExcel);
@@ -95,26 +97,27 @@ namespace Apassos.Models
 
         public void criaabaprojetoconsultorhoras(string exporttoexcel)
         {
+            RelatorioAccess relatorio = new RelatorioAccess();
             if (exporttoexcel.Equals(WITH_PARTNER_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoConsultorHoras(periodoatual.YEAR, periodoatual.MONTH);
+                listaRelatorios = relatorio.GetListaRelatorioProjetoConsultorHoras(periodoatual.YEAR, periodoatual.MONTH);
             }
             else if (exporttoexcel.Equals(NO_PARTNER_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoHoras(periodoatual.YEAR, periodoatual.MONTH);
+                listaRelatorios = relatorio.GetListaRelatorioProjetoHoras(periodoatual.YEAR, periodoatual.MONTH);
             }
             else if (exporttoexcel.Equals(ONLY_PROJECT_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoHoras(periodoatual.YEAR, periodoatual.MONTH, project.PROJECTID);
+                listaRelatorios = relatorio.GetListaRelatorioProjetoHoras(periodoatual.YEAR, periodoatual.MONTH, project.PROJECTID);
             }
             else if (exporttoexcel.Equals(BOTH_ITEMS_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoHoras(periodoatual.YEAR, periodoatual.MONTH,
+                listaRelatorios = relatorio.GetListaRelatorioProjetoHoras(periodoatual.YEAR, periodoatual.MONTH,
                         project.PROJECTID, partner.PARTNERID);
             }
             else if (exporttoexcel.Equals(ONLY_PARTNER_CONST))
             {
-                listaRelatorios = RelatorioAccess.GetListaRelatorioProjetoHoras(periodoatual.YEAR, periodoatual.MONTH, 0, partner.PARTNERID);
+                listaRelatorios = relatorio.GetListaRelatorioProjetoHoras(periodoatual.YEAR, periodoatual.MONTH, 0, partner.PARTNERID);
             }
             this.CriaAbaProjetoConsultorHoras(listaRelatorios, exporttoexcel);
             this.AutoSizeColumn();

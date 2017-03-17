@@ -10,24 +10,25 @@ namespace Apassos.DataAccess
 {
     public class PeriodDataAccess
     {
-        static private TimesheetContext db = new TimesheetContext();
-
         /**
          * Retorna o periodo atual cadastrado em banco.Em ordem descrescente de entrada.
          */
         public List<Period> GetPeriodoAll()
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Periods.Where(p => p.ENVIRONMENT == env).ToList();
-            lista = lista.OrderByDescending(p=>p.YEAR).ThenByDescending(p2=>p2.MONTH).ToList();
+            lista = lista.OrderByDescending(p => p.YEAR).ThenByDescending(p2 => p2.MONTH).ToList();
             return lista;
+        }
         }
 
         /**
          * Retorna o periodo atual cadastrado em banco. 
-         */    
+         */
 
-        
+
 
 
 
@@ -45,8 +46,11 @@ namespace Apassos.DataAccess
          */
         public Period GetPeriodo(string id)
         {
-          var period = db.Periods.Find( int.Parse(id));
-          return period;
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var period = db.Periods.Find(int.Parse(id));
+                return period;
+            }
         }
 
 
@@ -60,14 +64,16 @@ namespace Apassos.DataAccess
             return GetListDate(GetPeriodoAtual());
         }
 
-       
+
 
         /**
          * Retorna uma lista de datas, baseada no periodo passado como parametro.
          */
         public List<DateTime> GetListDate(Period period)
         {
-            if (period.TIMESHEETPERIODSTART != null && period.TIMESHEETPERIODFINISH != null)
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                if (period.TIMESHEETPERIODSTART != null && period.TIMESHEETPERIODFINISH != null)
             {
                 var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
                 var lista = db.Projects.Where(p => p.ENVIRONMENT == env && p.ENVIRONMENT == env).ToList();
@@ -75,6 +81,7 @@ namespace Apassos.DataAccess
                 return datas;
             }
             return null;
+        }
         }
     }
 }

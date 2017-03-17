@@ -16,7 +16,7 @@ namespace Apassos.TeamWork.Jobs
 
         private const string GROUP_NAME = "teamwork_group";
 
-        private const int MINUTES = 1;
+        private const int MINUTES = 4;
 
         private const int SECONDS = 60;
 

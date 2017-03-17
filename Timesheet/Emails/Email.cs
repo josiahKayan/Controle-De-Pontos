@@ -1,4 +1,5 @@
 ﻿using Apassos.Models;
+using Apassos.TeamWork.JsonObject;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +10,7 @@ namespace Apassos.Emails
     public class Email
     {
 
-        public async void EnviaMensagemEmail(List<TeamworkLogTraces> listLogs)
+        public async void EnviaMensagemEmail(List<InfoObjects> listLogs)
         {
             #region
             //string destino = "niege.costa@apassos.com.br";
@@ -20,9 +21,7 @@ namespace Apassos.Emails
 
             #region
             string email = "jkayanlima@gmail.com";
-            string secret = "88116309";
-            string assunto = "C#!! Urgente";
-            string senha = "dlna5421";
+            string secret = "danca12017";
 
             #endregion
             #region
@@ -62,16 +61,9 @@ namespace Apassos.Emails
 
             foreach (var log in listLogs)
             {
-                if (log.Creator != null)
-                {
-                    if (log.IsFixed == false)
-                    {
-                        EmailConfig emailConfig = new EmailConfig(log);
-                        emailConfig.GetUserNameMail(log);
-                        emailConfig.SetaParaNaoEnviarEmail(log);
-                        listEmail.Add(emailConfig);
-                    }
-                }
+                EmailConfig emailConfig = new EmailConfig(log);
+                emailConfig.GetUserNameMail(log);
+                listEmail.Add(emailConfig);
             }
 
 
@@ -111,9 +103,11 @@ namespace Apassos.Emails
         {
 
             string body =
-                "Olá " + mensagem.Log.Creator + " tudo bem?" +
+                "Olá " + mensagem.Name + " tudo bem?" +
                 "\n" +
-                "\n" + "Notamos que a sua atividade " + "com o título:[  " + mensagem.Titulo + "  ]" +
+                "\n" + "Notamos que existe um log de tempo no projeto: " + mensagem.Projeto  +
+                "\n" +
+                "\n" + "Na data:" + mensagem.Date +
                 "\n" +
                 "\n" + "Contém a seguinte pendência(s):" + mensagem.Pendencia +
                 "\n" +
@@ -125,18 +119,6 @@ namespace Apassos.Emails
                 "\n" +
                 "\n" + "God bless you!!";
             return body;
-        }
-
-
-        public string RetornaPendencias(List<string> pendencias)
-        {
-            string todasPendencias = string.Empty;
-            foreach (var item in pendencias)
-            {
-                todasPendencias = todasPendencias + item + "\n";
-            }
-
-            return todasPendencias;
         }
 
     }

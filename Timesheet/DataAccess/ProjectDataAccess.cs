@@ -13,45 +13,48 @@ namespace Apassos.DataAccess
 {
     public class ProjectDataAccess
     {
-        static private TimesheetContext db = new TimesheetContext();
-
         /**
          * Retorna lista de projetos do consultor.
          */
         public List<ProjectUser> GetProjetosPorConsultor(Partners consultor, bool ignoreEncerrados = true)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-            List<ProjectUser> lista = new List<ProjectUser>();
-            if (!ignoreEncerrados)
+
+            using (TimesheetContext db = new TimesheetContext())
             {
-                lista = db.ProjectUsers.Where(p => p.ENVIRONMENT == env).ToList();
-            }
-            else
-            {
-                var listaAll = db.ProjectUsers.Where(p => p.ENVIRONMENT == env).ToList();
-                foreach (var pu in listaAll)
+
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+                List<ProjectUser> lista = new List<ProjectUser>();
+                if (!ignoreEncerrados)
                 {
-                    if (int.Parse(pu.project.STATUS).In((int)Constants.StatusProjetoConstant.Aberto, (int)Constants.StatusProjetoConstant.Iniciado))
+                    lista = db.ProjectUsers.Where(p => p.ENVIRONMENT == env).ToList();
+                }
+                else
+                {
+                    var listaAll = db.ProjectUsers.Where(p => p.ENVIRONMENT == env).ToList();
+                    foreach (var pu in listaAll)
                     {
-                        lista.Add(pu);
+                        if (int.Parse(pu.project.STATUS).In((int)Constants.StatusProjetoConstant.Aberto, (int)Constants.StatusProjetoConstant.Iniciado))
+                        {
+                            lista.Add(pu);
+                        }
                     }
+
                 }
 
-            }
-
-            if (lista != null)
-            {
-                List<ProjectUser> listaReturn = new List<ProjectUser>();
-                foreach (ProjectUser item in lista)
+                if (lista != null)
                 {
-                    if (item.partner.PARTNERID == consultor.PARTNERID)
+                    List<ProjectUser> listaReturn = new List<ProjectUser>();
+                    foreach (ProjectUser item in lista)
                     {
-                        listaReturn.Add(item);
+                        if (item.partner.PARTNERID == consultor.PARTNERID)
+                        {
+                            listaReturn.Add(item);
+                        }
                     }
+                    return listaReturn;
                 }
-                return listaReturn;
+                return new List<ProjectUser>();
             }
-            return new List<ProjectUser>();
         }
 
         /**
@@ -59,54 +62,61 @@ namespace Apassos.DataAccess
          */
         public List<Project> GetProjetosPorGestor(Partners gestor)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-            var lista = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
-
-            if (lista != null)
+            using (TimesheetContext db = new TimesheetContext())
             {
-                List<Project> listaReturn = new List<Project>();
-                foreach (Project item in lista)
+
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+                var lista = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
+
+                if (lista != null)
                 {
-                    if (item.Gestor.PARTNERID == gestor.PARTNERID)
+                    List<Project> listaReturn = new List<Project>();
+                    foreach (Project item in lista)
                     {
-                        listaReturn.Add(item);
+                        if (item.Gestor.PARTNERID == gestor.PARTNERID)
+                        {
+                            listaReturn.Add(item);
+                        }
                     }
+                    return listaReturn;
                 }
-                return listaReturn;
+                return new List<Project>();
             }
-            return new List<Project>();
         }
 
 
         public List<ProjetoAuxiliar> GetListaProjetosPorNome(string name)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-            var lista = db.Projects.Where(p => p.ENVIRONMENT == env && (p.STATUS == "1" || p.STATUS == "0") && p.NAME.ToUpper().Contains(name.ToUpper())).ToList();
-
-            List<ProjetoAuxiliar> listProjetos = new List<ProjetoAuxiliar>();
-            ProjetoAuxiliar projetoAuxiliar = new ProjetoAuxiliar();
-
-            try
+            using (TimesheetContext db = new TimesheetContext())
             {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+                var lista = db.Projects.Where(p => p.ENVIRONMENT == env && (p.STATUS == "1" || p.STATUS == "0") && p.NAME.ToUpper().Contains(name.ToUpper())).ToList();
 
-                foreach (var item in lista)
-                {
-                    projetoAuxiliar.id = item.PROJECTID;
-                    projetoAuxiliar.name = item.NAME;
-                    projetoAuxiliar.description = item.DESCRIPTION;
-                    listProjetos.Add(projetoAuxiliar);
-                }
+                List<ProjetoAuxiliar> listProjetos = new List<ProjetoAuxiliar>();
+                ProjetoAuxiliar projetoAuxiliar = new ProjetoAuxiliar();
 
-                if (listProjetos != null)
+                try
                 {
-                    return listProjetos;
+
+                    foreach (var item in lista)
+                    {
+                        projetoAuxiliar.id = item.PROJECTID;
+                        projetoAuxiliar.name = item.NAME;
+                        projetoAuxiliar.description = item.DESCRIPTION;
+                        listProjetos.Add(projetoAuxiliar);
+                    }
+
+                    if (listProjetos != null)
+                    {
+                        return listProjetos;
+                    }
                 }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Aquiiii");
+                }
+                return null;
             }
-            catch ( Exception e)
-            {
-                Debug.WriteLine("Aquiiii");
-            }
-            return null;
         }
 
         /**
@@ -114,56 +124,63 @@ namespace Apassos.DataAccess
         */
         public List<TimesheetHeader> GetConsultoresApontamentosPorGestor(Partners gestor)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-            var lista = db.TimesheetHeaders.Where(p => p.ENVIRONMENT == env).ToList();
-
-            if (lista != null)
+            using (TimesheetContext db = new TimesheetContext())
             {
-                List<TimesheetHeader> listaReturn = new List<TimesheetHeader>();
-                foreach (TimesheetHeader item in lista)
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+                var lista = db.TimesheetHeaders.Where(p => p.ENVIRONMENT == env).ToList();
+
+                if (lista != null)
                 {
-                    //    if (item.poL.PARTNERID == gestor.PARTNERID)
-                    //    {
-                    //        listaReturn.Add(item);
-                    //    }
+                    List<TimesheetHeader> listaReturn = new List<TimesheetHeader>();
+                    foreach (TimesheetHeader item in lista)
+                    {
+                        //    if (item.poL.PARTNERID == gestor.PARTNERID)
+                        //    {
+                        //        listaReturn.Add(item);
+                        //    }
+                    }
+                    return listaReturn;
                 }
-                return listaReturn;
+                return new List<TimesheetHeader>();
             }
-            return new List<TimesheetHeader>();
         }
 
         /**
        * Retorna lista de consultores que tem apontamentos no periodo.
        */
         public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodo(Period periodo)
-        {
-
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-            //List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env && ti.TimesheetHeader.Period.PERIODID == periodo.PERIODID).
-            //    Select(x => x.TimesheetHeader.Partner).OrderBy(u1=>u1.USERGROUP).ThenBy(u2=>u2.NAME).Distinct().ToList();
-            List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env && ti.TimesheetHeader.Period.PERIODID == periodo.PERIODID).
-                        Select(x => x.TimesheetHeader.Partner).Distinct().ToList();
-
-            List<PartnersTimesheetHeaderAccess> list = new List<PartnersTimesheetHeaderAccess>();
-
-            listPartners.Sort((x, y) => string.Compare(x.USERGROUP + ":" + x.NAME, y.USERGROUP + ":" + y.NAME));
-            foreach (Partners partner in listPartners)
+         {
+            using (TimesheetContext db = new TimesheetContext())
             {
-                list.Add(new PartnersTimesheetHeaderAccess(partner, periodo, periodo));
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+                //List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env && ti.TimesheetHeader.Period.PERIODID == periodo.PERIODID).
+                //    Select(x => x.TimesheetHeader.Partner).OrderBy(u1=>u1.USERGROUP).ThenBy(u2=>u2.NAME).Distinct().ToList();
+
+                List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env && ti.TimesheetHeader.Period.PERIODID == periodo.PERIODID).
+                            Select(x => x.TimesheetHeader.Partner).Distinct().ToList();
+
+                List<PartnersTimesheetHeaderAccess> list = new List<PartnersTimesheetHeaderAccess>();
+
+                listPartners.Sort((x, y) => string.Compare(x.USERGROUP + ":" + x.NAME, y.USERGROUP + ":" + y.NAME));
+                foreach (Partners partner in listPartners)
+                {
+                    list.Add(new PartnersTimesheetHeaderAccess(partner, periodo, periodo));
+                }
+                return list;
             }
-            return list;
         }
 
 
-        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodo(Project projeto = null , Period periodoInicial = null, Period periodoFinal = null)
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodo(Project projeto = null, Period periodoInicial = null, Period periodoFinal = null)
         {
-
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<PartnersTimesheetHeaderAccess> list = new List<PartnersTimesheetHeaderAccess>();
 
             if (projeto == null && periodoInicial == null && periodoFinal == null)
             {
-                List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env ).Select(x => x.TimesheetHeader.Partner).Distinct().ToList();
+                List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env).Select(x => x.TimesheetHeader.Partner).Distinct().ToList();
 
                 foreach (Partners partner in listPartners)
                 {
@@ -183,12 +200,14 @@ namespace Apassos.DataAccess
             }
             return list;
         }
+        }
 
         public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Period periodo, Partners partners, Project project)
         {
+            using (TimesheetContext db = new TimesheetContext())
+            {
 
-
-            Debug.WriteLine("Aqui");
+                Debug.WriteLine("Aqui");
 
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
 
@@ -206,11 +225,14 @@ namespace Apassos.DataAccess
             }
             return list;
         }
+        }
 
 
-        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Partners partners , Project project , Period periodoInicial , Period periodoFinal )
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Partners partners, Project project, Period periodoInicial, Period periodoFinal)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<PartnersTimesheetHeaderAccess> list = new List<PartnersTimesheetHeaderAccess>();
 
 
@@ -228,7 +250,7 @@ namespace Apassos.DataAccess
                 }
 
             }
-            else if(partners == null && project != null)
+            else if (partners == null && project != null)
             {
                 List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env && project.PROJECTID == ti.project.PROJECTID
                         ).
@@ -243,7 +265,7 @@ namespace Apassos.DataAccess
 
             else if (project == null && partners != null)
             {
-                List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env 
+                List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env
                         && partners.PARTNERID == ti.TimesheetHeader.Partner.PARTNERID).
                         Select(x => x.TimesheetHeader.Partner).Distinct().ToList();
 
@@ -268,11 +290,14 @@ namespace Apassos.DataAccess
             }
             return list;
         }
+        }
 
 
-        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Partners partners, Project project )
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoProjeto(Partners partners, Project project)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<PartnersTimesheetHeaderAccess> list = new List<PartnersTimesheetHeaderAccess>();
 
 
@@ -303,12 +328,14 @@ namespace Apassos.DataAccess
             }
             return list;
         }
+        }
 
 
         public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodoPartner(Period periodo, Partners partners)
         {
-
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
 
 
             List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env && partners.PARTNERID == ti.TimesheetHeader.Partner.PARTNERID
@@ -324,12 +351,14 @@ namespace Apassos.DataAccess
             }
             return list;
         }
+        }
 
         public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorProjeto(Period periodo, Project project)
         {
+            using (TimesheetContext db = new TimesheetContext())
+            {
 
-
-            Debug.WriteLine("Caso onde o parceiro é nulo e o projeto foi escolhido");
+                Debug.WriteLine("Caso onde o parceiro é nulo e o projeto foi escolhido");
 
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
 
@@ -346,13 +375,16 @@ namespace Apassos.DataAccess
             }
             return list;
         }
+        }
 
         /**
         * Retorna os projetos cadastrados em banco.
         */
         public List<Project> GetProjetosNomeAll()
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var listaX = db.Projects.Where(p => p.ENVIRONMENT == env).OrderBy(p => p.NAME).ToList();
             List<Project> lista = new List<Project>();
             foreach (Project pX in listaX)
@@ -364,18 +396,22 @@ namespace Apassos.DataAccess
             }
             return lista;
         }
+        }
 
         /**
        * Retorna todos os projetos cadastrados.
        */
         public List<Project> GetProjetosNomeNoPeriodoAll()
         {
-            DateTime dataHoje = DateTime.Now;
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                DateTime dataHoje = DateTime.Now;
 
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
             lista = lista.OrderBy(p => p.NAME).ToList();
             return lista;
+        }
         }
 
         /**
@@ -383,7 +419,9 @@ namespace Apassos.DataAccess
       */
         public List<Project> GetProjetosNomeNoPeriodo(Period period)
         {
-            DateTime dataHoje = DateTime.Now;
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                DateTime dataHoje = DateTime.Now;
             PeriodDataAccess periodo = new PeriodDataAccess();
             var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var listaAll = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
@@ -404,25 +442,32 @@ namespace Apassos.DataAccess
             lista = lista.OrderBy(p => p.NAME).ToList();
             return lista;
         }
+        }
 
         /**
         * Retorna os projetos cadastrados em banco.
         */
-        public  List<Project> GetProjetosAll()
+        public List<Project> GetProjetosAll()
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
             lista = lista.OrderBy(p => p.NAME).ToList();
             return lista;
         }
+        }
 
 
-        public  List<Project> GetProjetosAllTimesheet()
+        public List<Project> GetProjetosAllTimesheet()
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             var lista = db.Projects.Where(p => p.ENVIRONMENT == env).ToList();
             lista = lista.OrderBy(p => p.PROJECTID).ToList();
             return lista;
+        }
         }
 
 
@@ -431,17 +476,22 @@ namespace Apassos.DataAccess
         */
 
         //Tratar esse bug
-        public  Project GetProjeto(string id)
+        public Project GetProjeto(string id)
         {
-            var projeto = db.Projects.Find(int.Parse(id));
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var projeto = db.Projects.Find(int.Parse(id));
             return projeto;
+        }
         }
 
 
-        public  bool IsProjectExistInThisPeriod(Period period)
+        public bool IsProjectExistInThisPeriod(Period period)
         {
-            var exist = db.Projects.Where(p => p.PLANNEDSTARTDATE.Month >= period.MONTH && p.PLANNEDFINISHDATE.Month <= period.MONTH).ToString();
-            if( exist != null || exist != string.Empty )
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var exist = db.Projects.Where(p => p.PLANNEDSTARTDATE.Month >= period.MONTH && p.PLANNEDFINISHDATE.Month <= period.MONTH).ToString();
+            if (exist != null || exist != string.Empty)
             {
                 return true;
             }
@@ -450,20 +500,27 @@ namespace Apassos.DataAccess
                 return false;
             }
         }
+        }
 
         /**
         * Retorna o ultimo projeto cadastrado.
         */
         public Project GetProjetoAtual()
         {
-            var lista = GetProjetosAll();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var lista = GetProjetosAll();
             return lista.FirstOrDefault();
+        }
         }
 
         public Project GetProjetoAtualPorPeriodo(Period periodo, Project project)
         {
-            var lista = db.Projects.Where(p => p.ACTUALSTARTDATE >= periodo.TIMESHEETPERIODSTART && p.ACTUALFINISHDATE <= periodo.TIMESHEETPERIODFINISH).ToList();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var lista = db.Projects.Where(p => p.ACTUALSTARTDATE >= periodo.TIMESHEETPERIODSTART && p.ACTUALFINISHDATE <= periodo.TIMESHEETPERIODFINISH).ToList();
             return lista.FirstOrDefault();
+        }
         }
 
 
@@ -472,17 +529,22 @@ namespace Apassos.DataAccess
         */
         public List<Partners> GetConsultoresProjeto(Project project)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<Partners> listPartners = db.ProjectUsers.Where(p => p.ENVIRONMENT == env && p.project.PROJECTID == project.PROJECTID).
                 Select(x => x.partner).Distinct().ToList();
 
             var lista = listPartners.OrderBy(p => p.NAME).ToList();
             return lista;
         }
+        }
 
         public List<Partners> GetConsultoresIdProjeto(int id)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<Partners> listPartners = db.ProjectUsers.Where(p => p.ENVIRONMENT == env && p.project.PROJECTID == id).
                 Select(x => x.partner).Distinct().ToList();
 
@@ -491,6 +553,7 @@ namespace Apassos.DataAccess
 
             return lista;
         }
+        }
 
 
         /**
@@ -498,9 +561,12 @@ namespace Apassos.DataAccess
         */
         public List<ProjectUser> GetRelacaoConsultoresProjeto(Project project)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-            List<ProjectUser> lista = db.ProjectUsers.Where(p => p.ENVIRONMENT == env && p.project.PROJECTID == project.PROJECTID).ToList();
-            return lista;
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+                List<ProjectUser> lista = db.ProjectUsers.Where(p => p.ENVIRONMENT == env && p.project.PROJECTID == project.PROJECTID).ToList();
+                return lista;
+            }
         }
 
         /**
@@ -508,12 +574,15 @@ namespace Apassos.DataAccess
         */
         public List<Partners> GetConsultoresComApontamentos(Project project)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             List<Partners> listPartners = db.TimesheetItems.Where(t => t.ENVIRONMENT == env && t.project.PROJECTID == project.PROJECTID).
                 Select(x => x.TimesheetHeader.Partner).Distinct().ToList();
 
             var lista = listPartners.OrderBy(p => p.NAME).ToList();
             return lista;
+        }
         }
 
         /**
@@ -521,19 +590,25 @@ namespace Apassos.DataAccess
        */
         public int TotalConsultorApontamentos(Project project, Partners partner)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             int totalApontamentos = db.TimesheetItems.Where(t => t.ENVIRONMENT == env && t.project.PROJECTID == project.PROJECTID
                 && t.TimesheetHeader.Partner.PARTNERID == partner.PARTNERID).Count();
             return totalApontamentos;
+        }
         }
 
 
         public static int TotalConsultorApontamentosFilter(Project project, Partners partner)
         {
-            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
             int totalApontamentos = db.TimesheetItems.Where(t => t.ENVIRONMENT == env && t.project.PROJECTID == project.PROJECTID
                 && t.TimesheetHeader.Partner.PARTNERID == partner.PARTNERID).Count();
             return totalApontamentos;
+        }
         }
 
         /**
@@ -541,7 +616,9 @@ namespace Apassos.DataAccess
        */
         public bool SaveProjectPartner(int ProjectID, int PartnerID, Users usuarioLogado)
         {
-            try
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                try
             {
                 var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
                 ProjectUser pu = new ProjectUser
@@ -579,13 +656,16 @@ namespace Apassos.DataAccess
             }
             return false;
         }
+        }
 
         /**
          * Remove as relacoes entre projetos e consultores que sairam da selecao atual.
          */
         public void ExcluiRelacaoConsultoresProjetos(Project projetoAtual, string _consultoreselecionados)
         {
-            ProjectDataAccess project = new ProjectDataAccess();
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                ProjectDataAccess project = new ProjectDataAccess();
             //corre todos os consultores ja cadastrados, para verificar quais serao excluidos
             List<ProjectUser> listaConsultoresProjetoExcluir = new List<ProjectUser>();
             List<ProjectUser> listaRelacaoConsultoresProjeto = project.GetRelacaoConsultoresProjeto(projetoAtual);
@@ -607,29 +687,33 @@ namespace Apassos.DataAccess
             }
             db.SaveChanges();
         }
+        }
 
         public  int calculateNextProjectNumber(int year, int month)
         {
-            int nextNumber = 0;
-            int yearMonthStarts = int.Parse(year.ToString() + month.ToString() + "0000");
-            int yearMonthEnds = int.Parse(year.ToString() + month.ToString() + "9999");
-            int currentNumber = 0;
-            try
+            using (TimesheetContext db = new TimesheetContext())
             {
-                currentNumber = db.Projects.Where(p => p.PROJECTID >= yearMonthStarts && p.PROJECTID <= yearMonthEnds).Max(p1 => p1.PROJECTID);
-                if (currentNumber == 0)
+                int nextNumber = 0;
+                int yearMonthStarts = int.Parse(year.ToString() + month.ToString() + "0000");
+                int yearMonthEnds = int.Parse(year.ToString() + month.ToString() + "9999");
+                int currentNumber = 0;
+                try
+                {
+                    currentNumber = db.Projects.Where(p => p.PROJECTID >= yearMonthStarts && p.PROJECTID <= yearMonthEnds).Max(p1 => p1.PROJECTID);
+                    if (currentNumber == 0)
+                    {
+                        currentNumber = yearMonthStarts;
+                    }
+                }
+                catch
                 {
                     currentNumber = yearMonthStarts;
                 }
-            }
-            catch
-            {
-                currentNumber = yearMonthStarts;
-            }
 
-            nextNumber = currentNumber + 1;
+                nextNumber = currentNumber + 1;
 
-            return nextNumber;
+                return nextNumber;
+            }
         }
 
     }
