@@ -1,0 +1,14 @@
+﻿
+
+
+
+.reset {
+
+    
+    margin: 1px 4px 0 0;
+    padding: 10px; /* Aqui Você pode aumentar ou diminuir o tamanho da borda pode colocar 3px, 5px, 6px etc */
+    background-color: #000; /* Aqui você pode trocar a cor */
+    border: 1px solid #dbdbdb;
+
+
+}

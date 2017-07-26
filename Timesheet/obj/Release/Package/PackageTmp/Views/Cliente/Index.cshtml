@@ -1,0 +1,218 @@
+﻿@model IEnumerable<Apassos.Models.Partners>
+
+@{
+    ViewBag.Title = System.Configuration.ConfigurationManager.AppSettings["TITLEAPP"].ToString();
+    Layout = "~/Views/Shared/_Principal.cshtml";
+    var relativePath = System.Configuration.ConfigurationManager.AppSettings["RELATIVEPATH"].ToString();
+
+    var _mensagem = (string)HttpContext.Current.Session["_MENSAGEM_"];
+    var _success = (string)HttpContext.Current.Session["_SUCCESS_"];
+    var flag = 0;
+
+    HttpContext.Current.Session["_MENSAGEM_"] = "";
+    HttpContext.Current.Session["_SUCCESS_"] = "";
+    
+}
+
+<script>
+    jQuery(function ($) {
+        _mensagemAlert = '@(_mensagem)';
+        _success = '@(_success)';
+        flag = '@(flag)';
+        if (_mensagemAlert != '') {
+            if (_success == 'true') {
+                showAlert('success', '&nbsp;&nbsp;' + _mensagemAlert);
+            } else {
+                showAlert('error', '&nbsp;&nbsp;' + _mensagemAlert);
+            }
+        }
+
+        // Define the Dialog and its properties.
+        $("#dialog-confirm").dialog({
+            resizable: false,
+            modal: true,
+            title: "Exclus&atilde;o",
+            height: 250,
+            width: 400,
+            autoOpen: false,
+            buttons: {
+                "Sim": function () {
+                    $(this).dialog('close');
+                    apagarmarcados();
+                },
+                "Não": function () {
+                    $(this).dialog('close');
+                    //excluir(false);
+                }
+            }
+        });
+
+        initilizeScreen();
+        $(window).resize(function () {
+            initilizeScreen();
+        });
+
+    });
+
+
+    function initilizeScreen() {
+        var heightW = screen.height - 260;
+        var heightWY = innerHeight - 260;
+        $("#containerprincipalParceiros").css("height", heightWY);
+        // $("#spanavisos").html(heightWY);
+        // alert('atualizou');
+    }
+
+
+    function novoCliente() {
+        window.open(relativepath + 'Cliente/Create', '_top');
+    }
+    function getselecionados() {
+        var stringchecados = "";
+        var itemschecks = document.getElementsByClassName("checkitemclass");
+
+        for (icont = 0; icont < itemschecks.length; icont++) {
+            if (itemschecks[icont].checked) {
+                stringchecados = stringchecados + itemschecks[icont].id.substr(8) + ",";
+            }
+        }
+
+        if (stringchecados.length > 0) {
+            stringchecados = stringchecados.substr(0, stringchecados.length - 1);
+        }
+        return stringchecados;
+    }
+    function apagarmarcados() {
+        var periodosexcluir = getselecionados();
+        $("#checados").val(periodosexcluir);
+        document.getElementById('formexcluir').action = relativepath + "Cliente/Excluir";
+        document.getElementById('formexcluir').method = "post";
+        document.getElementById('formexcluir').submit();
+    }
+    function openDialogExclusao() {
+        var periodosexcluir = getselecionados();
+        if (periodosexcluir.length > 0) {
+            $("#dialog-confirm").dialog("open");
+        }
+    }
+
+
+</script>
+
+
+<style>
+    #containerprincipalParceiros {
+        overflow-y:auto;
+        overflow-x:hidden;
+        height:370px;
+    }
+</style>
+
+
+<table align="left" style="width:100%;border-spacing:5px;">
+    <tr >
+        <td>
+
+            <table align="left">
+                   <tr>
+                        <td>
+                            <input id="novo" type="button" onclick="novoCliente();"  class="botaocursor"
+                                                    style="background-image:url('@(relativePath)images/mais.png')" 
+                                                    value="  " name="novo" title="Novo cliente">
+                        </td>
+                        <td>
+                            <input id="excluirmarcados" type="button" onclick="openDialogExclusao();"  class="botaocursor"
+                                                style="background-image:url('@(relativePath)images/lixeira.png')" 
+                                                value="  " name="excluirmarcados" title="Apagar">
+                        </td>
+                    </tr>
+            </table>
+
+
+        <td align="right">
+                
+                <table>
+                	<tr>
+                    	<td>Legenda:&nbsp;&nbsp;&nbsp;
+                        </td>
+                    	<td><img src="@(relativePath)images/icone_usuario.gif" title="Usu&aacute;rio do sistema" width="20"/></td>
+                    	<td>Usu&aacute;rio do sistema</td>
+                        <td  style="width:5px;"></td>
+                    </tr>
+                </table></td>
+
+
+    </tr>
+</table>
+
+<form id="formexcluir" name="formexcluir">
+    <input type="hidden" value="" id="checados" name="checados" />
+</form>
+<br />
+
+
+
+
+<table id="tabelaperiodos" style="width:100%;border-spacing:5px;">
+    <tr class="trheader">
+        <th>
+            <!--empty cell-->
+        </th>
+        <th>
+            Nome Completo
+        </th>
+        <th>
+            Nome Curto
+        </th>
+        <th>CPF/CNPJ</th>
+        <th>
+            Grupo
+        </th>
+        <th>
+            Cidade
+        </th>
+        <th>
+            E-mail
+        </th>
+        <th>
+            Telefones
+        </th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr class="tritem">
+        <td align="center">
+            <input type="checkbox" id="itemsel_@(item.PARTNERID)" name="itemsel_@(item.PARTNERID)" class="checkitemclass" />
+        </td>
+        <td>
+            @Html.ActionLink(item.NAME, "Edit", new { id = item.PARTNERID }) <span class="@(item.cssClassUsers)" title="&Eacute; usu&aacute;rio do sistema">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SHORTNAME)
+        </td>
+      <td>
+            @Html.DisplayFor(modelItem => item.CPFCNPJ)
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.USERGROUP)
+        </td>
+        <td>
+            @(Html.Raw(Html.DisplayFor(modelItem => item.city.CITY).ToString() )+ " - " + Html.DisplayFor(modelItem => item.city.brazilState.UF))
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EMAIL)
+        </td>
+        <td>
+            @(Html.DisplayFor(modelItem => item.TELEPHONENUMBER) + ", " + item.TELEPHONEEXTENSION + ", "+ item.MOBILEPHONENUMBER)
+        </td>
+    </tr>
+}
+
+</table>
+
+<div id="dialog-confirm">Confirma a exclus&atilde;o dos parceiros selecionados?</div>
+
+<script>
+    var relativepath = '@(relativePath)';
+</script>

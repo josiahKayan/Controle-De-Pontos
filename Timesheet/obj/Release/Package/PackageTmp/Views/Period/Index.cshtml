@@ -1,0 +1,190 @@
+﻿
+    @{
+      ViewBag.Title = System.Configuration.ConfigurationManager.AppSettings["TITLEAPP"].ToString();
+      Layout = "~/Views/Shared/_Principal.cshtml";
+      var relativePath = System.Configuration.ConfigurationManager.AppSettings["RELATIVEPATH"].ToString();
+
+      var _mensagem = (string)HttpContext.Current.Session["_MENSAGEM_"];
+      var _success = (string)HttpContext.Current.Session["_SUCCESS_"];
+      var flag = 0;
+      List<Apassos.Models.Period> listaPeriodos = (List<Apassos.Models.Period>)HttpContext.Current.Session["LISTA_TODOS_PERIODOS"];
+      HttpContext.Current.Session["_MENSAGEM_"] = "";
+      HttpContext.Current.Session["_SUCCESS_"] = "";
+
+    }
+
+    <script>
+        jQuery(function ($) {
+            _mensagemAlert = '@(_mensagem)';
+            _success = '@(_success)';
+            flag = '@(flag)';
+            if (_mensagemAlert != '') {
+                if (_success == 'true') {
+                    showAlert('success', '&nbsp;&nbsp;' + _mensagemAlert);
+                } else {
+                    showAlert('error', '&nbsp;&nbsp;' + _mensagemAlert);
+                }
+            }
+
+            // Define the Dialog and its properties.
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                modal: true,
+                title: "Exclus&atilde;o",
+                height: 250,
+                width: 400,
+                autoOpen: false,
+                buttons: {
+                    "Sim": function () {
+                        $(this).dialog('close');
+                        apagarmarcados();
+                    },
+                    "Não": function () {
+                        $(this).dialog('close');
+                        //excluir(false);
+                    }
+                }
+            });
+
+        });
+
+        function novoPeriodo() {
+            window.open(relativepath + 'Period/Create', '_top');
+        }
+        function getselecionados() {
+            var stringchecados = "";
+            var itemschecks = document.getElementsByClassName("checkitemclass");
+
+            for (icont = 0; icont < itemschecks.length; icont++) {
+                if (itemschecks[icont].checked) {
+                    stringchecados = stringchecados + itemschecks[icont].id.substr(8) + ",";
+                }
+            }
+
+            if (stringchecados.length > 0) {
+                stringchecados = stringchecados.substr(0, stringchecados.length - 1);
+            }
+            return stringchecados;
+        }
+        function apagarmarcados() {
+            var periodosexcluir = getselecionados();
+            $("#checados").val(periodosexcluir);
+            document.getElementById('formexcluir').action = relativepath + "Period/Excluir";
+            document.getElementById('formexcluir').method = "post";
+            document.getElementById('formexcluir').submit();
+        }
+        function openDialogExclusao() {
+            var periodosexcluir = getselecionados();
+            if (periodosexcluir.length > 0) {
+                $("#dialog-confirm").dialog("open");
+            }
+        }
+
+    </script>
+
+
+    <table cellspacing="5" cellpadding="5" align="left">
+        <tr>
+            <td>
+                <input id="novo" type="button" onclick="novoPeriodo();" class="botaocursor"
+                       style="background-image:url('@(relativePath)images/mais.png')"
+                       value=" " name="novo" title="Novo per&iacute;odo">
+            </td>
+            <td>
+                <input id="excluirmarcados" type="button" onclick="openDialogExclusao();" class="botaocursor"
+                       style="background-image:url('@(relativePath)images/lixeira.png')"
+                       value=" " name="excluirmarcados" title="Apagar">
+            </td>
+
+            <td>
+                <label>  *Corrente - Mês atual             </label>
+            </td>
+
+            <td>
+                <label> <blockquote> *Aberto -    Período para Apontamentos está aberto       </blockquote>       </label>
+            </td>
+
+            <td>
+                <label> <blockquote> *Fechado -   Período para Apontamentos está encerrado </blockquote>  </label>
+            </td>
+
+
+        </tr>
+    </table>
+    <br />
+
+    <form id="formexcluir" name="formexcluir">
+        <input type="hidden" value="" id="checados" name="checados" />
+    </form>
+
+    <table id="tabelaperiodos" width="100%" cellspacing="5" cellpadding="5">
+        <tr class="trheader">
+            <th>
+                <!--empty cell-->
+            </th>
+            <th>
+                M&ecirc;s/Ano
+            </th>
+            <th>
+                Total Horas
+            </th>
+            <th>
+                In&iacute;cio
+            </th>
+            <th>
+                T&eacute;rmino
+            </th>
+            <th>
+                STATUS
+            </th>
+
+        </tr>
+
+        @foreach (var item in listaPeriodos)
+        {
+        <tr valign="middle" class="tritem">
+            <td align="center">
+                <input type="checkbox" id="itemsel_@(item.PERIODID)" name="itemsel_@(item.PERIODID)" class="checkitemclass" />
+            </td>
+            <td align="center">
+                @Html.ActionLink(item.MONTH.ToString("00") + "/" + item.YEAR, "Edit", new { id = item.PERIODID })
+            </td>
+            <td align="center">
+                @(item.TOTALHOURS)
+            </td>
+            <td align="center">
+                @(Convert.ToDateTime(item.TIMESHEETPERIODSTART).ToShortDateString())
+            </td>
+            <td align="center">
+                @( Convert.ToDateTime(item.TIMESHEETPERIODFINISH).ToShortDateString())
+            </td>
+            <td align="center">
+              @if(   (item.STATUS).Equals("f") ) {
+                <p>Fechado</p>
+              }
+              else if ((item.STATUS).Equals("a"))
+              {
+                <p>Aberto</p>
+              }
+              else if ((item.STATUS).Equals("c"))
+              {
+                <p>Corrente</p>
+              }
+            </td>
+
+            
+            @*<td>
+                @Html.ActionLink("Delete", "Delete", new { id=item.PERIODID })
+            </td>*@
+                
+        </tr>
+        }
+
+    </table>
+
+    <div id="dialog-confirm">Confirma a exclus&atilde;o dos per&iacute;odos selecionados?</div>
+
+
+    <script>
+        var relativepath = '@(relativePath)';
+    </script>

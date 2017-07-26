@@ -58,7 +58,6 @@ namespace Apassos.TeamWork.Jobs
             //}
             //catch (Exception e)
             //{
-
             //}
 
 
