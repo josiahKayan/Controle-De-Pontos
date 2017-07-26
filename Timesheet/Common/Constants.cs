@@ -9,7 +9,6 @@ namespace Apassos.Common
 {
     public class Constants
     {
-
         public enum StatusAprovacaoConstant
         {
             [Description("Aberto")]
