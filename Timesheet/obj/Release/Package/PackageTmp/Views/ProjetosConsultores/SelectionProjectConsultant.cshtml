@@ -1,0 +1,236 @@
+﻿@{
+
+
+
+   //Titulo
+   ViewBag.Title = "APONTAMENTO DE HORAS";
+   Layout = "~/Views/Shared/_Principal.cshtml";
+
+   //Paulo
+   Apassos.Models.Partners gestorAtual = (Apassos.Models.Partners)HttpContext.Current.Session["GESTOR_ATUAL"];
+   //Projeto Atual
+   Apassos.Models.Project projetoAtual = (Apassos.Models.Project)HttpContext.Current.Session["PROJETO_ATUAL"];
+   //Lista de Projetos
+   List<Apassos.Models.Project> listProjetos = (List<Apassos.Models.Project>)HttpContext.Current.Session["TODOS_PROJETOS"];
+   //Lista que será adicionada no primeiro listBox
+   List<Apassos.Models.Partners> consultoresDisponiveis = (List<Apassos.Models.Partners>)HttpContext.Current.Session["CONSULTORES_DISPONIVEIS"];
+   //Lista de Consultores no Projeto
+   List<Apassos.Models.Partners> consultoresProjeto = (List<Apassos.Models.Partners>)HttpContext.Current.Session["CONSULTORES_PROJETO"];
+   //Lista de Consultores com o asterísco
+   List<Apassos.Models.Partners> listaConsultoresComApontamentos = (List<Apassos.Models.Partners>)HttpContext.Current.Session["CONSULTORES_PROJETO_APONTAMENTOS"];
+   //Marca a data de hoje
+   var periodoAtual = (Apassos.Models.Period)HttpContext.Current.Session["periodoAtual"];
+
+   var relativePath = System.Configuration.ConfigurationManager.AppSettings["RELATIVEPATH"].ToString();
+
+   string statusTodosConsultores = (string)HttpContext.Current.Session["STATUS"];
+
+   var _mensagem = (string)HttpContext.Current.Session["_MENSAGEM_"];
+   var _success = (string)HttpContext.Current.Session["_SUCCESS_"];
+
+   var flag = 0;
+
+   HttpContext.Current.Session["_MENSAGEM_"] = "";
+   HttpContext.Current.Session["_SUCCESS_"] = "";
+}
+
+<script src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/apontamentos/projetosconsultores.js")" type="text/javascript"></script>
+
+<script>
+   var _desabilitarRemoverTodos = '@(listaConsultoresComApontamentos.Count() > 0)' == 'True';
+   var _totalConsultoresAlocados = '@(consultoresProjeto.Count())';
+   jQuery(function ($) {
+
+      _mensagemAlert = '@(_mensagem)';
+      _success = '@(_success)';
+      flag = '@(flag)';
+      if (_mensagemAlert != '') {
+         if (_success == 'true') {
+            showAlert('success', '&nbsp;&nbsp;' + _mensagemAlert);
+         } else {
+            showAlert('error', '&nbsp;&nbsp;' + _mensagemAlert);
+         }
+      }
+
+
+      if (_desabilitarRemoverTodos) {
+         $("#moveleftall").attr("disabled", true);
+      }
+
+      initilizeScreen();
+      $(window).resize(function () {
+         initilizeScreen();
+      });
+
+   });
+
+   function initilizeScreen() {
+      var heightW = screen.height - 374;
+      var heightWY = innerHeight - 374;
+      $("#from_select_list").css("height", heightWY);
+      $("#to_select_list").css("height", heightWY);
+      // $("#containerprincipal").css("background-color", "gray");
+      //alert(innerHeight);
+      // $("#spanavisos").html(heightWY);
+      // alert('atualizou');
+   }
+
+
+
+</script>
+
+
+<style>
+   .textareagrid {
+      height: 20px;
+   }
+
+   .selectarea {
+      width: 400px;
+      height: 100%;
+      min-height: 200px;
+   }
+</style>
+
+
+<!--APONTAMENTOS-->
+<form id="formapontamentos" name="formapontamentos">
+   <input type="hidden" name="idsconsultoresselecionados" id="idsconsultoresselecionados" value="" />
+
+
+   <table width="100%" align="left">
+
+      </tr>
+      <tr>
+         <td width="60">
+            PER&Iacute;ODO:&nbsp;
+         </td>
+         <td colspan="2">
+            @Html.Raw(new Apassos.Common.Components.SelectPeriod("selectperiodo").SetPeriod(periodoAtual).SetOnChange("mudarperiodo(this)").SetStyle("width:220px;font-size:16px;height:30px;").SetSelected(true).EchoSelectPeriod())
+         </td>
+      </tr>
+      <tr>
+         <td width="60">
+            PROJETOS:&nbsp;
+         </td>
+         <td width="100">
+           
+
+
+            <select id="selectprojeto" name="selectprojeto" onchange="mudarprojeto('@statusTodosConsultores')" style="width:780px;font-size:16px;height:30px;">
+               @for (int i = 0; i < listProjetos.Count; i++)
+               {
+                  Apassos.Models.Project projeto = listProjetos.ElementAt<Apassos.Models.Project>(i);
+                  string strselect = string.Empty;
+
+                  if (i == 0)
+                  {
+                     <option> </option>
+                  }
+
+                  if (projetoAtual != null && projeto.PROJECTID == projetoAtual.PROJECTID)
+                  {
+                     strselect = "selected";
+                  }
+
+                  <option value="@(projeto.PROJECTID)" @(strselect)>@(projeto.NAME + " /" + projeto.Partner.SHORTNAME + "(" + projeto.Partner.CPFCNPJ + ")" )</option>
+               }
+            </select>
+
+         </td>
+
+         <td>
+            <table align="left">
+               <tbody>
+                  <tr>
+                     <td>
+                        <input id="btsalvar" class="botaocursor" type="button" onclick="salvar();" style="background-image:url('@(relativePath)images/salvar.png')" "
+                               value=" " name="btsalvar" title="Salvar">
+                     </td>
+                     <td width="10"></td>
+                     <td>
+                        <input id="btenviar" class="botaocursor" type="button" onclick="cancelar();" style="background-image:url('@(relativePath)images/return.png')" "
+                               value=" " name="btenviar" title="Cancelar">
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </td>
+
+
+   </table>
+
+   <table cellpadding="5" cellspacing="5" align="left" border="0" id="tblconsultores">
+      <tr>
+      <tbody>
+         <tr>
+            <td colspan="3">
+               <div style="width:100%;">
+                  SELECIONE OS CONSULTORES ALOCADOS PARA O PROJETO: <span id="projetoinfo" style="font-weight:bold;">@(projetoAtual.NAME) </span><br>
+                  <span style="color:gray; font-size:12px;">* Consultores com apontamentos lan&ccedil;ados</span>
+               </div>
+            </td>
+         </tr>
+         <tr>
+
+            <td>
+               <select id="from_select_list" multiple="multiple" name="from_select_list" class="selectarea" style="width:400px;font-size:18px;" 
+                       ondblclick="move_list_items('from_select_list', 'to_select_list');">
+                  @foreach (var itemDisp in consultoresDisponiveis)
+                  {
+                     <option value="@(itemDisp.PARTNERID)">@(itemDisp.NAME)</option>
+
+                  }
+               </select>
+            </td>
+            <td>
+               <table>
+                  <tr>
+                     <td>
+                        <input id="moveright" type="button" value="Adicionar" onclick="move_list_items('from_select_list', 'to_select_list');" 
+                               style="height:30px;" />
+                     </td>
+                  </tr>
+                  <tr>
+                     <td><input id="moverightall" type="button" value="Adicionar Todos" onclick="move_list_items_all('from_select_list', 'to_select_list');" style="height:30px;" /></td>
+                  </tr>
+                  <tr>
+                     <td><input id="moveleft" type="button" value="Remover" onclick="move_list_items('to_select_list', 'from_select_list');" style="height:30px;" /></td>
+                  </tr>
+                  <tr>
+                     <td><input id="moveleftall" type="button" value="Remover Todos" onclick="move_list_items_all('to_select_list', 'from_select_list');" style="height:30px;" /></td>
+                  </tr>
+               </table>
+            </td>
+            <td>
+               <select id="to_select_list" multiple="multiple" name="to_select_list" class="selectarea" style="width:400px;font-size:18px; " 
+                       ondblclick="move_list_items('to_select_list', 'from_select_list');">
+                  @foreach (var itemConsult in consultoresProjeto)
+                  {
+                     if (Apassos.DataAccess.ProjectDataAccess.TotalConsultorApontamentosFilter(projetoAtual, itemConsult) > 0)
+                     {
+                        <option value="-" disabled="disabled">@(itemConsult.NAME) *</option>
+                     }
+                     else
+                     {
+                        <option value="@(itemConsult.PARTNERID)">@(itemConsult.NAME)</option>
+                     }
+
+                  }
+               </select>
+            </td>
+
+         </tr>
+   </table>
+
+
+
+   <!--END CONSULTORES-->
+
+</form>
+
+
+<script>
+   var relativepath = '@(relativePath)';
+</script>

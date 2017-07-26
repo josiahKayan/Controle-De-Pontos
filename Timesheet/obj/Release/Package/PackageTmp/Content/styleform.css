@@ -1,0 +1,1113 @@
+body{
+	margin:0px;
+    /*background: url(../images/bg.png) repeat;*/
+}
+input, select,textarea
+{
+    height: 22px;
+    font-size: 12px;
+    color: #000000;
+	font-family: 'Open Sans', sans-serif;
+	width: 100%;
+}
+input[type="radio"], input[type="checkbox"]{
+    height: 20px;
+    width: 20px;
+}
+
+input[readonly], select[readonly], textarea[readonly] {
+    background-color:#EFEFF2;
+    color:#797C80;
+}
+input[disabled], select[disabled], textarea[disabled] {
+    background-color:#EFEFF2;
+    color:#797C80;
+}
+
+
+#containerprincipal {
+    overflow-y:auto;
+    overflow-x:hidden;
+    height:370px;
+}
+
+td {
+	font-family: 'Open Sans', sans-serif;
+    height: 22px;
+    font-size: 14px;
+}
+
+.tdfooter{
+	font-family: 'Open Sans', sans-serif;
+	background-color:#006BA7;
+	font-size:14px;
+	color:white;
+}
+
+.trheader{
+	font-family: 'Open Sans', sans-serif;
+	background-color:#006BA7;
+	font-size:14px;
+	color:white;
+}
+
+.repeatitem {
+	font-family: 'Open Sans', sans-serif;
+    height: 22px;
+    font-size: 12px;
+	color:grey;
+}
+
+.textareagrid {
+    height:20px;
+}
+.textareagrid:hover {
+    height:60px;
+}
+
+.botaocursor {
+	cursor:default;
+    border-width:0px;
+    border-color:white;
+    height:30px;
+    width:30px;
+    font-size:14px;
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+.botaocursor:hover {
+	cursor:pointer;
+    border-color:white;
+    border-width:1px;
+    height:30px;
+    width:30px;
+    font-size:14px;
+    background-repeat:no-repeat;
+    background-size:cover;
+}
+
+.menuitem {
+	cursor:default;
+    border-width:0px;
+    border-color:white;
+    height:30px;
+    /*width:30px;*/
+    font-size:14px;
+    background-repeat:no-repeat;
+    /**
+    padding-right:10px;
+    padding-left:10px;
+    */
+     background-color:transparent;
+    text-decoration:none;
+    color:white;
+
+}
+
+.menuitem:hover {
+    cursor:pointer;
+    border-color:white;
+    border-width:1px;
+    height:30px;
+    /*width:30px;*/
+    font-size:14px;
+    background-repeat:no-repeat;
+    /**
+    padding-right:10px;
+    padding-left:10px;
+    */
+
+     background-color:transparent;
+    text-decoration:underline;
+    font-weight:bold;
+    color:white;
+}
+
+
+.botao
+{
+    float: left;
+    height: 30px;
+    width: 150px;
+    font-size: 14px;
+	font-weight:bold;
+    color: #ffffff;
+    background-color: #339933;
+	font-family: 'Open Sans', sans-serif;
+   /*
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+       */
+	border-width:0px;
+}
+.botao:hover
+{
+    background-color: #fa7a69;
+    height: 30px;
+    width: 150px;
+}
+.botao-cancelar
+{
+    float: left;
+    height: 30px;
+    font-size: 14px;
+	font-weight:bold;
+    color: #ffffff;
+    background-color: #E51400;
+	font-family: 'Open Sans', sans-serif;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+	border-width:0px;
+}
+.botao-cancelar:hover
+{
+    background-color: #e49f24;
+        height: 30px;
+    width: 150px;
+
+}
+.botaogrid
+{
+    height: 20px;
+    font-size: 14px;
+	font-weight:bold;
+    color: #ffffff;
+    background-color: #006BA7;
+	font-family: 'Open Sans', sans-serif;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+	border-width:0px;
+}
+.botaogrid-excluir
+{
+    height: 20px;
+    font-size: 14px;
+	font-weight:bold;
+    color: #ffffff;
+    background-color: red;
+	font-family: 'Open Sans', sans-serif;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
+	border-width:0px;
+}
+
+textarea
+{
+    float: left;
+    font-size: 12px;
+    color: #000000;
+    background-color: white;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.tdlabeltext
+{
+    background-color:#006BA7;
+	font-size: 16px;
+    color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-weight:bold;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+	padding:5px;
+	text-align:center;
+}
+.tdinput
+{
+	font-size: 14px;
+	height:22px;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.tritem{
+	background-color:#E0E0E0;
+	padding:5px;
+    border-width:0px;
+}
+.tritem:hover{
+	background-color: co;
+	padding:5px;
+    border-style:dotted;
+    border-width:1px;
+    border-color:#000000;
+}
+
+.tritem + td:hover{
+	background-color: co;
+	padding:5px;
+    border-style:dotted;
+    border-width:1px;
+    border-color:#000000;
+}
+
+.tritem_error{
+	background-color:#339933;
+	padding:5px;
+    border-style:dotted;
+    border-width:1px;
+    border-color:orange;
+}
+.tritem_error:hover{
+	background-color:#339933;
+	padding:5px;
+    border-style:dotted;
+    border-width:1px;
+    border-color:orange;
+}
+
+.tritemnovo{
+	background-color:#F8F7FF;
+	padding:5px;
+}
+.titulopagina{
+	font-size:22px;
+	background-color:#cccccc;
+	color:#FFF;
+	font-family: 'Open Sans', sans-serif;
+	font-weight:bold;
+	padding:5px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+	height:30px;
+}
+.avisopagina{
+	font-size:12px;
+	background-color:#cccccc;
+	color:#333;
+	font-family: 'Open Sans', sans-serif;
+	font-weight:bold;
+	padding:5px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+	height:20px;
+}
+
+.labeltitle
+{
+    font-size: 16px;
+    color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-weight:bold;
+	padding:5px;
+}
+
+.tdtitlesection 
+{
+	background-color:#87274C;
+	color:#FFF;
+	font-family: 'Open Sans', sans-serif;
+	font-weight:bold;
+	padding:5px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.titleapp {
+	font-size: 30px;
+	height:22px;
+	font-family: 'Open Sans', sans-serif;
+	color:#006BA7;
+	margin-right:10px;
+	font-weight:bold;
+}
+
+.tdlogin {
+	font-size: 12px;
+	height:40px;
+	font-family: 'Open Sans', sans-serif;
+	color:white;
+	background-color:#006BA7;
+}
+
+.spanmenuclick{
+    font-size:16px;
+    color:blue;
+    font-weight:bold;
+    text-decoration:none;
+	cursor:default;
+}
+.spanmenuclick:hover{
+    font-size:16px;
+    color:blue;
+    font-weight:bold;
+    text-decoration:underline;
+	cursor:pointer;
+}
+
+.div-cadastros-container {
+    text-align: left;
+    margin: 10px;
+    border-width: 1px;
+    border-color: gray;
+    border-style: dashed;
+}
+
+
+.container-header {
+    position: fixed;
+    top: 200px;
+}
+
+
+.classUsers {
+    background-image:url("../images/icone_usuario.gif");
+    width:16px;
+    height:16px;
+    background-repeat:no-repeat;
+    content:attr(title);
+}
+
+.classPartners {
+    background-image:url("../images/icone_usuario.gif");
+    width:20px;
+    height:20px;
+    background-repeat:no-repeat;
+    content:attr(title);
+}
+
+table.hovertable {
+	width: 720px;
+	font-size:10px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #999999;
+	border-collapse: collapse;
+}
+table.hovertable th {
+	background-color:#E3E3E3; /*#c3dde0;*/
+	border-width: 1px;
+	padding: 2px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+table.hovertable tr {
+	background-color: #F8F7FF; /*#d4e3e5;*/
+}
+table.hovertable td {
+	border-width: 1px;
+	padding: 2px;
+	border-style: solid;
+	border-color: #a9c6c9;
+}
+table li  {
+	font-size: 10px;
+	color:;
+	text-decoration: none;
+	padding: 2px;
+}
+
+#curriculo #text-curriculo {
+	float: left;
+	height: 10px;
+	width: 722px;
+	color: #666;
+	padding-right: 5px;
+	padding-left: 10px;
+}
+#curriculo-msg {
+	float: left;
+	height: 40px;
+	width: 400px;
+	font-size: 10px;
+	color: Red;
+	padding: 5px;
+	display: table-cell;
+	display: inline;
+}
+#curriculo-NecessitaExperiencia {
+	float: left;
+	width: 500px;
+	font-size: 10px;
+	color: #000;
+	padding: 5px;
+	display: none;
+}
+#curriculo #text-curriculo-outrosQuis {
+	float: left;
+	height: 8px;
+	width: 722px;
+	color: #666;
+	padding-right: 5px;
+	padding-left: 10px;
+	display: none;
+}
+
+#curriculo #text-curriculo-g {
+	float: left;
+	height: 10px;
+	width: 722px;
+	color: #666;
+	padding-right: 5px;
+	padding-left: 10px;
+}
+#curriculo #text-curriculo-ddd {
+	float: left;
+	height: 10px;
+	width: 722px;
+	color: #666;
+	padding-right: 5px;
+	padding-left: 10px;
+}
+#curriculo #curriculo-tebela {
+	float: left;
+	height: 300px;
+	width: 740px;
+	font-size: 10px;
+	color: #666;
+	padding: 10px;
+	display: table;
+}
+#curriculo #search-curriculo #search-form-curriculo {
+	color: #000000;
+	margin-top: 10px;
+	font-size: 10px;
+	margin-left: 10px;
+	line-height: 10px;
+}
+.serchb-curriculo {
+	background-image: url(../../imgs/serach.png);
+	background-repeat: no-repeat;
+	color: #FFF;
+	height: 24px;
+	width: 93px;
+	margin-top: 5px;
+	background-position: 0px 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #E3E3E3;
+}
+.serchb-curriculoEsqueda {
+	background-image: url(../../imgs/serach.png);
+	background-repeat: no-repeat;
+	color: #FFF;
+	height: 24px;
+	width: 93px;
+	margin-top: 5px;
+	background-position: 0px 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #E3E3E3;
+	right:auto;
+}
+.serchb-curriculoPequeno {
+	background-image: url(../../imgs/login.png);
+	background-repeat: no-repeat;
+	color: #FFF;
+	height: 24px;
+	width: 66px;
+	margin-top: 0px;
+	background-position: 0px 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+/*	background-color: #00507f; */
+}
+.serchb-curriculoEsqueda1 {
+	background-image: url(../../imgs/serachM1.png);
+	background-repeat: no-repeat;
+	color: #FFF;
+	height: 29px;
+	width: 112px;
+	margin-top: 5px;
+	background-position: 0px 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #E3E3E3;
+	right:auto;
+}
+.serchb-curriculoVoltar {
+	background-image: url(../../imgs/serach1.png);
+	background-repeat: no-repeat;
+	color: #FFF;
+	height: 24px;
+	width: 93px;
+	margin-top: 5px;
+	background-position: 0px 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	background-color: #E3E3E3;
+	right:auto;
+}
+.drop-curriculo {
+	margin-bottom: 4px;
+	width: 300px;
+}
+.drop-curriculo-Dia {
+	margin-bottom: 4px;
+	width: 40px;
+}
+.drop-curriculo-cliente {
+	margin-bottom: 4px;
+	width: 700px;
+}
+
+#curriculo #search-curriculo #curriculo-trpCliente1 {
+	float: left;
+	height: 5px;
+	width: 740px;
+	font-size: 10px;
+	color: #000;
+	padding: 10px;
+	display: table-row;
+	display: inline;
+}
+#curriculo #search-curriculo #curriculo-trpCliente1 a {
+	color:  Black;
+	text-decoration: none;
+	display: block;
+	float: left;
+	font-size: 10px;
+	font-weight: regular;
+}
+#curriculo #search-curriculo #curriculo-trpCliente1 #curriculo-celulaCli1 {
+	float: left;
+	width: 300px;
+	font-size: 10px;
+	color: #000;
+	padding: 5px;
+	TEXT-ALIGN:left;
+	display: table-cell;
+	display: inline;
+}
+#curriculo #search-curriculo #curriculo-trpCliente1 #curriculo-celulaCli2 {
+	float: left;
+	width: 300px;
+	font-size: 10px;
+	color: #000;
+	padding: 5px;
+	TEXT-ALIGN:left;
+	display: table-cell;
+	display: inline;
+}
+#curriculo #search-curriculo #curriculo-trpCliente2 {
+	float: left;
+	height: 30px;
+	width: 740px;
+	font-size: 10px;
+	color: #000;
+	padding: 10px;
+	display: table-row;
+	display: inline;
+}
+#curriculo #curriculo-div {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: inline;
+}
+#curriculo #curriculo-div-ingles {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo #curriculo-div-espanhol {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo #curriculo-div-outrosIdiomas {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+
+#curriculo  #curriculo-Mudanca {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo #curriculo-codigoanuncio {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: inline;
+}
+#curriculo #curriculo-motivo {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+
+#curriculo #curriculo-div-outrosIdiomaDig {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+
+#curriculo #curriculo-div-outrosInfoDig {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo #curriculo-div-outrosInfo {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo #curriculo-div-windows {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo #curriculo-div-excel {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo #curriculo-div-word {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo #curriculo-div-powerpoint {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+
+
+#curriculo-tebela-teste {
+	float: left;
+	height: 360px;
+	width: 380px;
+	font-size: 10px;
+	color: #666;
+	padding: 5px;
+	display: table;
+	display: inline;
+}
+#curriculo-tebela-teste a {	color: #FFF;
+	text-decoration: none;
+	display: block;
+	float: left;
+	font-size: 10px;
+	font-weight: regular;
+}
+#curriculo-tebela-teste #search-curriculo-teste
+{
+    float: left;
+    width: 380px;
+    height: 360px;
+    padding: 5px; /*	background-image: url(../../imgs/pesquisa.png); */
+    background-color: #F8F7FF; /*#E3E3E3;*/
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
+}
+#curriculo-tebela-teste #curriculo-trTeste {
+	float: left;
+	height: 10px;
+	width: 360px;
+	font-size: 10px;
+	color: #000;
+	padding: 2px;
+	display: table-row;
+	display: inline;
+}
+#curriculo-tebela-teste #curriculo-trTeste #curriculo-celulaTeste {
+	float: left;
+	width: 170px;
+	font-size: 10px;
+	color: #000;
+	padding: 2px;
+	TEXT-ALIGN:left;
+	display: table-cell;
+	display: inline;
+}
+#curriculo-tebela-teste #curriculo-trTeste #curriculo-trpBol-Teste {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 2px;
+	display: table-row;
+	display: inline;
+}
+#curriculo-tebela-teste #teste-informatica {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 2px;
+	display: none;
+}
+#curriculo-tebela-teste #teste-ingles {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 2px;
+	display: none;
+}
+#curriculo-tebela-teste #teste-matematica {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 2px;
+	display: none;
+}
+#curriculo-tebela-teste #teste-outros {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 2px;
+	display: none;
+}
+#curriculo-tebela-teste #teste-portugues {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 2px;
+	display: none;
+}
+#curriculo-tebela-email {
+	float: left;
+	height: 360px;
+	width: 720px;
+	font-size: 10px;
+	color: #666;
+	padding: 5px;
+	display: table;
+	display: inline;
+}
+#curriculo-tebela-email #curriculo-tr-email {
+	float: left;
+	width: 700px;
+	height: 5px;
+	font-size: 10px;
+	color: #000;
+	padding: 5px;
+	display: table-row;
+	display: inline;
+}
+#curriculo-tebela-email #curriculo-celula-email1 {
+	float: left;
+	width: 300px;
+	font-size: 10px;
+	color: #000;
+	padding: 5px;
+	TEXT-ALIGN:left;
+	display: table-cell;
+	display: inline;
+}
+#curriculo-tebela-email #curriculo-celula-email2 {
+	float: left;
+	width: 300px;
+	font-size: 10px;
+	color: #000;
+	padding: 5px;
+	TEXT-ALIGN:left;
+	display: table-cell;
+	display: inline;
+}
+#curriculo-div-valida-ender {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-ramo {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-prazo {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-cargo {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-qtdvaga {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-requisitante {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-email {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-fone {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-area {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-tipo {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-motivo {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-sigilo {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-remuneracao {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-beneficio {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-horariohrabalho {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-formacaoacademica {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-dioma {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-informatica {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-cronograma {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-conhecimentosespecificos {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-competencia {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#curriculo-div-valida-obs {
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 0px;
+	display: none;
+}
+#content-curriculo #info {
+	float: left;
+	height: 570px;
+	width: 760px;
+}
+#content-curriculo #info #header-curriculo {
+	float: left;
+	height: 18px;
+	width: 740px;
+	margin-top: -10px;
+	margin-bottom: 20px;
+	margin-left: -20px;
+}
+#info #text-curriculo {
+	background-image: url(../imgs/bg-qm.jpg);
+	background-repeat: no-repeat;
+	float: left;
+	height: 300px;
+	width: 420px;
+	font-size: 12px;
+	color: #666;
+	margin-left: 20px;
+	padding: 10px;
+	text-align: justify;
+}
+.azul {
+	color: #20638D;
+}
+#info #sidebar-curriculo {
+	float: left;
+	height: 380px;
+	width: 240px;
+	margin-left: 50px;
+}
+#topo-curriculo {
+	margin-left: 40px;
+	margin-top: 5px;	
+	color: #000;
+	float: left;
+	font-size: 10px;
+	color: #000;
+	padding: 10px;
+	display: table-row;
+	display: inline;
+}
+
+#texto-foto-curriculo {
+	position: relative;
+	left: 568px;
+	top: -180px;
+	width: 136px;
+	height: 160px;
+	z-index: 1;
+	background-color: rgba(0, 0, 0, 0.7);
+	filter: alpha(opacity=70);
+	-moz-opacity: 1;
+	-khtml-opacity: 1;
+	opacity: 1;
+	color: #fff;
+	font: 14px/15px Arial, Helvetica, sans-serif;
+	padding: 10px 13px;
+}
+
+.left {
+	margin-bottom:4px;
+	top: 0;
+    left: 0;
+	width: 100px !important;
+	height: 160px;
+}
+.right {
+	margin-bottom:4px;
+	right: 0;
+	bottom: 0;
+	width: 100px !important;
+	height: 160px;
+}
+
+#curriculo-senhaconfirmar 
+{
+    	display: inline;
+}
+#curriculo-tebela-testeDesc {
+	float: left;
+	height: 360px;
+	width: 380px;
+	font-size: 10px;
+	color: #666;
+	margin-top: 40px;
+	margin-bottom: 50px;
+	margin-left: 40px;
+	padding: 10px;
+	display: table;
+	display: inline;
+}
+#curriculo #curriculo-trpBolDesc {
+	float: left;
+	height: 20px;
+	width: 700px;
+	font-size: 10px;
+	color: #000;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	margin-left: 20px;
+	padding: 10px;
+	display: table-row;
+	display: inline;
+}

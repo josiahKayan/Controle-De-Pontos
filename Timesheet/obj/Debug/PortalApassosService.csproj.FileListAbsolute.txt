@@ -1,0 +1,213 @@
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll.config
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.pdb
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Helpers.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Mvc.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Providers.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Razor.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Deployment.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Razor.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\TeamWorkNet.Base.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\WebActivatorEx.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.pdb
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.pdb
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.pdb
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.xml
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\PortalApassosService.csprojResolveAssemblyReference.cache
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.dll
+C:\Users\ljosias\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.pdb
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll.config
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.pdb
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Microsoft.Web.Infrastructure.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Helpers.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Mvc.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Providers.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Razor.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Deployment.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Razor.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\TeamWorkNet.Base.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\WebActivatorEx.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.pdb
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.pdb
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.pdb
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.xml
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\PortalApassosService.csprojResolveAssemblyReference.cache
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.dll
+D:\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.pdb
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\PortalApassosService.csprojResolveAssemblyReference.cache
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll.config
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.pdb
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Helpers.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Mvc.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Providers.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Razor.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Deployment.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Razor.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\TeamWorkNet.Base.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\WebActivatorEx.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.pdb
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.pdb
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.pdb
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.xml
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.dll
+C:\Users\ljosias\Source\TS Verificacao\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.pdb
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll.config
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.pdb
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EPPlus.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Helpers.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Mvc.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Providers.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Razor.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Deployment.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Razor.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\TeamWorkDomain.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\TeamWorkNet.Base.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\WebActivatorEx.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\TeamWorkDomain.pdb
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.pdb
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.pdb
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EPPlus.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.pdb
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\Quartz.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\PortalApassosService.csprojResolveAssemblyReference.cache
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.pdb
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll.config
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Timesheet.pdb
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\EPPlus.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Ninject.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Quartz.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Helpers.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Mvc.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Providers.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Razor.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Deployment.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.WebPages.Razor.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\TeamWorkDomain.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\TeamWorkNet.Base.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\WebActivatorEx.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\TeamWorkDomain.pdb
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.pdb
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.pdb
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Common.Logging.Core.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\EPPlus.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Newtonsoft.Json.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Ninject.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Common.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Ninject.Web.Mvc.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Quartz.pdb
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\Quartz.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Net.Http.Formatting.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\System.Web.Http.WebHost.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\bin\EntityFramework.xml
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\obj\Debug\PortalApassosService.csprojResolveAssemblyReference.cache
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.dll
+C:\Users\ljosias\Source\Repos\TimesheetService\TimesheetService\Timesheet\obj\Debug\Timesheet.pdb

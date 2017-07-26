@@ -1,0 +1,161 @@
+﻿@model Apassos.Models.Users
+
+@{
+    Layout = "~/Views/Shared/_Principal.cshtml";
+    ViewBag.Title = "Login - Controle de Apontamentos - APassos Consultoria";
+    var relativePath = System.Configuration.ConfigurationManager.AppSettings["RELATIVEPATH"].ToString();
+
+    var _mensagem = (string)HttpContext.Current.Session["_MENSAGEM_"];
+    var _success = (string)HttpContext.Current.Session["_SUCCESS_"];
+    var flag = 0;
+    Apassos.Models.Users usuarioLogado = (Apassos.Models.Users)HttpContext.Current.Session["_USUARIO_LOGADO"];
+}
+
+<script src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Users/ResetPassword.js")" type="text/javascript"></script>
+<!-- Secao da mensagem de alerta -->
+<div id="alert"></div>
+
+<script>
+    jQuery(function ($) {
+        _mensagemAlert = '@(_mensagem)';
+        _success = '@(_success)';
+        flag = '@(flag)';
+        if (_mensagemAlert != '') {
+            if (_success == 'true') {
+                showAlert('success', '&nbsp;&nbsp;' + _mensagemAlert);
+            } else {
+                showAlert('error', '&nbsp;&nbsp;' + _mensagemAlert);
+            }
+        }
+
+        $('#btsalvar').click(function () {
+            validaSenha();
+        });
+
+
+        $( "#dialog-confirm" ).dialog({
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                "Delete all items": function() {
+                    $( this ).dialog( "close" );
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+
+        //$("#nova_senha").attr({required:"true"});
+        //$("#confirma_senha").attr({required:"true"});
+        //$(document.getElementsByTagName('form')[0].id).validator();
+
+        $("#senha_anterior").attr("maxlength","30");
+        $("#senha_anterior").css("width","240");
+        $("#nova_senha").attr("maxlength","30");
+        $("#nova_senha").css("width","240");
+        $("#confirma_senha").attr("maxlength","30");
+        $("#confirma_senha").css("width","240");
+
+    });
+  
+
+   
+
+
+   $(function(){
+      $('#senha_anterior').click(function(){
+         document.getElementById('senha_anterior').style.borderColor = "white";
+      });
+   });
+
+
+
+
+
+    function validaSenha() {
+       var senhaAnterior = document.getElementById('senha_anterior').value.trim();
+
+       if (senhaAnterior == null || senhaAnterior == "") {
+
+          _mensagem = "O campo senha anterior não pode ser nulo";
+          showAlert('error',_mensagem);
+
+          document.getElementById('senha_anterior').style.borderColor = "red";
+
+       }
+       else {
+          var novaSenha = document.getElementById('nova_senha').value.trim();
+          var confirmaSenha = document.getElementById('confirma_senha').value.trim();
+
+          if (novaSenha != confirmaSenha) {
+             showAlert('error', 'As senhas informadas est&atilde;o diferentes. Informe os dados novamente.');
+          } else if (novaSenha == '' || confirmaSenha == '') {
+             showAlert('error', 'As senhas não podem ficar em branco.');
+          } else {
+             document.getElementsByTagName('form')[0].submit();
+          }
+       }
+    }
+</script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+<div class="div-cadastros-container">
+
+    <div style="margin-left:10px;">
+    
+    @Html.HiddenFor(model => model.ENVIRONMENT)
+    @Html.HiddenFor(model => model.USERID)
+    <table>
+        <tr>
+            <td colspan="2">
+                <span style="text-align:left;font-size:30px;">Alterar senha</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Senha Anterior:
+            </td>
+            <td>
+                @Html.Password("senha_anterior", "") 
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Nova Senha:
+            </td>
+            <td>
+                @Html.Password("nova_senha", "")
+            </td>
+        </tr>
+        <tr>
+            <td>Confirme a senha:
+            </td>
+            <td>
+                @Html.Password("confirma_senha", "")
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input id="btsalvar" class="botaocursor" type="button" onclick="validaSenha();" 
+                                style="background-image:url('@(relativePath)images/salvar.png')"  
+                                value="" name="btsalvar" title="Salvar"  />
+                <input id="btsalvar" class="botaocursor" type="button" onclick="window.open('@(relativePath)Apontamentos','_self');" 
+                                style="background-image:url('@(relativePath)images/return.png')"  
+                                value="" name="btsalvar" title="Cancelar" />
+
+                  @*@<!--'@Model.USERNAME'-->*@
+              <input id="btsalvar" class="botaocursor" type="button" onclick="Senha(@usuarioLogado.USERID);"
+                     style="background-image:url('@(relativePath)images/reset.jpg')"
+                     value="" name="btsalvar" title="Resetar Senha" />
+            </td>
+        </tr>
+    </table>
+    </div>
+</div>
+    
+}
+

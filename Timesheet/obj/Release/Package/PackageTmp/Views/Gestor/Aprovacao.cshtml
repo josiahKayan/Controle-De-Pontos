@@ -1,0 +1,436 @@
+﻿@{
+    ViewBag.Title = "APONTAMENTO DE HORAS";
+    Layout = "~/Views/Shared/_Principal.cshtml";
+    Apassos.Models.Period periodoAtual = (Apassos.Models.Period)HttpContext.Current.Session["PERIODO_ATUAL"];
+    List<Apassos.Models.Period> listaPeriodos = (List<Apassos.Models.Period>)HttpContext.Current.Session["TODOS_PERIODOS"];
+
+    Apassos.Models.Partners gestorAtual = (Apassos.Models.Partners)HttpContext.Current.Session["GESTOR_ATUAL"];
+    List<Apassos.DataAccess.PartnersTimesheetHeaderAccess> listConsultoresApontamentos = (List<Apassos.DataAccess.PartnersTimesheetHeaderAccess>)HttpContext.Current.Session["TODOS_CONSULTORES_APONTAMENTOS"];
+
+    var imagens = new string[] { "statusaberto", "statusaceito", "statusrejeitado", "statusencerrado", "statusnovo" };
+
+    var relatorios = new string[] { "", "Relatório Mensal de Projetos", "Relatório Mensal de Horas." };
+
+    var grupos = new string[] { "", "Manaus", "São Paulo" };
+
+    string dataApontamento = string.Empty;
+
+    var relativePath = System.Configuration.ConfigurationManager.AppSettings["RELATIVEPATH"].ToString();
+
+    var _mensagem = (string)HttpContext.Current.Session["_MENSAGEM_"];
+    var _success = (string)HttpContext.Current.Session["_SUCCESS_"];
+
+    var flag = 0;
+
+    string reportType = string.Empty;
+
+    string grupo = string.Empty;
+
+
+    HttpContext.Current.Session["_MENSAGEM_"] = "";
+    HttpContext.Current.Session["_SUCCESS_"] = "";
+
+}
+
+<script src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/apontamentos/aprovacao.js")" type="text/javascript"></script>
+
+@*<script src="@Url.Content()" type="text/javascript"></script>*@
+
+<script>
+    jQuery(function ($) {
+
+        initializeMasks();
+        _mensagemAlert = '@(_mensagem)';
+        _success = '@(_success)';
+        flag = '@(flag)';
+        if (_mensagemAlert != '') {
+            if (_success == 'true') {
+                showAlert('success', '&nbsp;&nbsp;' + _mensagemAlert);
+            } else {
+                showAlert('error', '&nbsp;&nbsp;' + _mensagemAlert);
+            }
+        }
+        $(".textareagrid").blur(function () {
+            $(this).css("height", 20);
+        });
+        $(".textareagrid").focus(function () {
+            $(this).css("height", 60);
+        });
+
+        $(".row_show_hide").hide();
+
+        $(".textareagrid").blur(function () {
+            $(this).css("height", 20);
+        });
+        $(".textareagrid").focus(function () {
+            $(this).css("height", 60);
+        });
+
+
+        $(".spansconde").hide();
+
+
+    });
+
+    function initializeMasks() {
+        $(".campodatasimples").mask("99/99/9999");
+        $(".campodatalong").mask("99/99/9999 99:99");
+        $(".campohorasimples").mask("9?9:99");
+        $(".campohorasimpleslong").mask("99:99:99");
+        $(".campoTelefone").mask("(99) 999-9999");
+        $(".campohorasimples").blur(function () {
+            formatacampohorasimples(this);
+        });
+    }
+
+    function formatacampohorasimples(valor) {
+        var valueH = valor.value;
+
+        if (valueH.length == 1) {
+            valor.value = "0" + valueH + ":00";
+        } else if (valueH.length == 2) {
+            valor.value = valueH + ":00";
+        } else if (valueH.length == 3) {
+            valor.value = valueH + "00";
+        } else if (valueH.length == 4) {
+            valor.value = valueH + "0";
+        } else if (valueH.length == 5 && valueH.indexOf(':') < 0) {
+            var p1 = valueH.substr(0, 2);
+            var p2 = valueH.substr(2, 4);
+            valor.value = p1 + ":" + p2;
+        }
+    }
+    function adicionarlinhanova() {
+        adicionarlinha();
+    }
+
+
+    function somatodos(id) {
+
+    }
+
+    function escondeApontamentos(id) {
+        if ($("#mostra_id_" + id)) {
+        }
+    }
+
+    function mostraesconde(id) {
+
+        if ($("#mostra_id_" + id).css("display") == "none") {
+            esconde(id);
+        } else {
+            mostra(id);
+        }
+
+    }
+
+
+
+    function esconde(id) {
+        //$('.consultor_id_' + id).hide("blind",
+        //                 { direction: "vertical" }, "fast");
+        $('.consultor_id_' + id).hide();
+        $("#mostra_id_" + id).show();
+        $("#esconde_id_" + id).hide();
+        $("#tblmarcartodos_" + id).hide();
+    }
+    function mostra(id) {
+        //$('.consultor_id_' + id).show("blind",
+        //                 { direction: "vertical" }, "fast");
+        $('.consultor_id_' + id).show();
+        $("#mostra_id_" + id).hide();
+        $("#esconde_id_" + id).show();
+        $("#tblmarcartodos_" + id).show();
+    }
+
+    function selectTodos(id) {
+        $('.class_check_' + id).attr('checked', true);
+    }
+    function unselectTodos(id) {
+        $('.class_check_' + id).attr('checked', false);
+    }
+
+    function mudartodos(selectStatus, id) {
+        $('.class_select_status_item_id_' + id).val(selectStatus.value);
+    }
+
+
+    function unselectTodos(id) {
+        $('.class_check_' + id).attr('checked', false);
+    }
+
+</script>
+
+
+<style>
+    .textareagrid {
+        height: 20px;
+    }
+</style>
+
+
+<!--APONTAMENTOS-->
+<form id="formapontamentos" name="formapontamentos">
+
+
+    <table width="100%" align="left">
+        <tr>
+            <td width="60">
+                PER&Iacute;ODO:&nbsp;
+            </td>
+            <td width="100">
+                <select id="selectperiodo" name="selectperiodo" onchange="mudarperiodo(this)">
+                    @foreach (var periodo in listaPeriodos)
+                    {
+                        string strselect = "";
+                        if (periodo.PERIODID == periodoAtual.PERIODID)
+                        {
+                            strselect = "selected";
+                        }
+                        <option value="@(periodo.PERIODID)" @(strselect)>@(periodo.MONTH.ToString("00") + "/" + periodo.YEAR)</option>
+
+                    }
+                </select>
+            </td>
+            <td>
+                <table align="left">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input id="btsalvar" class="botaocursor" type="button" onclick="salvar();" style="background-image:url('@(relativePath)images/salvar.png')" value=" " name="btsalvar" title="Salvar">
+                            </td>
+                            <td width="10"></td>
+                            <td>
+                                <input id="btenviar" name="btenviar" class="botaocursor" type="button" onclick="cancelar();" style="background-image:url('@(relativePath)images/return.png')" value=" " title="Cancelar">
+                            </td>
+                            <td>
+                                @{
+                                    if ((listConsultoresApontamentos != null) && (listConsultoresApontamentos.Count() > 0))
+                                    {
+                                    <td width="10"></td>
+                                    <td>Relatórios</td>
+                                    <td>
+                                        <select id="selectrelatorio" name="selectrelatorio">
+                                            @foreach (var item in relatorios)
+                                            {
+                                                <option @reportType>@item</option>
+
+
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        @{
+
+                                            DateTime dateNow = new DateTime(205000);
+                                            var teste = TimeZoneInfo.ConvertTimeToUtc(dateNow);
+                                        }
+                                        <button id="btbaixar" name="baixar" class="botaocursor" type="button" onclick="apontamentosrelatorio(@reportType)"
+                                                style="background-image:url('@(relativePath)images/excel.jpg')" value="" title="Exportar para Excel" />
+                                    </td>
+                                    <td width="10"></td>
+                                            }
+                                }
+                </td>
+            <td width="100">
+                <select id="selectgrupo" name="selectgrupo" onchange="mudargrupo(this.value);">
+                    @foreach (var item in grupos)
+                    {
+                        <option value="@grupo">@item</option>
+
+
+                    }
+
+                </select>
+
+            </td>
+
+                </tbody>
+        </table>
+        </td>
+
+
+        <td align="right">
+
+            <table>
+                <tr>
+                    <td>
+                        Legenda:
+                    </td>
+                    <td><img src="@(relativePath)images/statusaberto.png" title="Aberto" width="20" /></td>
+                    <td>Aberto</td>
+                    <td width="15"></td>
+                    <td><img src="@(relativePath)images/statusaceito.png" title="Aprovado" width="20" /></td>
+                    <td>Aprovado</td>
+                    <td width="15"></td>
+                    <td><img src="@(relativePath)images/statusrejeitado.png" title="Reprovado" width="20" /></td>
+                    <td>Reprovado</td>
+                    <td width="15"></td>
+                    <td><img src="@(relativePath)images/statusencerrado.png" title="Aceito" width="20" /></td>
+                    <td>Encerrado</td>
+                    <td width="5"></td>
+                </tr>
+            </table>
+        </td>
+        </tr>
+        </table>
+
+
+
+        <!--CONSULTORES-->
+        <table align="left" width="100%">
+            @foreach (var itemConsultApont in listConsultoresApontamentos)
+            {
+                <tr style="background-color:#efeff2;border-color:#000000;border-style:solid;border-width:1px;height:32px;">
+                    <td align="left" colspan="15">
+
+                        <table>
+                            <tr>
+                                <td>
+                                    <span class="spansmostra" onclick="mostra('@(itemConsultApont.partner.PARTNERID)');" id="mostra_id_@(itemConsultApont.partner.PARTNERID)">
+                                        <img src="@(relativePath)images/plus.png" title="Expandir" width="19" />
+                                    </span>
+                                    <span class="spansconde" onclick="esconde('@(itemConsultApont.partner.PARTNERID)');" id="esconde_id_@(itemConsultApont.partner.PARTNERID)">
+                                        <img src="@(relativePath)images/minus.png" title="Reduzir" width="19" />
+                                    </span>
+                                </td>
+                                <td width="3px"></td>
+                                <td onclick="mostraesconde('@(itemConsultApont.partner.PARTNERID)');">
+                                    <div style="min-width:150px;max-width:250px;">Grupo: <span style="font-weight:bold;">@(itemConsultApont.partner.USERGROUP)</span></div>
+                                </td>
+                                <td onclick="mostraesconde('@(itemConsultApont.partner.PARTNERID)');">
+                                    <div style="min-width:300px;max-width:500px;">Consultor: <span style="font-weight:bold;">@(itemConsultApont.partner.NAME)</span></div>
+                                </td>
+                                <td width="5px"></td>
+                                <td width="150" onclick="mostraesconde('@(itemConsultApont.partner.PARTNERID)');">T.Horas: <span style="font-weight:bold;">@(Apassos.Common.Util.AddHoras(itemConsultApont.TotalHours()))</span></td>
+                                <td width="5px"></td>
+                                <td width="150" onclick="mostraesconde('@(itemConsultApont.partner.PARTNERID)');">T.Horas Aprov.: <span style="font-weight:bold;">@(Apassos.Common.Util.AddHoras(itemConsultApont.AprovTotalHours()))</span></td>
+                                <td width="5px"></td>
+                                <td width="150" onclick="mostraesconde('@(itemConsultApont.partner.PARTNERID)');">T.Horas Reprov.: <span style="font-weight:bold;">@(Apassos.Common.Util.AddHoras(itemConsultApont.ReprovTotalHours()))</span></td>
+                                <td width="5px"></td>
+                                <td width="130" onclick="mostraesconde('@(itemConsultApont.partner.PARTNERID)');"> Status: <span style="font-weight:bold;">@(Apassos.Common.Constants.GetEnumDescription(itemConsultApont.generalStatus))</span></td>
+                                <td width="5px"></td>
+
+
+
+                                <td>
+                                    <table id="tblmarcartodos_@(itemConsultApont.partner.PARTNERID)" class="row_show_hide">
+                                        <tr>
+
+                                            <select id="selectstatustodos_id_@(itemConsultApont.partner.PARTNERID)" name="selectstatustodos_id_@(itemConsultApont.partner.PARTNERID)"
+                                                    onchange="mudartodos(this,@(itemConsultApont.partner.PARTNERID))" width="200px">
+                                                <option value="">Selecione</option>
+                                                <option value="@((int)Apassos.Common.Constants.StatusAprovacaoConstant.Aberto)">@(Apassos.Common.Constants.GetEnumDescription(Apassos.Common.Constants.StatusAprovacaoConstant.Aberto))</option>
+                                                <option value="@((int)Apassos.Common.Constants.StatusAprovacaoConstant.Aprovado)">@(Apassos.Common.Constants.GetEnumDescription(Apassos.Common.Constants.StatusAprovacaoConstant.Aprovado))</option>
+                                                <option value="@((int)Apassos.Common.Constants.StatusAprovacaoConstant.Reprovado)">@(Apassos.Common.Constants.GetEnumDescription(Apassos.Common.Constants.StatusAprovacaoConstant.Reprovado))</option>
+                                                <option value="@((int)Apassos.Common.Constants.StatusAprovacaoConstant.Encerrado)">@(Apassos.Common.Constants.GetEnumDescription(Apassos.Common.Constants.StatusAprovacaoConstant.Encerrado))</option>
+                                            </select>
+                                            <td>
+                                                <div style="min-width:50px">Marcar todos </div>
+                                            </td>
+                                            <td>
+                                </td>
+
+                            </tr>
+
+                        </table>
+                    <td width="5px"></td>
+                </tr>
+            </table>
+
+            </tr>
+                <tr class="consultor_id_@(itemConsultApont.partner.PARTNERID) row_show_hide trheader">
+                    <td align="center">Aprovar</td>
+                    <td align="center">Data</td>
+                    <td align="center">Dia da Semana</td>
+                    <td align="center">Cliente</td>
+                    <td align="center">Projeto</td>
+                    <td align="center">Tipo</td>
+                    <td align="center">Entrada</td>
+                    <td align="center">Sa&iacute;da</td>
+                    <td align="center">Intervalo</td>
+                    <td align="center">Total</td>
+                    <td align="center">Total Dia</td>
+                    <td align="center">Observa&ccedil;&atilde;o</td>
+                    <td align="center">Anota&ccedil;&atilde;o</td>
+                    <td align="center" hidden>Hash</td>
+                </tr>
+                foreach (var itemApont in itemConsultApont.items)
+                {
+
+                    if (!itemApont.DATE.ToString("yyyy/MM/dd").Equals(dataApontamento))
+                    {
+                        dataApontamento = itemApont.DATE.ToString("yyyy/MM/dd");
+                        List<Apassos.Models.TimesheetItem> items = itemConsultApont.items.FindAll(x => x.DATE.ToString("yyyy/MM/dd") == dataApontamento);
+                        itemApont.TotalDays = items.Count();
+                        var ticks = items.Sum(x => x.TotalHours.Ticks);
+                        itemApont.TotalHoursDay = TimeSpan.FromTicks(ticks);
+                        itemApont.StyleType = "";
+                    }
+                    else
+                    {
+                        itemApont.TotalDays = 0;
+                        itemApont.StyleType = "display: none";
+                    }
+
+                    string newHashObject = itemApont.STATUS + itemApont.NOTE;
+                    itemApont.HASH = newHashObject.GetHashCode();
+
+                    <tr class="consultor_id_@(itemConsultApont.partner.PARTNERID) row_show_hide tritem" valign="middle">
+                        <td width="90" align="center">
+                            <input type="hidden" id="hidden_id_timesheetitem_@(itemApont.TIMESHEETITEMID)" name="hidden_id_timesheetitem_@(itemApont.TIMESHEETITEMID)" value="@(itemApont.TIMESHEETITEMID)" />
+                            <select id="selectstatusitem_id_@(itemApont.TIMESHEETITEMID)" name="selectstatusitem_id_@(itemApont.TIMESHEETITEMID)"
+                                    class="class_select_status_item_id_@(itemConsultApont.partner.PARTNERID)">
+
+                                @foreach (var status in Enum.GetValues(typeof(Apassos.Common.Constants.SelecaoGestorStatusAprovacaoConstant)))
+                                {
+                                    string strselect = "";
+                                    if (((int)status) == itemApont.STATUS)
+                                    {
+                                        strselect = "selected";
+                                    }
+                                    <option value="@((int)status)" @(strselect)>@((Apassos.Common.Constants.SelecaoGestorStatusAprovacaoConstant)status)</option>
+
+                                }
+                            </select>
+                        </td>
+                        <td align="center" style="background-color:@(Apassos.Common.Util.CorFeriadoFinalDeSemana(itemApont.DATE,"#FF4500",""))">
+                            @(itemApont.DATE.ToString("dd/MM/yyyy"))
+
+                        </td>
+                        <td align="center" style="background-color:@(Apassos.Common.Util.CorFeriadoFinalDeSemana(itemApont.DATE,"#FF4500",""))">
+                            @(Apassos.Common.Util.DiaDaSemana(itemApont.DATE))
+                        </td>
+                        <td align="center">@(itemApont.project.Partner.SHORTNAME)</td>
+                        <td align="center">@(itemApont.project.NAME)</td>
+                        <td align="center">@(Apassos.Common.Constants.GetDescricaoTipoApontamentos(itemApont.TYPE))</td>
+                        <td align="center">@(itemApont.IN.ToString().Substring(0, 5))</td>
+                        <td align="center">@(itemApont.OUT.ToString().Substring(0, 5))</td>
+                        <td align="center">@(itemApont.BREAK.ToString().Substring(0, 5))</td>
+                        <td align="center">@(itemApont.TotalHours.ToString().Substring(0, 5))</td>
+                        <td id="@(itemApont.TIMESHEETITEMID + "_total_horas_dias")" align="center" rowspan="@itemApont.TotalDays" style="@itemApont.StyleType">
+                            <p> @itemApont.TotalHoursDay</p>
+                        </td>
+                        <td align="center"><textarea cols="23" rows="2" id="text_obs_@(itemApont.TIMESHEETITEMID)" name="text_obs_@(itemApont.TIMESHEETITEMID)" class="textareagrid" readonly="readonly" style="min-width:200px;width:98%">@(itemApont.DESCRIPTION)</textarea></td>
+                        <td align="center"><textarea cols="23" rows="2" id="text_note_@(itemApont.TIMESHEETITEMID)" name="text_note_@(itemApont.TIMESHEETITEMID)" class="textareagrid" style="min-width:200px; width:98%">@(itemApont.NOTE)</textarea> </td>
+                        <td align="center">
+                            <input hidden name="hash_@(itemApont.TIMESHEETITEMID)" type="text" id="hash_@(itemApont.TIMESHEETITEMID)" value="@itemApont.HASH" />
+
+                        </td>
+
+                    </tr>
+
+                }
+            }
+            </table>
+
+            <!--END CONSULTORES-->
+
+        </form>
+
+
+        <script>
+            var relativepath = '@(relativePath)';
+        </script>

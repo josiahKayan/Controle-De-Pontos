@@ -1,0 +1,6 @@
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\TeamWorkDomain\bin\Debug\TeamWorkDomain.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\TeamWorkDomain\bin\Debug\TeamWorkDomain.pdb
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\TeamWorkDomain\bin\Debug\Newtonsoft.Json.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\TeamWorkDomain\bin\Debug\Newtonsoft.Json.xml
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\TeamWorkDomain\obj\Debug\TeamWorkDomain.dll
+C:\Users\ljosias\TSServiceInterface\TimesheetService\TimesheetService\TimesheetService\TeamWorkDomain\obj\Debug\TeamWorkDomain.pdb
