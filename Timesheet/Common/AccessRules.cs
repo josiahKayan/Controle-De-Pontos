@@ -27,7 +27,10 @@ namespace Apassos.Common
                 Constants.ModulesConstant.CRYPTALL,
                 Constants.ModulesConstant.REPORTS,
                 Constants.ModulesConstant.INFOPROJETOS,
-                Constants.ModulesConstant.INTEGRATION
+                Constants.ModulesConstant.INTEGRATION,
+                Constants.ModulesConstant.ALLTIMESHEETINPERIODREPORT,
+                Constants.ModulesConstant.TIMESHEET
+
 
                 //,Constants.ModulesConstant.CHECKIN
             };
@@ -50,7 +53,9 @@ namespace Apassos.Common
                 Constants.ModulesConstant.ALLTIMESHEETINPERIODREPORT,
                 Constants.ModulesConstant.PASSWORD,
                 Constants.ModulesConstant.REPORTS,
+                Constants.ModulesConstant.TIMESHEETINPERIODREPORT,
             Constants.ModulesConstant.INFOPROJETOS};
+
             Constants.ModulesConstant[] aConsult = { Constants.ModulesConstant.TIMESHEET, 
                 Constants.ModulesConstant.PASSWORD,
                 Constants.ModulesConstant.TIMESHEETINPERIODREPORT,

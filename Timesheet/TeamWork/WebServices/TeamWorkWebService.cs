@@ -35,7 +35,7 @@ namespace Apassos.TeamWork.WebServices
 
         public List<EntryTime> GetAllTimeEntries()
         {
-            int weekInMonth = 12;
+            int weekInMonth = 20;
 
             List<TimeResponse> responseList = new List<TimeResponse>();
             for (int i = 1; i <= weekInMonth; i++)
@@ -47,7 +47,7 @@ namespace Apassos.TeamWork.WebServices
                 }
             }
 
-            List<EntryTime> timeEntriesList = new List<EntryTime>();
+           List<EntryTime> timeEntriesList = new List<EntryTime>();
 
 
             foreach ( TimeResponse timeResponse in responseList)
@@ -64,17 +64,49 @@ namespace Apassos.TeamWork.WebServices
         public TimeResponse GetAllEntries(int i)
         {
             //Pega o primeiro dia do Mês
-            string startDate = (new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1).Date).ToString("yyyMMdd");
+
+            //int Month = DateTime.UtcNow.Month ;
+            int Month = DateTime.UtcNow.Month - 1;
+
+            string startDate = (new DateTime(DateTime.UtcNow.Year, Month, 1).Date).ToString("yyyMMdd");
+
 
             int endDate = DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month);
 
             //Pega o último dia do Mês
             string lastDayOfMonth = (new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, endDate).Date).ToString("yyyMMdd");
 
-            var response = _tsTimeHandler.GetSingleTimeEntry(startDate, lastDayOfMonth,i).Result;
+            var response = _tsTimeHandler.GetSingleTimeEntry(startDate, lastDayOfMonth, i).Result;
 
-            return response;
+            if (response != null)
+            {
+                return response;
+
+            }
+
+            return null;
         }
+
+
+        //public TimeResponse GetAllEntries(int i)
+        //{
+        //    //Pega o primeiro dia do Mês
+
+        //    int Month = DateTime.UtcNow.Month;
+
+
+        //    string startDate = (new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1).Date).ToString("yyyMMdd");
+
+
+        //    int endDate = DateTime.DaysInMonth(DateTime.UtcNow.Year, DateTime.UtcNow.Month);
+
+        //    //Pega o último dia do Mês
+        //    string lastDayOfMonth = (new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, endDate).Date).ToString("yyyMMdd");
+
+        //    var response = _tsTimeHandler.GetSingleTimeEntry(startDate, lastDayOfMonth, i).Result;
+
+        //    return response;
+        //}
 
 
         private void GetFirstLastDayofWeek(int ano, int mes, int dia)

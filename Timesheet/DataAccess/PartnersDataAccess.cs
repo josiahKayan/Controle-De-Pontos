@@ -4,6 +4,7 @@ using System.Linq;
 using Apassos.Common;
 using Apassos.Models;
 using System.Diagnostics;
+using System;
 
 namespace Apassos.DataAccess
 {
@@ -47,17 +48,21 @@ namespace Apassos.DataAccess
         {
             using (TimesheetContext db = new TimesheetContext())
             {
-                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
-                var listaAll = db.Partners.Where(p => p.ENVIRONMENT == env && p.SHORTNAME.ToLower() != "admin").OrderBy(c => c.NAME).ToList();
-                List<Partners> lista = new List<Partners>();
-                foreach (var partner in listaAll)
+                try
                 {
-
-                    //db.Entry(partner).Reload();
-                    lista.Add(partner);
+                    var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+                    var listaAll = db.Partners.Where(p => p.ENVIRONMENT == env && p.SHORTNAME.ToLower() != "admin").OrderBy(c => c.NAME).ToList();
+                    return listaAll;
                 }
-
-                return lista;
+                catch(Exception e)
+                {
+                    using (TimesheetContext d = new TimesheetContext())
+                    {
+                            var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+                            var listaAll = d.Partners.Where(p => p.ENVIRONMENT == env && p.SHORTNAME.ToLower() != "admin").OrderBy(c => c.NAME).ToList();
+                            return listaAll;
+                    }
+                }
             }
         }
 

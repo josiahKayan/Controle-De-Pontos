@@ -1,6 +1,7 @@
 ﻿using Apassos.Common;
 using Apassos.Models;
 using Apassos.Observer;
+using Apassos.TeamWork.Exceptions;
 using Apassos.TeamWork.JsonObject;
 using Apassos.TeamWork.Response;
 using System;
@@ -32,29 +33,29 @@ namespace Apassos.TeamWork.Handler
             "Erro ao atualizar atividade",
             "Erro ao inserir atividade",
             "Erro ,pois não contém TAG ou Descrição" };
-
-
+        private readonly string APPROVEDSTATUS = "Atividade aprovada pelo Gestor";
 
         public void CreateTimesheetItem(Period period, Partners partner, Project projectTodoItem, EntryTime entry, Logs log)
         {
 
-            if (entry.PersonFirstName.Equals("Danilo") && entry.Description.Equals(""))
-            {
-
-            }
-
             TimesheetItem item;
             List<InfoObjects> teamWorkInfoObject = new List<InfoObjects>();
-            TimesheetTeamWorkItem teamWorkItem = new TimesheetTeamWorkItem();
+
+            TimesheetTeamWorkItem teamWorkItem ;
+
+            GenericExceptions exceptions;
 
             using (TimesheetContext db = new TimesheetContext())
             {
-                if (projectTodoItem != null && entry.Description != null && entry.Description != string.Empty )
+
+                teamWorkItem = new TimesheetTeamWorkItem();
+
+                if (projectTodoItem != null && entry.Description != null && entry.Description != string.Empty)
                 {
                     #region
-                    TimesheetManagerHeader tsManagerHeader = new TimesheetManagerHeader();
                     TimesheetHeader header = db.TimesheetHeaders.Where(th => th.ENVIRONMENT == ENVIRONMENT && th.Partner.PARTNERID == partner.PARTNERID && th.Period.PERIODID == period.PERIODID).FirstOrDefault();
 
+                    #region
                     if (header == null)
                     {
 
@@ -65,7 +66,7 @@ namespace Apassos.TeamWork.Handler
                         //header.CHANGEDBY = "TimesheetService";
                         //header.CREATEDBY = "TimesheetService";
                         //header.CREATIONDATE = DateTime.Now.Date;
-                        header.Period = db.Periods.Where(p => p.PERIODID == period.PERIODID ).FirstOrDefault();
+                        header.Period = db.Periods.Where(p => p.PERIODID == period.PERIODID).FirstOrDefault();
                         header.Partner = db.Partners.Where(p => p.PARTNERID == partner.PARTNERID).FirstOrDefault();
                         //db.TimesheetHeaders.Add(header);
                         //db.SaveChanges();
@@ -104,7 +105,7 @@ namespace Apassos.TeamWork.Handler
                         teamWorkItem.TeamWorkTimeEntryId = entry.Id;
                         #endregion
                     }
-
+                    #endregion
                     //Inicializa os dados do Log
                     log.ActivityDate = ConvertTime(entry.Date);
                     log.ActivityDescription = entry.Description;
@@ -120,37 +121,71 @@ namespace Apassos.TeamWork.Handler
                     #region
                     TimesheetTeamWorkItem foundItem =
                             db.TimesheetTeamWorkItems.Include("TimesheetItem").Where(x => x.TeamWorkTimeEntryId == teamWorkItem.TeamWorkTimeEntryId).SingleOrDefault();
+
+                    exceptions = new GenericExceptions();
+
+                    int actualMonth = DateTime.Now.Month;
+
                     if (foundItem != null)
                     {
+
                         try
                         {
-                            foundItem.TeamWorkTimeEntryId = teamWorkItem.TeamWorkTimeEntryId;
-                            foundItem.TeamWorkTodoItemId = teamWorkItem.TeamWorkTodoItemId;
-                            foundItem.TimesheetItem.BREAK = teamWorkItem.TimesheetItem.BREAK;
-                            foundItem.TimesheetItem.COUNTER = teamWorkItem.TimesheetItem.COUNTER;
-                            foundItem.TimesheetItem.DATE = teamWorkItem.TimesheetItem.DATE;
 
-                            if (teamWorkItem.TeamWorkTimeDescription != null)
+
+                            if ( (period.STATUS.Equals("a") || (period.STATUS.Equals("c"))) && (foundItem.TimesheetItem.STATUS != 1)  )
                             {
-                                foundItem.TimesheetItem.DESCRIPTION = "" + teamWorkItem.TeamWorkTimeDescription;
+                                exceptions.PeriodIsClosed(header.Period.STATUS);
+                                exceptions.SheetIsApproved(foundItem.TimesheetItem.STATUS);
+
+
+                                TimesheetManagerHeader manager = new TimesheetManagerHeader();
+
+                                int contaApontamentosAprovados = manager.AlgumNaoAprovado(db, foundItem);
+
+                                if (contaApontamentosAprovados == 1)
+                                {
+
+
+
+                                    foundItem.TeamWorkTimeEntryId = teamWorkItem.TeamWorkTimeEntryId;
+                                    foundItem.TeamWorkTodoItemId = teamWorkItem.TeamWorkTodoItemId;
+                                    foundItem.TimesheetItem.BREAK = teamWorkItem.TimesheetItem.BREAK;
+                                    foundItem.TimesheetItem.COUNTER = teamWorkItem.TimesheetItem.COUNTER;
+                                    foundItem.TimesheetItem.DATE = teamWorkItem.TimesheetItem.DATE;
+
+                                    if (teamWorkItem.TeamWorkTimeDescription != null)
+                                    {
+                                        foundItem.TimesheetItem.DESCRIPTION = "" + teamWorkItem.TeamWorkTimeDescription;
+                                    }
+                                    else
+                                    {
+                                        foundItem.TimesheetItem.DESCRIPTION = teamWorkItem.TimesheetItem.DESCRIPTION;
+                                    }
+                                    foundItem.TimesheetItem.IN = teamWorkItem.TimesheetItem.IN;
+                                    foundItem.TimesheetItem.OUT = teamWorkItem.TimesheetItem.OUT;
+                                    foundItem.TimesheetItem.project = teamWorkItem.TimesheetItem.project;
+                                    foundItem.TimesheetItem.TimesheetHeader = teamWorkItem.TimesheetItem.TimesheetHeader;
+                                    log.TimesheetItem = foundItem.TimesheetItem.TIMESHEETITEMID;
+                                    db.Entry(foundItem).State = EntityState.Modified;
+                                    db.SaveChanges();
+                                    log.Description = DESCRIPTIONSTATUS[0];
+                                }
+                                else
+                                {
+                                    log.Description = "Atividade não migrada. O apontamento já foi aprovado pelo Gestor";
+                                }
                             }
                             else
                             {
-                                foundItem.TimesheetItem.DESCRIPTION = teamWorkItem.TimesheetItem.DESCRIPTION;
+                                log.Description = "Atividade não migrada. O apontamento já foi aprovado pelo Gestor";
                             }
-                            foundItem.TimesheetItem.IN = teamWorkItem.TimesheetItem.IN;
-                            foundItem.TimesheetItem.OUT = teamWorkItem.TimesheetItem.OUT;
-                            foundItem.TimesheetItem.project = teamWorkItem.TimesheetItem.project;
-                            foundItem.TimesheetItem.TimesheetHeader = teamWorkItem.TimesheetItem.TimesheetHeader;
-                            log.TimesheetItem = foundItem.TimesheetItem.TIMESHEETITEMID;
-                            db.Entry(foundItem).State = EntityState.Modified;
-                            db.SaveChanges();
-                            log.Description = DESCRIPTIONSTATUS[0];
+                            
                         }
                         catch (Exception e)
                         {
-                            Util.EscreverLog(e.Message, e.Message);
-                            log.Description = DESCRIPTIONSTATUS[2] + " and " + e.Message;
+                            //Util.EscreverLog(e.Message, e.Message);
+                            log.Description =  e.Message;
 
                         }
                     }
@@ -161,31 +196,58 @@ namespace Apassos.TeamWork.Handler
                     {
                         try
                         {
-                            db.TimesheetTeamWorkItems.Add(teamWorkItem);
-                            db.SaveChanges();
-                            log.Description = DESCRIPTIONSTATUS[1];
-                            log.TimesheetItem = item.TIMESHEETITEMID;
+                            if ((period.STATUS.Equals("a")) || (period.STATUS.Equals("c")))
+                            {
+
+
+                                TimesheetManagerHeader manager2 = new TimesheetManagerHeader();
+
+                                int contaApontamentosAprovados = manager2.AlgumNaoAprovadoComNovoApontamento(db, header);
+
+                                if (contaApontamentosAprovados == 1)
+                                {
+
+                                    db.TimesheetTeamWorkItems.Add(teamWorkItem);
+                                    db.SaveChanges();
+                                    log.Description = DESCRIPTIONSTATUS[1];
+                                    log.TimesheetItem = item.TIMESHEETITEMID;
+                                }
+                                else
+                                {
+                                    log.Description = "Atividade não migrada. O apontamento já foi aprovado pelo Gestor";
+                                    log.TimesheetItem = item.TIMESHEETITEMID;
+                                }
+                            }
+                            else
+                            {
+                                log.Description = "Atividade não migrada. O apontamento já foi aprovado pelo Gestor";
+                                log.TimesheetItem = item.TIMESHEETITEMID;
+                            }
+
                         }
                         catch (Exception e)
                         {
+                            exceptions.PeriodIsClosed(header.Period.STATUS);
+                            log.Description = "Atividade não migrada. O apontamento já foi aprovado pelo Gestor";
+                            log.TimesheetItem = item.TIMESHEETITEMID;
                             Util.EscreverLog(e.Message, e.Message);
-                            log.Description = DESCRIPTIONSTATUS[3] + " and " + e.Message;
+                            log.Description =  e.Message;
                         }
                     }
                     #endregion
-                   
+
                     #endregion
                 }
 
-                if (projectTodoItem==null)
+                if (projectTodoItem == null)
                 {
                     #region
                     //Inicializa os dados do Log caso a tag não exista
-                    
+
                     log.ActivityDate = ConvertTime(entry.Date);
-                    if(entry.Description.Equals(string.Empty) || entry.Description == null)
+                    if (entry.Description.Equals(string.Empty) || entry.Description == null)
                     {
-                        log.ActivityDescription = "NÂO EXISTE DESCRIÇÂO NO LOG DE TEMPO";
+                        log.ActivityDescription = "NÃO EXISTE DESCRIÇÃO NO LOG DE TEMPO";
                         log.DescriptionProblem = DESCRIPTION_PROBLEM_IS_HAPPENING;
                     }
                     else
@@ -212,7 +274,7 @@ namespace Apassos.TeamWork.Handler
                     log.ActivityDate = ConvertTime(entry.Date);
                     if (entry.Description.Equals(string.Empty) || entry.Description == null)
                     {
-                        log.ActivityDescription = "NÂO EXISTE DESCRIÇÂO NO LOG DE TEMPO";
+                        log.ActivityDescription = "NÃO EXISTE DESCRIÇÃO NO LOG DE TEMPO";
                         log.DescriptionProblem = DESCRIPTION_PROBLEM_IS_HAPPENING;
                     }
                     else
@@ -258,6 +320,10 @@ namespace Apassos.TeamWork.Handler
                     foundItem.ActivityDescription = log.ActivityDescription;
                     foundItem.ActivityDate = log.ActivityDate;
                     foundItem.Data = log.Data;
+                    if (log.Description == null)
+                    {
+                        log.Description = APPROVEDSTATUS;
+                    }
                     foundItem.Description = log.Description;
                     foundItem.DescriptionProblem = log.DescriptionProblem;
                     foundItem.TagProblem = log.TagProblem;
@@ -265,7 +331,7 @@ namespace Apassos.TeamWork.Handler
                     foundItem.ProjectTW = log.ProjectTW;
                     foundItem.ConsultorId = log.ConsultorId;
                     foundItem.PeriodoId = log.PeriodoId;
-                    if (project==null)
+                    if (project == null)
                     {
                         db.Entry(foundItem).State = EntityState.Modified;
                     }
@@ -275,11 +341,21 @@ namespace Apassos.TeamWork.Handler
                         db.Entry(foundItem).State = EntityState.Modified;
                     }
 
-                    if(foundItem.TagProblem.Equals("Não") && foundItem.DescriptionProblem.Equals("Não"))
+                    if (foundItem.TagProblem.Equals("Não") && foundItem.DescriptionProblem.Equals("Não"))
                     {
                         foundItem.Status = 1;
                     }
                     else
+                    {
+                        log.Status = 2;
+                    }
+
+                    if (log.Description == null)
+                    {
+                        log.Description = "Atividade não migrada. O apontamento já foi aprovado pelo Gestor";
+                    }
+
+                    if (log.Description.Contains("O período está Fechado. Entre em contato com o Administrador") || log.Description.Contains("Atividade não migrada. O apontamento já foi aprovado pelo Gestor"))
                     {
                         log.Status = 2;
                     }
@@ -300,7 +376,7 @@ namespace Apassos.TeamWork.Handler
                 try
                 {
 
-                    if(log.TagProblem == null)
+                    if (log.TagProblem == null)
                     {
                         log.TagProblem = "Sim";
                         log.Status = 2;
@@ -321,6 +397,18 @@ namespace Apassos.TeamWork.Handler
                     {
                         log.Status = 2;
                     }
+
+                    if (log.Description == null)
+                    {
+                        log.Description = "Atividade não migrada. O apontamento já foi aprovado pelo Gestor";
+                    }
+
+
+                    if (log.Description.Contains("O período está Fechado. Entre em contato com o Administrador") || log.Description.Contains("Atividade não migrada. O apontamento já foi aprovado pelo Gestor"))
+                    {
+                        log.Status = 2;
+                    }
+
                     db.Logs.Add(log);
                     db.SaveChanges();
                 }

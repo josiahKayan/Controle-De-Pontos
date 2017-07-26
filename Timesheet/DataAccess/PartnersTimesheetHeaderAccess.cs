@@ -89,8 +89,8 @@ namespace Apassos.DataAccess
                 {
                     this.periodInicial = periodInicial;
                     this.periodFinal = periodFinal;
-
-                    listHeader = db.TimesheetHeaders.Where(th => th.ENVIRONMENT == env && th.Partner.PARTNERID == partner.PARTNERID &&
+                    
+                    listHeader = db.TimesheetHeaders.Include("Period").Include("Partner").Where(th => th.ENVIRONMENT == env && th.Partner.PARTNERID == partner.PARTNERID &&
                         th.Period.TIMESHEETPERIODSTART >= periodInicial.TIMESHEETPERIODSTART && th.Period.TIMESHEETPERIODFINISH <= periodFinal.TIMESHEETPERIODFINISH
                     ).ToList();
 
@@ -142,7 +142,7 @@ namespace Apassos.DataAccess
                     {
                         foreach (var h in listHeader)
                         {
-                            items.AddRange(db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env && ti.TimesheetHeader.TIMESHEETHEADERID == h.TIMESHEETHEADERID &&
+                            items.AddRange(db.TimesheetItems.Include("project").Where(ti => ti.ENVIRONMENT == env && ti.TimesheetHeader.TIMESHEETHEADERID == h.TIMESHEETHEADERID &&
                             ti.project.PROJECTID == project.PROJECTID).OrderBy(ts => ts.DATE).ThenBy(ts => ts.IN).ToList());
                         }
                     }
@@ -200,7 +200,7 @@ namespace Apassos.DataAccess
                     this.periodInicial = periodInicial;
                     this.periodFinal = periodFinal;
 
-                    listHeader = db.TimesheetHeaders.Where(th => th.ENVIRONMENT == env &&
+                    listHeader = db.TimesheetHeaders.Include("Period").Include("Partner").Where(th => th.ENVIRONMENT == env &&
                         th.Period.TIMESHEETPERIODSTART >= periodInicial.TIMESHEETPERIODSTART && th.Period.TIMESHEETPERIODFINISH <= periodFinal.TIMESHEETPERIODFINISH &&
                         th.Partner.PARTNERID == partner.PARTNERID
                     ).ToList();
@@ -223,7 +223,7 @@ namespace Apassos.DataAccess
                     this.periodInicial = periodInicial;
                     this.periodFinal = periodFinal;
 
-                    listHeader = db.TimesheetHeaders.Where(th => th.ENVIRONMENT == env &&
+                    listHeader = db.TimesheetHeaders.Include("Period").Include("Partner").Where(th => th.ENVIRONMENT == env &&
                         th.Period.TIMESHEETPERIODSTART >= periodInicial.TIMESHEETPERIODSTART && th.Period.TIMESHEETPERIODFINISH <= periodFinal.TIMESHEETPERIODFINISH &&
                         th.Partner.PARTNERID == partner.PARTNERID
                     ).ToList();

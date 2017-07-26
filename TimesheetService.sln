@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalApassosService", "Timesheet\PortalApassosService.csproj", "{F858B2C7-DBAD-4C0A-9B14-7A9A336FE6EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamWorkDomain", "TeamWorkDomain\TeamWorkDomain.csproj", "{54BF24D0-B128-4BBE-8093-71B0A40157B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{F858B2C7-DBAD-4C0A-9B14-7A9A336FE6EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F858B2C7-DBAD-4C0A-9B14-7A9A336FE6EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F858B2C7-DBAD-4C0A-9B14-7A9A336FE6EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54BF24D0-B128-4BBE-8093-71B0A40157B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54BF24D0-B128-4BBE-8093-71B0A40157B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54BF24D0-B128-4BBE-8093-71B0A40157B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54BF24D0-B128-4BBE-8093-71B0A40157B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

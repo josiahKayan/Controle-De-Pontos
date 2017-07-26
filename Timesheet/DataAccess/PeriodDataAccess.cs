@@ -41,6 +41,18 @@ namespace Apassos.DataAccess
             return lista.FirstOrDefault();
         }
 
+        public Period GetPeriodoActivity(DateTime date)
+        {
+            Period period;
+            using ( TimesheetContext db = new TimesheetContext())
+            {
+                period = db.Periods.Where(x => x.MONTH == date.Month && x.YEAR == date.Year).FirstOrDefault();
+            }
+
+            return period;
+        }
+
+
         /**
          * Retorna o periodo pelo id. 
          */

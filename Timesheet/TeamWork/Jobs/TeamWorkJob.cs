@@ -2,6 +2,7 @@
 using Apassos.DataAccess;
 using Apassos.IoC;
 using Apassos.Models;
+using Apassos.TeamWork.AutomaticTasks;
 using Apassos.TeamWork.Handler;
 using Apassos.TeamWork.JsonObject;
 using Apassos.TeamWork.Parsers;
@@ -37,14 +38,18 @@ namespace Apassos.TeamWork.Jobs
             _service = _kernel.Get<ITeamWorkWebService>();
         }
 
-        public void Execute(IJobExecutionContext context)
-     {
+        public async void Execute(IJobExecutionContext context)
+        {
 
             var items = _parser.GetItems();
 
             TimesheetManager tsManager = new TimesheetManager();
 
-            List<InfoObjects> listTimesheetItems =  tsManager.InsertData(items);
+            List<InfoObjects> listTimesheetItems = tsManager.InsertData(items);
+
+            //TeamWorkTasks teamWorkTasks = new TeamWorkTasks();
+            //var list = await teamWorkTasks.GetAllTasks();
+            //await teamWorkTasks.CreateTaks(list);
 
             //Emails.Email email = new Emails.Email();
             //try
@@ -55,6 +60,7 @@ namespace Apassos.TeamWork.Jobs
             //{
 
             //}
+
 
         }
     }

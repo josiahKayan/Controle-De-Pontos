@@ -222,6 +222,7 @@
     <Compile Include="Models\Predecessor.cs" />
     <Compile Include="Models\ProjectResponseWithSubTask.cs" />
     <Compile Include="Models\ProjetoAuxiliar.cs" />
+    <Compile Include="Models\Status.cs" />
     <Compile Include="Models\SubTask.cs" />
     <Compile Include="Models\TeamworkLogTraceRootCauses.cs" />
     <Compile Include="Models\TeamWorkLogTraces.cs" />
@@ -232,6 +233,9 @@
     <Compile Include="reports\classes\RelatoriosXLS.cs" />
     <Compile Include="reports\Excel.cs" />
     <Compile Include="reports\Export.cs" />
+    <Compile Include="TeamWork\AutomaticTasks\ITeamWorkTasks.cs" />
+    <Compile Include="TeamWork\AutomaticTasks\TeamWorkTasks.cs" />
+    <Compile Include="TeamWork\Exceptions\GenericExceptions.cs" />
     <Compile Include="TeamWork\Handler\TimesheetManager.cs" />
     <Compile Include="TeamWork\Handler\TimesheetManagerHeader.cs" />
     <Compile Include="TeamWork\Handler\TimesheetManagerItem.cs" />
@@ -540,6 +544,12 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TeamWorkDomain\TeamWorkDomain.csproj">
+      <Project>{54bf24d0-b128-4bbe-8093-71b0a40157b9}</Project>
+      <Name>TeamWorkDomain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

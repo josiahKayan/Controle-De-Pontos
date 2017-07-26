@@ -171,6 +171,30 @@ namespace Apassos.DataAccess
         }
 
 
+
+        public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodo2(Period periodo)
+        {
+            using (TimesheetContext db = new TimesheetContext())
+            {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+
+                List<Partners> listPartners = db.TimesheetItems.Where(ti => ti.ENVIRONMENT == env && ti.TimesheetHeader.Period.PERIODID == periodo.PERIODID).
+                            Select(x => x.TimesheetHeader.Partner).Distinct().ToList();
+
+                List<PartnersTimesheetHeaderAccess> list = new List<PartnersTimesheetHeaderAccess>();
+
+                listPartners.Sort((x, y) => string.Compare(x.USERGROUP + ":" + x.NAME, y.USERGROUP + ":" + y.NAME));
+                foreach (Partners partner in listPartners)
+                {
+                    list.Add(new PartnersTimesheetHeaderAccess(partner, periodo, periodo));
+                }
+                return list;
+            }
+        }
+
+
+
+
         public List<PartnersTimesheetHeaderAccess> GetConsultoresApontamentosPorPeriodo(Project projeto = null, Period periodoInicial = null, Period periodoFinal = null)
         {
             using (TimesheetContext db = new TimesheetContext())
@@ -569,6 +593,13 @@ namespace Apassos.DataAccess
             }
         }
 
+        public List<ProjectUser> GetRelacaoConsultoresProjeto2(Project project, TimesheetContext db )
+        {
+                var env = ConfigurationManager.AppSettings["ENVIRONMENT"].ToString();
+                List<ProjectUser> lista = db.ProjectUsers.Where(p => p.ENVIRONMENT == env && p.project.PROJECTID == project.PROJECTID).ToList();
+                return lista;
+        }
+
         /**
         * Retorna os consultores do projeto selecionado, com apontamentos.
         */
@@ -668,7 +699,7 @@ namespace Apassos.DataAccess
                 ProjectDataAccess project = new ProjectDataAccess();
             //corre todos os consultores ja cadastrados, para verificar quais serao excluidos
             List<ProjectUser> listaConsultoresProjetoExcluir = new List<ProjectUser>();
-            List<ProjectUser> listaRelacaoConsultoresProjeto = project.GetRelacaoConsultoresProjeto(projetoAtual);
+            List<ProjectUser> listaRelacaoConsultoresProjeto = project.GetRelacaoConsultoresProjeto2(projetoAtual, db);
             foreach (ProjectUser item in listaRelacaoConsultoresProjeto)
             {
                 //se nao tiver apontamentos, nao pode excluir

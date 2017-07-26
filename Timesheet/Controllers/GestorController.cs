@@ -34,6 +34,7 @@ namespace Apassos.Controllers
             ProjectDataAccess project = new ProjectDataAccess();
 
             var _periodid = Request.Form["selectperiodo"];
+
             Period periodoAtual = null;
             if (_periodid != null && _periodid != "")
             {

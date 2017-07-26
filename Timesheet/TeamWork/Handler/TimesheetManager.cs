@@ -40,6 +40,12 @@ namespace Apassos.TeamWork.Handler
 
             foreach (var item in entryTimeList)
             {
+
+                if (item.Description.Equals(""))
+                {
+                    item.Description = item.TodoListName;
+                }
+
                 //Inicializa o log
                 log = new Logs();
 
@@ -67,7 +73,7 @@ namespace Apassos.TeamWork.Handler
                 //Cria o Header e o Item( O Apontamento em si )
                 tsManagerItem.CreateTimesheetItem(period, partner, project, item,log);
 
-                if (project != null)
+                if (project == null)
                 {
 
                     //Cria um objeto para erro
@@ -119,6 +125,7 @@ namespace Apassos.TeamWork.Handler
                 ProjectDataAccess projectDataAccess = new ProjectDataAccess();
 
                 Project project = projectDataAccess.GetProjeto(idByTag.ToString());
+
                 return project;
 
             }
@@ -164,7 +171,7 @@ namespace Apassos.TeamWork.Handler
         {
             DateTime date = DateTime.Parse(entryDate);
             PeriodDataAccess _periods = new PeriodDataAccess();
-            return _periods.GetPeriodoAtual();
+            return _periods.GetPeriodoActivity(date);
         }
 
 
@@ -172,6 +179,12 @@ namespace Apassos.TeamWork.Handler
         {
             PartnerDataAccess p = new PartnerDataAccess();
             List<Partners> _partners = p.GetAllParceiros();
+
+            if (LastName.Contains("DeAlmeida"))
+            {
+                return _partners.Find(x => x.PARTNERID == 1112);
+            }
+
 
             if (FirstName.Contains('á') || LastName.Contains('á'))
             {
@@ -209,16 +222,33 @@ namespace Apassos.TeamWork.Handler
             int numberPartner = _partners.FindAll(x => x.FIRSTNAME.ToUpper().Trim().Equals(FirstName.ToUpper()) && x.LASTNAME.ToUpper().Trim().Equals(LastName.ToUpper())).Count();
 
 
-            if (numberPartner > 1)
+            if (numberPartner >= 1)
             {
                 return _partners.FindAll(x => x.FIRSTNAME.ToUpper().Trim().Equals(FirstName.ToUpper()) && x.LASTNAME.ToUpper().Trim().Equals(LastName.ToUpper())).FirstOrDefault();
 
             }
 
             //return _partners.Find(x => x.FIRSTNAME.ToUpper().Trim().Equals(FirstName.ToUpper()) && x.LASTNAME.ToUpper().Trim().Equals(LastName.ToUpper()));
+            
+            if (FirstName.Equals("Nonato"))
+            {
+                return _partners.Find(x => x.FIRSTNAME.ToUpper().Trim().Equals(FirstName.ToUpper()));
 
-            return _partners.Find(x =>  x.FIRSTNAME.ToUpper().Trim().Equals(LastName.ToUpper()));
+            }
+            if (FirstName.Equals("Rayden"))
+            {
+                return _partners.Find(x => x.FIRSTNAME.ToUpper().Trim().Equals(FirstName.ToUpper()));
 
+            }
+
+
+            if (FirstName.Equals("Dennis"))
+            {
+                return _partners.Find(x => x.FIRSTNAME.ToUpper().Trim().Equals(FirstName.ToUpper()));
+
+            }
+
+            return _partners.Find(x => x.FIRSTNAME.ToUpper().Trim().Equals(LastName.ToUpper()));
 
         }
 

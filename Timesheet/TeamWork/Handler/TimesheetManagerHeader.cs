@@ -15,7 +15,7 @@ namespace Apassos.TeamWork.Handler
         public TimesheetHeader GetHeader(Period period, Partners partner)
         {
             TimesheetDataAccess timesheetSalvar = new TimesheetDataAccess();
-            TimesheetHeader header  = timesheetSalvar.GetApontamentoCabecalhoPorPeriodo(partner, period);
+            TimesheetHeader header = timesheetSalvar.GetApontamentoCabecalhoPorPeriodo(partner, period);
             if (header == null)
             {
                 header = new TimesheetHeader();
@@ -29,6 +29,61 @@ namespace Apassos.TeamWork.Handler
             }
 
             return header;
+        }
+
+
+        public int AlgumNaoAprovado(TimesheetContext db, TimesheetTeamWorkItem foundItem)
+        {
+
+            var total = db.TimesheetItems.Where(x => x.TimesheetHeader.TIMESHEETHEADERID == foundItem.TimesheetItem.TimesheetHeader.TIMESHEETHEADERID && x.STATUS == 0).FirstOrDefault();
+
+            if (total != null)
+            {
+                return 1;
+
+            }
+            else
+            {
+
+                int quantidadeAprovados = 0;
+                quantidadeAprovados = db.TimesheetItems.Where(x => x.TimesheetHeader.TIMESHEETHEADERID == foundItem.TimesheetItem.TimesheetHeader.TIMESHEETHEADERID && x.STATUS == 1).ToList().Count();
+
+                if (quantidadeAprovados > 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+        }
+
+        public int AlgumNaoAprovadoComNovoApontamento(TimesheetContext db, TimesheetHeader header)
+        {
+
+            var total = db.TimesheetItems.Where(x => x.TimesheetHeader.TIMESHEETHEADERID == header.TIMESHEETHEADERID && x.STATUS == 0).FirstOrDefault();
+
+            if (total != null)
+            {
+                return 1;
+
+            }
+            else
+            {
+
+                int quantidadeAprovados = 0;
+                quantidadeAprovados = db.TimesheetItems.Where(x => x.TimesheetHeader.TIMESHEETHEADERID == header.TIMESHEETHEADERID && x.STATUS == 1).ToList().Count();
+
+                if (quantidadeAprovados > 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
         }
 
     }

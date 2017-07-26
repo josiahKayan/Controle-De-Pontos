@@ -25,8 +25,6 @@ namespace Apassos.Controllers
 
         public ActionResult Integration()
         {
-            if (CommonController.Instance.AccessValidateRedirect(this.ControllerContext, Constants.ModulesConstant.INTEGRATION))
-            {
                 var consultorAtual = usuarioLogado.Partner;
                 List<Logs> logs;
                 //Parte para selecionar o Período
@@ -116,7 +114,6 @@ namespace Apassos.Controllers
                 Session["PARCEIROS_FILTRO"] = partnersListFilter;
                 Session["PARCEIRO_ATUAL"] = parceiroAtual;
                 Session["STATUS_ATUAL"] = _status;
-            }
 
             return View();
         }

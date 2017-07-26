@@ -126,6 +126,14 @@ function mudarperiodo(periodoselecionado) {
     document.getElementById('formapontamentos').submit();
 }
 
+function mudargrupo(grupo) {
+    var grupoid = grupo.value;
+    document.getElementById('formapontamentos').action = relativepath + "Gestor/Aprovacao/";
+    document.getElementById('formapontamentos').method = "post";
+    document.getElementById('formapontamentos').submit();
+}
+
+
 function cancelar() {
     document.getElementById('formapontamentos').action = relativepath + "Gestor/Aprovacao/";
     document.getElementById('formapontamentos').method = "post";
